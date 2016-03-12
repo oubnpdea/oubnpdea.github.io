@@ -8,1371 +8,647 @@
     <language>zh</language>
     <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
     <webMaster>345345345345@163.com (345345 345345345)</webMaster>
-    <lastBuildDate>Thu, 03 Mar 2016 07:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 03 Dec 2015 23:46:40 +0800</lastBuildDate>
     <atom:link href="http://oubnpdea.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>MongoDB 学习笔记（二）</title>
-      <link>http://oubnpdea.github.io/2016/03/mongodb-3/</link>
-      <pubDate>Thu, 03 Mar 2016 07:00:00 +0800</pubDate>
+      <title>初识 Lua</title>
+      <link>http://oubnpdea.github.io/2015/12/acquaintance-lua/</link>
+      <pubDate>Thu, 03 Dec 2015 23:46:40 +0800</pubDate>
       <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/03/mongodb-3/</guid>
+      <guid>http://oubnpdea.github.io/2015/12/acquaintance-lua/</guid>
       <description>
 
-&lt;h2 id=&#34;php-篇:329d44cf14e5929d78d602751fb22339&#34;&gt;PHP 篇&lt;/h2&gt;
+&lt;p&gt;最近了解 &lt;a href=&#34;http://www.lua.org/&#34;&gt;Lua&lt;/a&gt; 完全是为了学习 &lt;a href=&#34;http://weibo.com/agentzh&#34;&gt;@agentZh&lt;/a&gt; 大神的开源项目 &lt;a href=&#34;https://openresty.org/&#34;&gt;OpenResty&lt;/a&gt;。因为在接触到的一些大型高访问高并发下的 Web 项目后，日益发现 PHP 存在的不足与无力（当然这不能抹杀他带来的开发效率的优势，新的 PHP 7 也有了很显著的性能上的提高）。有幸前段时间参加了 OpenResty 的一次线下活动，学习到了很多公司对于 OpenResty 的应用与实践，发现 OpenResty 就是一个很棒的解决方案。&lt;/p&gt;
 
-&lt;h4 id=&#34;安装-mongodb-的-php-驱动扩展:329d44cf14e5929d78d602751fb22339&#34;&gt;安装 MongoDB 的 PHP 驱动扩展&lt;/h4&gt;
+&lt;p&gt;OpenResty 是一个基于 Nginx 核心的，拥有大量高质量的第三方模块的全功能 Web 应用服务器。OpenResty 可以让 Web 开发人员使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K+ 并发连接响应的超高性能 Web 应用系统。&lt;/p&gt;
 
-&lt;p&gt;PHP 关于 MongoDB 的扩展拥有两个，分别是 php-mongodb 及 php-mongo 其中分别支持的情况如下。&lt;/p&gt;
+&lt;p&gt;既然是使用 Lua 开发，那就先学习了解 Lua 吧。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/mongodb-2-1.jpg&#34; alt=&#34;php-mongodb 及 php-mongo 支持情况&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;lua-简介:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 简介&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/mongodb-2-2.jpg&#34; alt=&#34;php-mongodb 及 php-mongo 对 PHP 版本的支持&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Lua 是于 1993 年在巴西里约热内卢天主教大学(Pontifical Catholic University of Rio de Janeiro in Brazil)诞生了一门编程语言，发明者是该校的三位研究人员，他们给这门语言取了个浪漫的名字 —— Lua，在葡萄牙语里代表美丽的月亮。事实证明她没有糟蹋这个优美的单词，Lua语言正如它名字所预示的那样成长为一门简洁、优雅且富有乐趣的语言。&lt;/p&gt;
 
-&lt;p&gt;根据比较情况 php-mongodb 显然支持更高版本的 MongoDB，而且其还支持 PHP7 及 HHVM，所以选择安装 php-mongodb 扩展。&lt;/p&gt;
+&lt;p&gt;Lua 从一开始就是作为一门方便嵌入(其它应用程序)并可扩展的轻量级脚本语言来设计的，因此她一直遵从着简单、小巧、可移植、快速的原则，官方实现完全采用ANSI C编写，能以C程序库的形式嵌入到宿主程序中。Lua 的每个版本都保持着开放源码的传统，不过各版采用的许可协议并不相同，自5.0版(最新版是5.1)开始她采用的是著名的MIT许可协议。正由于上述特点，所以Lua在游戏开发、机器人控制、分布式应用、图像处理、生物信息学等各种各样的领域中得到了越来越广泛的应用。其中尤以游戏开发为最，许多著名的游戏，比如 Escape from Monkey Island、World of Warcraft、大话西游，都采用了 Lua 来配合引擎完成数据描述、配置管理和逻辑控制等任务。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew install php56-mongodb
-==&amp;gt; Installing php56-mongodb from homebrew/php
-==&amp;gt; Downloading https://homebrew.bintray.com/bottles-php/php56-mongodb-1.1.2.el_capitan.bottle.tar.gz
-######################################################################## 100.0%
-==&amp;gt; Pouring php56-mongodb-1.1.2.el_capitan.bottle.tar.gz
-==&amp;gt; Caveats
-To finish installing mongodb for PHP 5.6:
-  * /usr/local/etc/php/5.6/conf.d/ext-mongodb.ini was created,
-    do not forget to remove it upon extension removal.
-  * Validate installation via one of the following methods:
-  *
-  * Using PHP from a webserver:
-  * - Restart your webserver.
-  * - Write a PHP page that calls &amp;quot;phpinfo();&amp;quot;
-  * - Load it in a browser and look for the info on the mongodb module.
-  * - If you see it, you have been successful!
-  *
-  * Using PHP from the command line:
-  * - Run `php -i &amp;quot;(command-line &#39;phpinfo()&#39;)&amp;quot;`
-  * - Look for the info on the mongodb module.
-  * - If you see it, you have been successful!
-==&amp;gt; Summary
-🍺  /usr/local/Cellar/php56-mongodb/1.1.2: 5 files, 751.1K
+&lt;p&gt;提到 Lua 就不得不提到 LuaJIT，虽然 Lua 已经很高效了，相对于其他很多脚本语言都要快，但仍然不能满足所有人，于是就诞生出了 LuaJIT。LuaJIT 是利用 JIT 编译技术把 Lua 代码编译成本地机器码后交由 CPU 直接执行。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://luajit.org/&#34;&gt;LuaJIT&lt;/a&gt; 是采用 C 语言编写的 Lua 解释器。LuaJIT 被设计成全兼容标准 Lua 5.1，因此 LuaJIT 代码的语法和标准的 Lua 语法没有太大的区别（当然一些 Lua 后续的新特性还没有引入）。LuaJIT 却比标准 Lua 快上数十倍，简直就是一个高效版的 Lua。&lt;/p&gt;
+
+&lt;h2 id=&#34;lua-环境搭建:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 环境搭建&lt;/h2&gt;
+
+&lt;p&gt;因为 OpenResty 使用的就是 LuaJIT，所以后续学习 Lua 也是在 LuaJIT 环境下运行。
+对于 Mac 用户来说安装简单，只要已经安装了 Homebrew 即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install luajit
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id=&#34;mongodb-的-crub-操作:329d44cf14e5929d78d602751fb22339&#34;&gt;MongoDB 的 CRUB 操作&lt;/h4&gt;
+&lt;p&gt;其他系统的安装可查看&lt;a href=&#34;http://www.lua.org/download.html&#34;&gt;官网&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;php-mongodb 使用的管理器方式处理的，分离为多个类方法。&lt;/p&gt;
+&lt;h2 id=&#34;hello-world:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Hello World&lt;/h2&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;插入操作&lt;/p&gt;
+&lt;p&gt;既然学习新东西，起手一定是 Hello World ！&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$bulk = new MongoDB\Driver\BulkWrite;
-
-
-$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;1&amp;quot;));
-$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;2&amp;quot;));
-$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;3&amp;quot;));
-$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;4&amp;quot;));
-$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;5&amp;quot;));
-
-
-$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
-$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 100);
-$result = $manager-&amp;gt;executeBulkWrite(&#39;yangming.bpcoder&#39;, $bulk, $writeConcern);
-echo &amp;quot;getInsertedCount: &amp;quot; . $result-&amp;gt;getInsertedCount();
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;更新操作&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$bulk = new MongoDB\Driver\BulkWrite;
-
-
-$bulk-&amp;gt;update(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;1&amp;quot;), array(&#39;$set&#39; =&amp;gt; array(&amp;quot;color&amp;quot; =&amp;gt; &amp;quot;blue&amp;quot;)));
-$bulk-&amp;gt;update(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;3&amp;quot;), array(&#39;$set&#39; =&amp;gt; array(&amp;quot;color&amp;quot; =&amp;gt; &amp;quot;red&amp;quot;)));
-$bulk-&amp;gt;update(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;6&amp;quot;), array(&#39;$set&#39; =&amp;gt; array(&amp;quot;color&amp;quot; =&amp;gt; &amp;quot;orange&amp;quot;)), array(&amp;quot;multi&amp;quot; =&amp;gt; false, &amp;quot;upsert&amp;quot; =&amp;gt; true));
-
-
-$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
-$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 100);
-$result = $manager-&amp;gt;executeBulkWrite(&#39;yangming.bpcoder&#39;, $bulk, $writeConcern);
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;删除操作&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$bulk = new MongoDB\Driver\BulkWrite;
-
-
-$bulk-&amp;gt;delete(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;2&amp;quot;));
-$bulk-&amp;gt;delete(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;4&amp;quot;));
-
-
-$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
-$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 100);
-$result = $manager-&amp;gt;executeBulkWrite(&#39;yangming.bpcoder&#39;, $bulk, $writeConcern);
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;查询操作&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
-$filter = array(&amp;quot;name&amp;quot; =&amp;gt; array(&#39;$gt&#39; =&amp;gt; &amp;quot;1&amp;quot;));
-$options = array();
-$query = new MongoDB\Driver\Query($filter, $options);
-$cursor = $manager-&amp;gt;executeQuery(&#39;yangming.bpcoder&#39;, $query);
-
-
-foreach ($cursor as $document)
-{
-    print_r($document);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;总结:329d44cf14e5929d78d602751fb22339&#34;&gt;总结&lt;/h3&gt;
-
-&lt;p&gt;相对来说，新的 PHP 的 MongoDB 扩展比原有的扩展好很多，也更加易用，只要根据个人的项目开发需求进行相应的封装即可，而且更加面向对象设计。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MongoDB 学习笔记（一）</title>
-      <link>http://oubnpdea.github.io/2016/03/mongodb-2/</link>
-      <pubDate>Wed, 02 Mar 2016 07:00:00 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/03/mongodb-2/</guid>
-      <description>
-
-&lt;p&gt;整理学习通过常见编程语言操作使用 MongoDB，因为阅读的书籍和资料多以 Ruby 为主，所以一并整理并总结两种编程语言的使用方式（Ruby &amp;amp; PHP），整理 PHP 主要原因是因为工作项目使用。&lt;/p&gt;
-
-&lt;h2 id=&#34;ruby-篇:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;Ruby 篇&lt;/h2&gt;
-
-&lt;h4 id=&#34;安装-mongodb-的-ruby-驱动:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;安装 MongoDB 的 Ruby 驱动&lt;/h4&gt;
-
-&lt;p&gt;因为 Ruby 拥有自己的包管理系统 RubyGems，故使用其安装即可。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ gem install mongo
-Fetching: bson-4.0.3.gem (100%)
-Building native extensions.  This could take a while...
-Successfully installed bson-4.0.3
-Fetching: mongo-2.2.3.gem (100%)
-Successfully installed mongo-2.2.3
-Parsing documentation for bson-4.0.3
-Installing ri documentation for bson-4.0.3
-Parsing documentation for mongo-2.2.3
-Installing ri documentation for mongo-2.2.3
-Done installing documentation for bson, mongo after 4 seconds
-2 gems installed
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过安装流程可以看出安装两部分 bson-4.0.3.gem 及 mongo-2.2.3.gem（实际情况可能安装版本号有出路），其中 BSON 是受 JSON 启发的二进制格式，MongoDB 用他来表示文档。而 bson-4.0.3.gem 是用来将 Ruby 对象序列化为 BSON 或者将 BSON 反序列化为 Ruby 对象的。&lt;/p&gt;
-
-&lt;h4 id=&#34;连接-mongodb-样例:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;连接 MongoDB 样例&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require &#39;mongo&#39;
-
-#client = Mongo::Client.new([ &#39;127.0.0.1:27017&#39; ], :database =&amp;gt; &#39;tutorial&#39;)
-client = Mongo::Client.new(&#39;mongodb://127.0.0.1:27017/tutorial&#39;)
-
-输出Debug结果：
-D, [2016-03-01T12:40:20.613274 #27736] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;代码很简单，两种连接方式均可，如果你开启了 DEBUG 模式，运行一下就可以看到运行情况。&lt;/p&gt;
-
-&lt;h4 id=&#34;基本的-crud-操作样例:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;基本的 CRUD 操作样例&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;插入操作：insert_one | insert_many&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;result = client[:users].insert_one({&#39;username&#39;: &#39;Ming Yang&#39;}) 
-
-
-输出Debug结果：
-D, [2016-03-01T12:45:52.390855 #27778] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
-D, [2016-03-01T12:45:52.392778 #27778] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | STARTED | {&amp;quot;insert&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;documents&amp;quot;=&amp;gt;[{:username=&amp;gt;&amp;quot;Ming Yang&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51e807ae7216c8236bcde&#39;)}], &amp;quot;ordered&amp;quot;=&amp;gt;true}
-D, [2016-03-01T12:45:52.393603 #27778] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | SUCCEEDED | 0.000754s
-
-
-result = client[:users].insert_many([{&#39;username&#39;: &#39;robot0&#39;},{&#39;username&#39;: &#39;robot1&#39;},{&#39;username&#39;: &#39;robot2&#39;}])
-
-
-输出Debug结果：
-D, [2016-03-01T12:46:56.891338 #27803] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
-D, [2016-03-01T12:46:56.893884 #27803] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | STARTED | {&amp;quot;insert&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;documents&amp;quot;=&amp;gt;[{:username=&amp;gt;&amp;quot;robot0&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51ec07ae7216c9b4f2a66&#39;)}, {:username=&amp;gt;&amp;quot;robot1&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51ec07ae7216c9b4f2a67&#39;)}, {:username=&amp;gt;&amp;quot;robot2&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51ec07ae7216c9b4f2a68&#39;)}...
-D, [2016-03-01T12:46:56.894697 #27803] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | SUCCEEDED | 0.000741s
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;查询操作：find&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;client[:users].find({&#39;username&#39;: &#39;Yang&#39;}).each do |doc|
-    puts doc
+&lt;pre&gt;&lt;code&gt;function main()
+    print(&amp;quot;Hello World!&amp;quot;)
 end
 
+main()
+&lt;/code&gt;&lt;/pre&gt;
 
-输出Debug结果：
-D, [2016-03-01T13:50:57.343763 #28019] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
-D, [2016-03-01T13:50:57.345945 #28019] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.find | STARTED | {&amp;quot;find&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;filter&amp;quot;=&amp;gt;{&amp;quot;username&amp;quot;=&amp;gt;&amp;quot;Yang&amp;quot;}}
-D, [2016-03-01T13:50:57.346787 #28019] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.find | SUCCEEDED | 0.0007689999999999999s
-{&amp;quot;_id&amp;quot;=&amp;gt;BSON::ObjectId(&#39;56d3f2cdc78712267ac63daf&#39;), &amp;quot;username&amp;quot;=&amp;gt;&amp;quot;Yang&amp;quot;, &amp;quot;country&amp;quot;=&amp;gt;&amp;quot;China&amp;quot;}
+&lt;p&gt;然后和所有脚本语言一下执行它查看输出结果&lt;/p&gt;
 
+&lt;pre&gt;&lt;code&gt;$ luajit HelloWorld.lua
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;
 
-puts client[:users].find({&#39;username&#39;: &#39;Yang&#39;}).count
+&lt;h2 id=&#34;lua-的注释:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 的注释&lt;/h2&gt;
 
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;单行注释 &amp;ndash;  功能等同于 C++ 中的 //&lt;/p&gt;&lt;/li&gt;
 
-输出结果：
-1
+&lt;li&gt;&lt;p&gt;多行注释 &amp;ndash;[[  注释的内容  ]]   功能等同于C++中的 /**/&lt;/p&gt;&lt;/li&gt;
 
+&lt;li&gt;&lt;p&gt;多行注释 &amp;ndash;[====[   注释和内容  ]====],  也等同于C++中的/**/,   这个主要用于注释的内容里面有像arr[arr2[idx]] 这种文本,  如果使用&amp;ndash;[[  ]] 遇到arr[arr2[idx]]后面的]]注释就结束,这显示与我们的意图不相符合。所以使用&amp;ndash;[===[  ]===] 来注释内容, 就不用担心了, 两边的等号数量要相同, 多少个没有关系。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
-client[:users].find.distinct(:username).each do |doc|
-    puts doc
+&lt;h2 id=&#34;lua-基础数据类型:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 基础数据类型&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;nil         空（无效值）
+boolean     布尔（true/false）
+number      实数（类同 C/C++ 的 double 类型）
+string      字符串
+table       表（关联数组）
+function    函数
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;lua-表达式:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 表达式&lt;/h2&gt;
+
+&lt;p&gt;算数运算符和关系运算符，与大多数语言一致，唯一特殊的是 不等于运算的写法为 ~=。&lt;/p&gt;
+
+&lt;h5 id=&#34;逻辑运算符:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;逻辑运算符&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;and     逻辑与
+or      逻辑或
+not     逻辑非
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lua 中的 and 和 or 不同于大多数语言。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;a and b   如果 a 为 nil或false，则返回 a，否则返回 b&lt;/li&gt;
+&lt;li&gt;a or b    如果 a 为 nil或false，则返回 b，否则返回 a&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;lua-函数:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 函数&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;function functionName(args..) 
+    ....
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lua 函数的使用：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;函数的定义一定要在函数调用前。&lt;/li&gt;
+&lt;li&gt;函数的参数为按值传递，唯一例外的是表数据类型，是按址传递。&lt;/li&gt;
+&lt;li&gt;函数参数支持变长参数。&lt;/li&gt;
+&lt;li&gt;函数支持多个返回值。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;lua-模块:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 模块&lt;/h2&gt;
+
+&lt;p&gt;从Lua5.1版本开始，就对模块和包添加了新的支持，可以使用require和module来定义和使用模块和包。require用于使用模块，module用于创建模块。简单的说，一个模块就是一个程序库，可以通过require来加载。然后便得到了一个全局变量，表示一个table。这个table就像是一个命名空间，其内容就是模块中导出的所有东西，比如函数和常量，一个符合规范的模块还应使require返回这个table。&lt;/p&gt;
+
+&lt;p&gt;使用实例：&lt;/p&gt;
+
+&lt;p&gt;complex.lua 文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;local _M = {}   -- 局部变量，模块名称
+
+function _M.new(r, i)
+    return {r = r, i = i}
 end
 
+_M.i =  _M.new(0, 1)     -- 定义一个table型常量i
 
-输出结果：
-BPCoder
-Yang
-robot0
-robot1
-robot2
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+function  _M.add(c1, c2)  --复数加法
+    return  _M.new(c1.r + c2.r, c1.i + c2.i)
+end
 
-&lt;li&gt;&lt;p&gt;更新操作：update_one | update_many | replace_one | find_one_and_update | find_one_and_replace&lt;/p&gt;
+function  _M.sub(c1, c2)  --复数减法
+    return  _M.new(c1.r - c2.r, c1.i - c2.i)
+end
 
-&lt;pre&gt;&lt;code&gt;client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).update_one({&#39;country&#39;: &#39;China&#39;})
+return  _M  -- 返回模块的table
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;main.lua 文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;local complex = require &amp;quot;complex&amp;quot;
+
+local com1 = complex.new(0, 1)
+local com2 = complex.new(1, 2)
+
+local ans = complex.add(com1, com2)
+print(ans.r, ans.i)      --&amp;gt;output  1     3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;lua-类库:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 类库&lt;/h2&gt;
+
+&lt;p&gt;Lua 提供丰富的标准库，便于开发使用。&lt;a href=&#34;http://www.lua.org/manual/5.1/&#34;&gt;在线手册&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;lua-文件操作:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 文件操作&lt;/h2&gt;
+
+&lt;p&gt;Lua I/O库提供两种不同的方式处理文件：隐式文件描述，显式文件描述。&lt;/p&gt;
+
+&lt;h6 id=&#34;隐式文件描述:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;隐式文件描述&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;file = io.input(&amp;quot;test1.txt&amp;quot;)  --使用io.input()函数打开文件
+
+repeat
+    line = io.read()      --逐行读取内容，文件结束时返回nil
+    if nil == line then
+        break
+end
+print(line)
+until (false)
+
+io.close(file)       --关闭文件
+
+--&amp;gt;output
+my test file
+hello
+lua
 
 
-输出Debug结果：
-D, [2016-03-01T14:07:04.920829 #28221] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
-D, [2016-03-01T14:07:04.923163 #28221] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.update | STARTED | {&amp;quot;update&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;updates&amp;quot;=&amp;gt;[{&amp;quot;q&amp;quot;=&amp;gt;{&amp;quot;username&amp;quot;=&amp;gt;&amp;quot;robot0&amp;quot;}, &amp;quot;u&amp;quot;=&amp;gt;{:country=&amp;gt;&amp;quot;China&amp;quot;}, &amp;quot;multi&amp;quot;=&amp;gt;false, &amp;quot;upsert&amp;quot;=&amp;gt;false}], &amp;quot;ordered&amp;quot;=&amp;gt;true}
-D, [2016-03-01T14:07:04.924070 #28221] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.update | SUCCEEDED | 0.000846s
+file = io.open(&amp;quot;test1.txt&amp;quot;, &amp;quot;a+&amp;quot;) --使用io.open()函数，以添加模式打开文件
+io.output(file)                    --使用io.output()函数，设置默认输出文件
+io.write(&amp;quot;\nhello world&amp;quot;)          --使用io.write()函数，把内容写到文件
+io.close(file)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;显示文件描述:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;显示文件描述&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;file = io.open(&amp;quot;test2.txt&amp;quot;, &amp;quot;r&amp;quot;)  --使用io.open()函数，以只读模式打开文件
+
+for line in file:lines() do          --使用file:lines()函数逐行读取文件
+    print(line)
+end
+
+file:close()
+
+--&amp;gt;output
+my test2
+hello lua
 
 
-client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).update_many({&#39;country&#39;: &#39;China&#39;})
-client[:users].find({&#39;username&#39;: &#39;Yang&#39;}).replace_one({&amp;quot;$set&amp;quot;: {&#39;city&#39;: &#39;Shenyang&#39;}})
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+file = io.open(&amp;quot;test2.txt&amp;quot;, &amp;quot;a&amp;quot;)  --使用io.open()函数，以添加模式打开文件
+file:write(&amp;quot;\nhello world&amp;quot;)       --使用file:open()函数，在文件的最后添加一行内容
+file:close()
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;li&gt;&lt;p&gt;删除操作：delete_one | delete_many&lt;/p&gt;
+&lt;p&gt;具体其他操作文件的函数，查询 &lt;a href=&#34;http://www.lua.org/manual/5.1/&#34;&gt;在线手册&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).delete_one
+&lt;h2 id=&#34;参考资料:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;参考资料&lt;/h2&gt;
 
-
-输出Debug结果：
-D, [2016-03-01T15:17:27.455187 #28994] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
-D, [2016-03-01T15:17:27.457425 #28994] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.delete | STARTED | {&amp;quot;delete&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;deletes&amp;quot;=&amp;gt;[{&amp;quot;q&amp;quot;=&amp;gt;{&amp;quot;city&amp;quot;=&amp;gt;&amp;quot;Shenyang&amp;quot;}, &amp;quot;limit&amp;quot;=&amp;gt;1}], &amp;quot;ordered&amp;quot;=&amp;gt;true}
-D, [2016-03-01T15:17:27.458301 #28994] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.delete | SUCCEEDED | 0.000799s
-
-
-client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).delete_many
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gitbook.com/book/moonbingbing/openresty-best-practices&#34;&gt;OpenResty最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
     <item>
-      <title>初识 MongoDB</title>
-      <link>http://oubnpdea.github.io/2016/03/mongodb-1/</link>
-      <pubDate>Tue, 01 Mar 2016 07:00:00 +0800</pubDate>
+      <title>利用 Hugo &amp; GitHub 搭建个人博客静态网站</title>
+      <link>http://oubnpdea.github.io/2015/12/hugo-create-blog/</link>
+      <pubDate>Tue, 01 Dec 2015 12:55:48 +0800</pubDate>
       <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/03/mongodb-1/</guid>
+      <guid>http://oubnpdea.github.io/2015/12/hugo-create-blog/</guid>
       <description>
 
-&lt;p&gt;之前对于 MongoDB 的了解比较泛泛，也是因为在工作中使用的比较少的缘故，好吧就是没用过。。。最近工作上新项目使用的主要数据库为 MongoDB，那么正好系统的了解学习一下。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; 是一个多用途的网站框架，准确地说，Hugo 是一个静态网站生成器。这意味它不像是 Wordpress、Ghost 以及 Drupal 那样需要运行在其依赖环境的服务器上，也不需要不断的去维护它。Hugo 可以让我们更加专注于撰写自己喜欢的博客，不会因为复杂的操作管理功能浪费我们更多的时间（没错我就是在黑 Wordpress）。&lt;/p&gt;
 
-&lt;h3 id=&#34;简介:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;简介&lt;/h3&gt;
+&lt;p&gt;Hugo 生成静态网站的速度相对于 Jekyll 以及 Hexo 来说几乎是瞬间即可完成。而生成的静态代码可以安全地托管到任何地方，例如 Heroku，GoDaddy，DreamHost，GitHub Pages，Google Cloud Storage，Amazon S3 and CloudFront, 以及运行良好的 CDN 。&lt;/p&gt;
 
-&lt;p&gt;MongoDB 是一款为 Web 应用程序和互联网基础设施设计的数据库管理系统。MongoDB 的数据模型和持久化策略的设计目标是提供高读写吞吐量，在易于伸缩同时还能进行自动故障转移。&lt;/p&gt;
+&lt;p&gt;最 6 的就是 Hugo 拥有一个 watch 的编写调试模式，可以在我们编辑修改文章时，通过检测变更自动完成构建网站并刷新浏览器等操作，实现了实时预览的炒鸡好用的功能。Hugo 是由 Go 编写的静态网站构建工具，使用 MarkDown 作为其文本语法，这等种种优势让我不得不选择 Hugo 作为我的博客网站生成器。&lt;/p&gt;
 
-&lt;p&gt;MongoDB 的主要特性：&lt;/p&gt;
+&lt;h2 id=&#34;安装-hugo:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;安装 Hugo&lt;/h2&gt;
 
-&lt;ul&gt;
-&lt;li&gt;文档数据模型&lt;/li&gt;
-&lt;li&gt;即时查询（无需预先定义系统接受的查询类型）&lt;/li&gt;
-&lt;li&gt;二级索引（B树）&lt;/li&gt;
-&lt;li&gt;备份复制&lt;/li&gt;
-&lt;li&gt;速度与持久性&lt;/li&gt;
-&lt;li&gt;数据库扩展&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;对于 Mac 用户来说安装简单的不行，只要已经安装了 &lt;a href=&#34;http://brew.sh/&#34;&gt;Homebrew&lt;/a&gt; 以及 &lt;a href=&#34;https://golang.org/&#34;&gt;Go&lt;/a&gt; 即可。&lt;/p&gt;
 
-&lt;p&gt;MongoDB 与其他主流数据库的对比（图片来自《MongoDB 实战》）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/mongodb-1-1.jpg&#34; alt=&#34;MongoDB 与其他主流数据库的对比&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;使用场景:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;使用场景&lt;/h3&gt;
-
-&lt;p&gt;对于任何软件来说，它的使用场景往往才是技术选型时最为关注的，而 MongoDB 由于其具备的特性，适用的场景很多：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Web 应用程序&lt;/li&gt;
-&lt;li&gt;敏捷开发&lt;/li&gt;
-&lt;li&gt;分析和日志&lt;/li&gt;
-&lt;li&gt;缓存&lt;/li&gt;
-&lt;li&gt;可变的Schema&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;安装:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;安装&lt;/h3&gt;
-
-&lt;p&gt;先创建数据目录&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ sudo mkdir -p /data/db
-$ sudo chown `id -u` /data/db
+&lt;pre&gt;&lt;code&gt;$ brew install hugo
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;还是老样子以 Mac 为例安装，简单的不行：&lt;/p&gt;
+&lt;p&gt;其他的系统的安装可查看&lt;a href=&#34;http://gohugo.io/overview/installing/&#34;&gt;官网&lt;/a&gt;。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew install mongodb
-&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;选择-github-pages:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;选择 GitHub Pages&lt;/h2&gt;
 
-&lt;p&gt;然后全程自动化，然后就安好了。最后对 /usr/local/etc/mongod.conf 文件进行编辑，注释掉原默认信息，并添加如下配置：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://pages.github.com/&#34;&gt;GitHub Pages&lt;/a&gt; 是 GitHub 提供的一个免费的静态站点。（当然其他的也可以，比如国内的 &lt;a href=&#34;https://gitcafe.com/&#34;&gt;GitCafe&lt;/a&gt;）&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;dbpath=/data/db
-logpath=/usr/local/var/log/mongodb/mongo.log
-rest=true
-fork=true
-port=27017
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样就安装完成了，其中 MongoDB 即可。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ mongod -f /usr/local/etc/mongod.conf
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;基本的-crud-操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;基本的 CRUD 操作&lt;/h3&gt;
-
-&lt;p&gt;MongoDB 也提供了一个类似于 MySQL Client 一样的 Shell，不过是一个 JavaScript Shell，只要对于 JS 基本语法了解使用起来很容易。&lt;/p&gt;
-
-&lt;p&gt;切换数据库命令和 MySQL 完全一致：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; use tutorial
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注：MongoDB 数据库和集合不需要显示创建，均都是在第一次插入文档时才会被创建。&lt;/p&gt;
-
-&lt;h5 id=&#34;插入操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;插入操作&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.insert({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;})     // 插入一条文档
-&amp;gt; db.users.save({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;})          // 如果 _id 存在为更新，如果 _id 不存在为插入
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;删除操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;删除操作&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.remove({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;})        // 根据条件删除
-&amp;gt; db.users.drop()                              // 删除集合以及它的全部索引
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;查询操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;查询操作&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.find()                                   // 查询全部
-&amp;gt; db.users.count()                                  // 查询总条数
-&amp;gt; db.users.find({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;})               // 根据条件查询
-&amp;gt; db.users.find({&amp;quot;favorites.citys&amp;quot;: &amp;quot;Shenyang&amp;quot;})    // 复杂结构匹配查询
-&amp;gt; db.numbers.find({&amp;quot;num&amp;quot;: {&amp;quot;$gt&amp;quot;: 20, &amp;quot;$lt&amp;quot;: 26}})     // 条件查询方式（$lt 小于 &amp;amp; $gt 大于）
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;更新操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;更新操作&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;}, {$set: {&amp;quot;country&amp;quot;: &amp;quot;China&amp;quot;}}, false, true)   // 添加一个新的 country 属性（最后一个参数开启多项更新）
-&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;}, {$unset: {&amp;quot;country&amp;quot;: 1}})       // 删除一个 country 属性
-&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;}, {$set: {&amp;quot;favorites&amp;quot;:  {&amp;quot;citys&amp;quot;: [&amp;quot;Shenyang&amp;quot;, &amp;quot;Dalian&amp;quot;], &amp;quot;movies&amp;quot;: [&amp;quot;嫌疑人 X 的献身&amp;quot;]}}})  // 复杂结构
-&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;}, {$push: {&amp;quot;favorites.citys&amp;quot;: &amp;quot;Tianjing&amp;quot;}}) // 单独添加一个元素（不保证唯一性）
-&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;}, {$addToSet: {&amp;quot;favorites.citys&amp;quot;: &amp;quot;Tianjing&amp;quot;}}) // 单独添加一个元素（保证唯一性）
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;设置索引:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;设置索引&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; db.numbers.ensureIndex({&amp;quot;num&amp;quot;: 1})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;获取该集合已经设置索引信息:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;获取该集合已经设置索引信息&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; db.numbers.getIndexes()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;基本管理命令:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;基本管理命令&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; show dbs              // 获取数据库信息
-&amp;gt; db.stats()            // 获取数据库或者集合更底层的信息 （db.users.stats()）
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;总结:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;总结&lt;/h3&gt;
-
-&lt;p&gt;简单整理对于 MongoDB 的安装及基本操作，后续会在深入了解后补充博客，那就到这了。。。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>PHP 项目关于开发，测试，生产环境配置文件的解决方案</title>
-      <link>http://oubnpdea.github.io/2016/02/php-config/</link>
-      <pubDate>Tue, 23 Feb 2016 17:36:00 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/02/php-config/</guid>
-      <description>
-
-&lt;p&gt;对于大部分做过 PHP 项目的人来说，如何处理开发，测试，生产环境配置文件的设置，甚至如何处理对于生产环境强权限校验导致开发中功能测的不便尤为重要。
-我也接手及维护过很多这样类型的项目，对于那些没有处理好这方面问题的项目，开发测试过程中，简直是恶梦。
-当然也看到过很多做的好的项目，故这次进行一下总结分析。&lt;/p&gt;
-
-&lt;h3 id=&#34;如何判断配置设计方案好坏呢:04c78871de61d2016fc52b670aee642f&#34;&gt;如何判断配置设计方案好坏呢？&lt;/h3&gt;
-
-&lt;p&gt;我认为配置方案至少要解决几个必要问题：&lt;/p&gt;
+&lt;p&gt;其中 GitHub Pages 提供两种模式：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;搭建任何（开发，测试，生产）运行环境很方便。&lt;/li&gt;
-&lt;li&gt;维护配置文件清晰，不会导致开发人员错误提交导致配置文件异常。&lt;/li&gt;
-&lt;li&gt;由于有众多开发人员，导致各个开发环境配置文件不一致，该方案应该妥善解决该问题。&lt;/li&gt;
-&lt;li&gt;配置文件应同样进入版本控制中，防止仅通过运维同学单独手动上传出现的不可控异常情况。&lt;/li&gt;
+&lt;li&gt;个人用户或企业站点 （User or organization site）&lt;/li&gt;
+&lt;li&gt;项目站点 （Project site）&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&#34;抛砖引玉:04c78871de61d2016fc52b670aee642f&#34;&gt;抛砖引玉&lt;/h3&gt;
-
-&lt;p&gt;因为希望所有代码均通过版本控制包括配置信息，便于不了解业务代码的运维同学仍然能使用常规持续交付方式上线部署。
-所以我选择在运行环境入手，让不同环境通过获取 php.ini 文件中的某些配置参数判断当前环境，选择不同的配置文件，甚至选择不同的绕过逻辑。&lt;/p&gt;
+&lt;p&gt;由于我们使用 GitHub Pages 作为个人博客站点，就是选用第一种模式。而其有几个要求限制：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在 php.ini 中添加自定义参数。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[BPCODERENV]
-;bpcoder.env = &amp;quot;Dev|Test&amp;quot;
-bpcoder.env = &amp;quot;Dev&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;在项目读取配置文件入口处，使用内置函数 get_cfg_var() 获取 bpcoder.env 配置。判断情况为读取参数为 Dev 为开发环境则加载测试环境的配置文件，Test 为测试环境则加载测试环境的配置文件，如果获取不到则加载生产环境配置文件。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;switch(get_cfg_var(&amp;quot;bpcoder.env&amp;quot;))
-{
-    case &amp;quot;Dev&amp;quot;:
-        include &amp;quot;config.dev.php&amp;quot;;
-        break;
-    case &amp;quot;Test&amp;quot;:
-        include &amp;quot;config.test.php&amp;quot;;
-        break;
-    default:
-        include &amp;quot;config.php&amp;quot;;
-        break;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其中 config.php 和 config.test.php 由版本控制，这样对于测试环境和生产环境的上线部署就变得很容易，而开发环境不同开发人员仅需部署时复制一个config.php文件为config.dev.php文件即可，并根据个人情况修改 config.dev.php 即可。谨慎做法将 config.dev.php 文件设置为版本控制忽略的文件，防止开发人员手误错误提交。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;建议将配置文件及功能框架代码分为两个版本控制，配置文件由专人管理维护。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;进一步帮助，在一些特殊情况如开发中需要所有接口有强权限校验，而在开发测试中不能方便的进行单元测试时，可以一样通过 get_cfg_var() 实现开发环境绕过，提高开发测试效率。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;每个 GitHub 用户只能创建一个且项目名称必须为 [your-github-account].github.io&lt;/li&gt;
+&lt;li&gt;master 分支内容被用于构建和发布页面&lt;/li&gt;
+&lt;li&gt;访问的 URL 为 http://[your-github-account].github.io/&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&#34;总结:04c78871de61d2016fc52b670aee642f&#34;&gt;总结&lt;/h3&gt;
+&lt;h2 id=&#34;结合-github-pages-搭建个人博客静态网站-step-by-step:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;结合 GitHub Pages 搭建个人博客静态网站 Step by Step&lt;/h2&gt;
 
-&lt;p&gt;本文只是个人对于常见出现配置文件异常情况尝试的个人解决方案，也在部分项目中尝试使用。当然如果有更好的方案也会继续分享出来，也希望其他人有好的方案也分享出来大家学习。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>PHP 读写 Excel 文件</title>
-      <link>http://oubnpdea.github.io/2016/02/php-execl/</link>
-      <pubDate>Thu, 04 Feb 2016 14:20:51 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/02/php-execl/</guid>
-      <description>
-
-&lt;p&gt;在部分类似报表相关的业务中，涉及到报表数据导出或导入 Excel 文件的场景。这篇博客总结并推荐一个开源项目来解决这类问题 &amp;mdash; &lt;a href=&#34;https://github.com/PHPOffice/PHPExcel&#34;&gt;PHPExcel&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;PHPExcel 是一个完全有 PHP 代码编写的类库。它提供了一系列类来实现读写不同格式电子表格文件，它支持 Excel (BIFF) .xls, Excel 2007 (OfficeOpenXML) .xlsx, CSV, Libre/OpenOffice Calc .ods, Gnumeric, PDF, HTML 等等。&lt;/p&gt;
-
-&lt;h2 id=&#34;phpexcel-具体支持的文件格式:74a1a2077a411f0f128d238982b77be8&#34;&gt;PHPExcel 具体支持的文件格式&lt;/h2&gt;
-
-&lt;h4 id=&#34;读方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;读方式&lt;/h4&gt;
+&lt;h6 id=&#34;1-创建两个-github-仓库:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;1. 创建两个 GitHub 仓库&lt;/h6&gt;
 
 &lt;ul&gt;
-&lt;li&gt;BIFF 5-8 (.xls) Excel 95 and above&lt;/li&gt;
-&lt;li&gt;Office Open XML (.xlsx) Excel 2007 and above&lt;/li&gt;
-&lt;li&gt;SpreadsheetML (.xml) Excel 2003&lt;/li&gt;
-&lt;li&gt;Open Document Format/OASIS (.ods)&lt;/li&gt;
-&lt;li&gt;Gnumeric&lt;/li&gt;
-&lt;li&gt;HTML&lt;/li&gt;
-&lt;li&gt;SYLK&lt;/li&gt;
-&lt;li&gt;CSV&lt;/li&gt;
+&lt;li&gt;Hugo 结构代码的代码仓库       [your-github-account]-hugo&lt;/li&gt;
+&lt;li&gt;Hugo 生成静态文件的代码仓库   [your-github-account].github.io&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;写方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;写方式&lt;/h4&gt;
+&lt;h6 id=&#34;2-创建一个-hugo-的新站点项目:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;2. 创建一个 Hugo 的新站点项目&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo new site [your-github-account]-hugo
+$ cd [your-github-account]-hugo
+$ git init
+$ echo .DS_Store &amp;gt;&amp;gt; .gitignore
+$ git remote add origin git@github.com:[your-github-account]/[your-github-account]-hugo.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;命令很简单，用于构建 Hugo 站点项目。&lt;/p&gt;
+
+&lt;h6 id=&#34;3-选择模板:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;3. 选择模板&lt;/h6&gt;
+
+&lt;p&gt;Hugo 提供了一个官方收录的模板列表 &lt;a href=&#34;https://github.com/spf13/hugoThemes&#34;&gt;hugoThemes&lt;/a&gt;，从中选择你喜欢的一个作为你的模板。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git submodule add git@github.com:Zenithar/hugo-theme-crisp.git themes/crisp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;4-编辑配置信息:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;4. 编辑配置信息&lt;/h6&gt;
+
+&lt;p&gt;针对 Crisp 设置对应配置信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;baseurl = &amp;quot;http://blog.bpcoder.com/&amp;quot;
+languageCode = &amp;quot;zh-cn&amp;quot;
+title = &amp;quot;BPCoder&amp;quot;
+paginate = 8
+theme = &amp;quot;crisp&amp;quot;
+[params]
+    description = &amp;quot;积累分享，愉快生活&amp;quot;
+    email = &amp;quot;mingyangcoder@163.com&amp;quot;
+    hostname = &amp;quot;blog.bpcoder.com&amp;quot;
+[permalinks]
+    post = &amp;quot;/:year/:title/&amp;quot;
+    addendum = &amp;quot;/addendum/:year/:title/&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;5-新建文章:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;5. 新建文章&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo new posts/hugo-create-blog.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑 content/posts/hugo-create-blog.md 的内容即可，使用 MarkDown 语法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+++
+date = &amp;quot;2015-12-01T12:55:48+08:00&amp;quot;
+title = &amp;quot;利用 Hugo &amp;amp; GitHub 搭建个人博客静态网站&amp;quot;
+tags = [&amp;quot;Hugo&amp;quot;]
++++
+......
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;6-实时预览:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;6. 实时预览&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo server -w
+0 draft content
+0 future content
+1 pages created
+3 paginator pages created
+1 tags created
+0 categories created
+in 20 ms
+Watching for changes in /Users/BPCoder/git/MingYangCoder-hugo/{data,content,layouts,static,themes}
+Serving pages from memory
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+Press Ctrl+C to stop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个时候根据提示访问 &lt;a href=&#34;http://localhost:1313/&#34;&gt;http://localhost:1313/&lt;/a&gt; 进行预览。这时修改博客文档包括样式文件均可实时查看，配置文件为特例。&lt;/p&gt;
+
+&lt;h6 id=&#34;7-建立生成静态文件的代码目录:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;7. 建立生成静态文件的代码目录&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rm -rf public
+$ git submodule add git@github.com:[your-github-account]/[your-github-account].github.io.git public
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;8-生成静态站点并发布:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;8. 生成静态站点并发布&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo
+$ cd public
+$ git add -A &amp;amp;&amp;amp; git commit -m &amp;quot;first post&amp;quot;
+$ git push origin master
+$ cd ..
+$ git add -A &amp;amp;&amp;amp; git commit -m &amp;quot;init hugo coder&amp;quot;
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这是访问你的 http://[your-github-account].github.io/ 站点网址即可查看。&lt;/p&gt;
+
+&lt;h6 id=&#34;9-可选-设置自己域名的站点:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;9. 【可选】设置自己域名的站点&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd public
+$ echo [your.domain.name] &amp;gt;&amp;gt; CNAME
+$ git add -A &amp;amp;&amp;amp; git commit -m &amp;quot;add CNAME file&amp;quot;
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后到你的域名管理界面配置对应CNAME记录类型即可&lt;/p&gt;
+
+&lt;h2 id=&#34;补充内容:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;补充内容&lt;/h2&gt;
+
+&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-10 更新）&lt;/font&gt;通过一段时间的使用，感觉 GitHub Pages 提供的服务实在不稳定，访问速度也比较慢，特别影响体验。通过了解发现国内的 GitCafe 同样提供 Pages 服务，所以尝试使用一下，发现明显提高不少。可通过&lt;a href=&#34;https://gitcafe.com/GitCafe/Help/wiki/Pages-%E7%9B%B8%E5%85%B3%E5%B8%AE%E5%8A%A9&#34;&gt;官方文档&lt;/a&gt; 一步一步全新配置。&lt;/p&gt;
+
+&lt;h6 id=&#34;简单整理迁移方案:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;简单整理迁移方案：&lt;/h6&gt;
 
 &lt;ul&gt;
-&lt;li&gt;BIFF 8 (.xls) Excel 95 and above&lt;/li&gt;
-&lt;li&gt;Office Open XML (.xlsx) Excel 2007 and above&lt;/li&gt;
-&lt;li&gt;HTML&lt;/li&gt;
-&lt;li&gt;CSV&lt;/li&gt;
-&lt;li&gt;PDF (需要使用 tcPDF、DomPDF 或者 mPDF 类库实现)&lt;/li&gt;
+&lt;li&gt;在 GitCafe 创建与用户名相同的项目，并创建分支 gitcafe-pages 用于发布。&lt;/li&gt;
+&lt;li&gt;对现有静态文件的代码目录（public），添加上面新建的 remote。&lt;/li&gt;
+&lt;li&gt;然后就是提交时，提交到 gitcafe-pages 分支下即可，这时候访问 http://[your-gitcafe-account].gitcafe.io/ 就可以访问了。&lt;/li&gt;
+&lt;li&gt;至于域名设置，GitCafe 比 GitHub 好一些提供一个界面化管理页面，添加支持域名，无需 CNAME 文件。&lt;/li&gt;
+&lt;li&gt;最后和 GitHub 设置域名解析的方式一下，在域名管理界面配置对应的 CNAME 记录类型即可。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;使用前提依赖:74a1a2077a411f0f128d238982b77be8&#34;&gt;使用前提依赖&lt;/h2&gt;
+&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-10 更新）&lt;/font&gt;由于博客内容会存在一些图片或者比较大的js文件，推荐存储在国内&lt;a href=&#34;https://portal.qiniu.com/signup?code=3le4lzknkl2z6&#34;&gt;七牛云存储&lt;/a&gt;上，稳定速度快。&lt;/p&gt;
+
+&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-13 更新）&lt;/font&gt;又迁回 GitHub，虽然有时候 GitHub 有点慢，但是贵在稳定啊！经历一次 GitCafe Pages 停止服务的情况，没办法又迁回 GitHub，希望国内能有一个稳定的 Pages 服务。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考资料:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;参考资料&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;需要 PHP 5.2.0 以上版本（现在应该没人用这以下版本了吧）。&lt;/li&gt;
-&lt;li&gt;需要安装 php_zip 扩展（如果你需要对 .xlsx .ods 或者 .gnumeric 文件的处理）&lt;/li&gt;
-&lt;li&gt;需要安装 php_xml 扩展&lt;/li&gt;
-&lt;li&gt;需要安装 php_gd2 扩展（可选，但对于计算列宽是必须的）&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://kaichu.io/2015/07/my-first-post/&#34;&gt;在 Github Pages 建立 Hugo 靜態網站&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://blog.coderzh.com/2015/08/29/hugo/&#34;&gt;使用hugo搭建个人博客站点&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://sa.muel.be/tags/hugo/&#34;&gt;Hugo · Samuel Debruyn&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;h2 id=&#34;使用样例:74a1a2077a411f0f128d238982b77be8&#34;&gt;使用样例&lt;/h2&gt;
-
-&lt;h4 id=&#34;创建一个新的-excel-2007-文件:74a1a2077a411f0f128d238982b77be8&#34;&gt;创建一个新的 Excel 2007 文件&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?php
-
-include &amp;quot;../Classes/PHPExcel.php&amp;quot;;
-$objPHPExcel = new PHPExcel();
-
-$objPHPExcel-&amp;gt;getProperties()
-    -&amp;gt;setCreator(&amp;quot;BPCoder Yang&amp;quot;)                    // 设置文件创建者
-    -&amp;gt;setLastModifiedBy(&amp;quot;BPCoder Yang&amp;quot;)             // 设置文件最后编辑者
-    -&amp;gt;setTitle(&amp;quot;Office 2007 XLSX Test Document&amp;quot;)    // 设置标题
-    -&amp;gt;setSubject(&amp;quot;Office 2007 XLSX Test Document&amp;quot;)  // 设置主题
-    -&amp;gt;setDescription(&amp;quot;Test document for Office 2007 XLSX, generated using PHP classes.&amp;quot;)    // 设置描述
-    -&amp;gt;setKeywords(&amp;quot;office 2007 openxml php&amp;quot;)        // 设置 Keywords
-    -&amp;gt;setCategory(&amp;quot;Test result file&amp;quot;);              // 设置类别
-
-$objPHPExcel-&amp;gt;setActiveSheetIndex(0)        // 设置第一个内置表
-    -&amp;gt;setCellValue(&#39;A1&#39;, &#39;Hello&#39;)
-    -&amp;gt;setCellValue(&#39;B2&#39;, &#39;world!&#39;)
-    -&amp;gt;setCellValue(&#39;C1&#39;, 12)
-    -&amp;gt;setCellValue(&#39;D2&#39;, 12)
-    -&amp;gt;setCellValue(&#39;D3&#39;, true)
-    -&amp;gt;setCellValue(&#39;D4&#39;, &#39;=SUM(C1:D2)&#39;);
-
-// 得到当前活动表
-$objActSheet = $objPHPExcel-&amp;gt;getActiveSheet();
-// 设置表名称
-$objActSheet-&amp;gt;setTitle(&#39;Demo00&#39;);
-
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, &amp;quot;Excel2007&amp;quot;);
-$objWriter-&amp;gt;save(&amp;quot;demo.xlsx&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;提供一个下载-excel-2007-文件的方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;提供一个下载 Excel 2007 文件的方式&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?php
-
-// 前面都一样
-....
-
-header(&#39;Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&#39;);
-header(&#39;Content-Disposition: attachment;filename=&amp;quot;demo.xlsx&amp;quot;&#39;);
-header(&#39;Cache-Control: max-age=0&#39;);
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, &amp;quot;Excel2007&amp;quot;);
-$objWriter-&amp;gt;save( &#39;php://output&#39;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;读取-excel-2007-文件的方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;读取 Excel 2007 文件的方式&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?php
-$objReader = new PHPExcel_Reader_Excel2007();
-$objPHPExcel = $objReader-&amp;gt;load(&amp;quot;./demo.xlsx&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
     <item>
-      <title>PHP 数组去重小 Tips</title>
-      <link>http://oubnpdea.github.io/2016/02/php-array-remove-duplicate/</link>
-      <pubDate>Wed, 03 Feb 2016 21:49:55 +0800</pubDate>
+      <title></title>
+      <link>http://oubnpdea.github.io/1/01/acquaintance-lua.md/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/02/php-array-remove-duplicate/</guid>
-      <description>&lt;p&gt;在使用 PHP 开发程序会遇到对于数组去重的场景，多半会使用内置方法 array_unique()。虽然多数情况下很好，但如果在处理大数组会出现性能异常情况，运行异常缓慢。&lt;/p&gt;
+      <guid>http://oubnpdea.github.io/1/01/acquaintance-lua.md/</guid>
+      <description>﻿&lt;!doctype html public &#39;-//W3C//DTD HTML 4.0 Transitional //EN&#39;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;acquaintance-lua&lt;/title&gt;
+&lt;meta charset=&#39;UTF-8&#39; /&gt;
+&lt;meta name=&#39;generator&#39; content=&#39;EverEdit&#39; /&gt;
+&lt;link href=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\default.css&#39; rel=&#39;stylesheet&#39;&gt;&lt;/link&gt;
+&lt;link href=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\prettify.css&#39; rel=&#39;stylesheet&#39;&gt;&lt;/link&gt;
+&lt;script type=&#39;text/javascript&#39; src=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\prettify.js&#39;&gt;&lt;/script&gt;
+&lt;script type=&#39;text/javascript&#39; src=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\jquery-1.10.2.min.js&#39;&gt;&lt;/script&gt;
+&lt;script type=&#39;text/javascript&#39; src=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\toc.js&#39;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&#39;generated-toc&#39;&gt;&lt;/div&gt;
+&lt;p&gt;+++
+date = &#34;2015-12-03T23:46:40+08:00&#34;
+title = &#34;初识 Lua&#34;
+tags = [&#34;Lua&#34;]
+description = &#34;初识Lua;Lua简介;Lua语言正如它名字所预示的那样成长为一门简洁、优雅且富有乐趣的语言;LuaJIT是采用C语言编写的Lua解释器;Lua环境搭建;Lua的注释;Lua基础数据类型;Lua表达式;逻辑运算符;Lua函数;Lua模块;Lua类库;Lua文件操作;隐式文件描述;显示文件描述&#34;
++++&lt;/p&gt;
 
-&lt;p&gt;这个时候可以选择一个取巧的方法规避一下这个问题。因为 PHP 数组本质上一个 HashMap 数据结构，所以它遵循 key 值唯一。
-所以通过 Key 与 Value 的反转，再反转就可以实现去重功能。&lt;/p&gt;
+&lt;p&gt;最近了解 &lt;a href=&#34;http://www.lua.org/&#34;&gt;Lua&lt;/a&gt; 完全是为了学习 &lt;a href=&#34;http://weibo.com/agentzh&#34;&gt;@agentZh&lt;/a&gt; 大神的开源项目 &lt;a href=&#34;https://openresty.org/&#34;&gt;OpenResty&lt;/a&gt;。因为在接触到的一些大型高访问高并发下的 Web 项目后，日益发现 PHP 存在的不足与无力（当然这不能抹杀他带来的开发效率的优势，新的 PHP 7 也有了很显著的性能上的提高）。有幸前段时间参加了 OpenResty 的一次线下活动，学习到了很多公司对于 OpenResty 的应用与实践，发现 OpenResty 就是一个很棒的解决方案。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+&lt;p&gt;OpenResty 是一个基于 Nginx 核心的，拥有大量高质量的第三方模块的全功能 Web 应用服务器。OpenResty 可以让 Web 开发人员使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K+ 并发连接响应的超高性能 Web 应用系统。&lt;/p&gt;
 
-$array = array(&#39;bpcoder0&#39;, &#39;bpcoder1&#39;, &#39;bpcoder0&#39;, &#39;bpcoder2&#39;);
+&lt;p&gt;既然是使用 Lua 开发，那就先学习了解 Lua 吧。&lt;/p&gt;
 
-$array = array_flip($array);
-$array = array_flip($array);
+&lt;h2&gt;Lua 简介&lt;/h2&gt;
 
-// 结果：Array(2 =&amp;gt; bpcoder0, 1 =&amp;gt; bpcoder1, 3 =&amp;gt; bpcoder2)
+&lt;p&gt;Lua 是于 1993 年在巴西里约热内卢天主教大学(Pontifical Catholic University of Rio de Janeiro in Brazil)诞生了一门编程语言，发明者是该校的三位研究人员，他们给这门语言取了个浪漫的名字 —— Lua，在葡萄牙语里代表美丽的月亮。事实证明她没有糟蹋这个优美的单词，Lua语言正如它名字所预示的那样成长为一门简洁、优雅且富有乐趣的语言。&lt;/p&gt;
+
+&lt;p&gt;Lua 从一开始就是作为一门方便嵌入(其它应用程序)并可扩展的轻量级脚本语言来设计的，因此她一直遵从着简单、小巧、可移植、快速的原则，官方实现完全采用ANSI C编写，能以C程序库的形式嵌入到宿主程序中。Lua 的每个版本都保持着开放源码的传统，不过各版采用的许可协议并不相同，自5.0版(最新版是5.1)开始她采用的是著名的MIT许可协议。正由于上述特点，所以Lua在游戏开发、机器人控制、分布式应用、图像处理、生物信息学等各种各样的领域中得到了越来越广泛的应用。其中尤以游戏开发为最，许多著名的游戏，比如 Escape from Monkey Island、World of Warcraft、大话西游，都采用了 Lua 来配合引擎完成数据描述、配置管理和逻辑控制等任务。&lt;/p&gt;
+
+&lt;p&gt;提到 Lua 就不得不提到 LuaJIT，虽然 Lua 已经很高效了，相对于其他很多脚本语言都要快，但仍然不能满足所有人，于是就诞生出了 LuaJIT。LuaJIT 是利用 JIT 编译技术把 Lua 代码编译成本地机器码后交由 CPU 直接执行。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://luajit.org/&#34;&gt;LuaJIT&lt;/a&gt; 是采用 C 语言编写的 Lua 解释器。LuaJIT 被设计成全兼容标准 Lua 5.1，因此 LuaJIT 代码的语法和标准的 Lua 语法没有太大的区别（当然一些 Lua 后续的新特性还没有引入）。LuaJIT 却比标准 Lua 快上数十倍，简直就是一个高效版的 Lua。&lt;/p&gt;
+
+&lt;h2&gt;Lua 环境搭建&lt;/h2&gt;
+
+&lt;p&gt;因为 OpenResty 使用的就是 LuaJIT，所以后续学习 Lua 也是在 LuaJIT 环境下运行。
+对于 Mac 用户来说安装简单，只要已经安装了 Homebrew 即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install luajit
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;看起来效果是达到了，但是产生出的结果反而有些异常，因为 key 不是正常序列。如果需要得到正常序列的结果，可使用下面方式。&lt;/p&gt;
+&lt;p&gt;其他系统的安装可查看&lt;a href=&#34;http://www.lua.org/download.html&#34;&gt;官网&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+&lt;h2&gt;Hello World&lt;/h2&gt;
 
-$array = array(&#39;bpcoder0&#39;, &#39;bpcoder1&#39;, &#39;bpcoder0&#39;, &#39;bpcoder2&#39;);
+&lt;p&gt;既然学习新东西，起手一定是 Hello World ！&lt;/p&gt;
 
-$array = array_flip($array);
-$array = array_keys($array);
+&lt;pre&gt;&lt;code&gt;function main()
+    print(&#34;Hello World!&#34;)
+end
 
-// 结果：Array(0 =&amp;gt; bpcoder0, 1 =&amp;gt; bpcoder1, 2 =&amp;gt; bpcoder2)
+main()
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;以上方法即实现了对于大数组情况的数据去重处理，可用于一些特殊场景下的使用。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>PHP 实现解析二维码</title>
-      <link>http://oubnpdea.github.io/2016/02/php-zbarcode/</link>
-      <pubDate>Mon, 01 Feb 2016 09:53:51 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/02/php-zbarcode/</guid>
-      <description>
+&lt;p&gt;然后和所有脚本语言一下执行它查看输出结果&lt;/p&gt;
 
-&lt;p&gt;前些日因为一些原因，需要找到一个解决 PHP 端解析二维码的需求，并借着这个机会学习到了 &lt;a href=&#34;https://github.com/mkoppanen/php-zbarcode&#34;&gt;php-zbarcode&lt;/a&gt; 开源项目。
-php-zbarcode 是一个 PHP 扩展，仅需要通过常规安装方式就可以进行使用，简单可靠，可以解析绝大多数二维码图片，尤其是信息量较大的二维码信息。&lt;/p&gt;
-
-&lt;h2 id=&#34;php-zbarcode-扩展的安装:0357e8ff61a5e9c122c23ea6bba18fcb&#34;&gt;php-zbarcode 扩展的安装&lt;/h2&gt;
-
-&lt;p&gt;首先 php-zbarcode 扩展依赖 &lt;a href=&#34;http://zbar.sourceforge.net/&#34;&gt;ZBar&lt;/a&gt; 及 &lt;a href=&#34;http://www.imagemagick.org/&#34;&gt;ImageMagick&lt;/a&gt;，需要优先安装这两个。当然还是以 OS X 为例使用 Homebrew 安装。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ brew install zbar
-$ brew install ImageMagick
+&lt;pre&gt;&lt;code&gt;$ luajit HelloWorld.lua
+Hello World!
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;很方便，只要网络稳定，很快就安装好了，剩下就是安装 php-zbarcode 扩展了。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ git clone git@github.com:mkoppanen/php-zbarcode.git
-$ cd php-zbarcode
-$ phpize
-$ ./configure &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;简单就这样安装好了。&lt;/p&gt;
-
-&lt;h2 id=&#34;使用实例:0357e8ff61a5e9c122c23ea6bba18fcb&#34;&gt;使用实例&lt;/h2&gt;
-
-&lt;p&gt;来解析下面这个信息量相对较大的二维码&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/php-zbarcode.png&#34; alt=&#34;二维码图片样例&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;简单代码调用使用样例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?php
-/* Create new image object */
-$image = new ZBarCodeImage(&amp;quot;./image.png&amp;quot;);
-
-/* Create a barcode scanner */
-$scanner = new ZBarCodeScanner();
-
-/* Scan the image */
-$barcode = $scanner-&amp;gt;scan($image);
-
-print_r($barcode);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;输出结果如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Array
-(
-    [0] =&amp;gt; Array
-        (
-            [data] =&amp;gt; ZBar is an open source software suite for reading bar codes from various sources, such as video streams, image files and raw intensity sensors. It supports many popular symbologies (types of bar codes) including EAN-13/UPC-A, UPC-E, EAN-8, Code 128, Code 39, Interleaved 2 of 5 and QR Code.
-            [type] =&amp;gt; QR-Code
-            [quality] =&amp;gt; 1
-        )
-
-)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;总结:0357e8ff61a5e9c122c23ea6bba18fcb&#34;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;其实这个扩展是依赖于 ZBar 实现的，而 ZBar 是除了支持解析二维码之外，还支持 EAN-13/UPC-A, UPC-E, EAN-8, Code 128, Code 39, Interleaved 2 of 5 的开源项目。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>OAuth 2.0 Authorization Framework 文档（一）</title>
-      <link>http://oubnpdea.github.io/2016/01/oauth2-1/</link>
-      <pubDate>Sat, 02 Jan 2016 15:33:09 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/01/oauth2-1/</guid>
-      <description>
-
-&lt;p&gt;最近因为接手一个开放平台的项目，因为其中涉及到 &lt;a href=&#34;http://oauth.net/2/&#34;&gt;OAuth 2.0&lt;/a&gt; 的功能，对于 Server 端的功能并不是很完善。
-虽然之前做过 Client 端的开发，对于 OAuth 2.0 协议下的 Server 并不是很了解，也就借着这个机会完整学习一下。
-不过因为之前看英文文档不多，着实有点吃力，不过看完后，感觉还是做一个笔记，也能帮助认知，加深理解。（下面为个人做的官方 &lt;a href=&#34;http://tools.ietf.org/html/rfc6749&#34;&gt;RFC 6749&lt;/a&gt; 的翻译，如果有翻译不当的地方，欢迎批评指正。）&lt;/p&gt;
-
-&lt;h2 id=&#34;摘要:dd7f59640e19f800a811f4b09c994d04&#34;&gt;摘要&lt;/h2&gt;
-
-&lt;p&gt;OAuth 2.0 授权框架能够提供一个让第三方应用拥有一定访问限制的 HTTP 服务。
-无论是资源拥有者（Resource Owner）与 HTTP 服务之间精心设计地交互，还是通过被资源拥有者（Resource Owner）授权的第三方应用地访问。
-本规范将取代并淘汰在 RFC 5849 所描述的 OAuth 1.0 协议。&lt;/p&gt;
-
-&lt;h2 id=&#34;简介:dd7f59640e19f800a811f4b09c994d04&#34;&gt;简介&lt;/h2&gt;
-
-&lt;p&gt;在传统的 客户端-服务器 认证模型中，客户端通过服务器对其资源拥有者（Resource Owner）资格验证的方式，获取在服务器上的访问受限的资源（受保护的资源）。
-为了使第三方应用访问受限制资源，需要资源拥有者（Resource Owner）将操作资格授权给第三方应用。不过这样就带来了一些问题和限制：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;第三方应用为了后续的使用，会需要保存下来资源拥有者（Resource Owner）的认证信息，通常情况下是明文的密码。&lt;/li&gt;
-&lt;li&gt;服务器需要提供密码校验服务，尽管在密码上存在着安全隐患。&lt;/li&gt;
-&lt;li&gt;第三方应用拥有过多地访问资源拥有者（Resource Owner）受保护资源的权限，资源拥有者（Resource Owner）失去任何对于失效时间或者受保护资源访问范围的限制能力。&lt;/li&gt;
-&lt;li&gt;资源拥有者（Resource Owner）无法在不撤销所有第三方应用权限的前提下，单独撤销一个第三方应用。而且只能通过修改第三方所拥有的密码的方式来达到撤销的目的。&lt;/li&gt;
-&lt;li&gt;任何第三方应用遭到破解将导致最终用户密码被破解，而所有的数据却都是通过密码来保护的。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;OAuth 通过引入资格认证层和从资源拥有者（Resource Owner）分割出不同客户端角色来解决这些问题。
-在 OAuth 中，客户端请求访问被资源拥有者（Resource Owner）控制并由资源服务器（Resource Server）响应，客户端也会获得一组不同于资源拥有者（Resource Owner）的资格认证信息。&lt;/p&gt;
-
-&lt;p&gt;为了替代通过使用资源拥有者（Resource Owner）的权限方式访问受保护的资源，客户端需要获取一个访问令牌（Access Token）&amp;mdash;- 一个表示具体范围、生命周期以及其他访问属性的字符串。
-访问令牌（Access Token）通过一个授权服务器（Authorization Server）在资源拥有者（Resource Owner）认可的情况下派发给第三方客户端。
-第三方客户端通过使用访问令牌（Access Token）访问在资源服务器（Resource Server）上的受保护资源。&lt;/p&gt;
-
-&lt;p&gt;举一个例子，一个最终用户（资源拥有者）可以授权一个打印服务（客户端）访问其存放在图片分享服务（资源服务器）上的受保护的图片，
-而不需要分享给打印服务其用户名和密码。
-最终用户通过直接与图片分享服务信任的服务器（认证服务器）进行认证，然后由认证服务器分发一个特殊范围的认证信息（访问令牌）。&lt;/p&gt;
-
-&lt;p&gt;该标准规范是为使用 HTTP（&lt;a href=&#34;http://tools.ietf.org/html/rfc2616&#34;&gt;RFC2616&lt;/a&gt;） 协议设计的，通过 HTTP 之外的其他协议使用 OAuth 均超出本规范范围。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-1-角色:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.1 角色&lt;/h2&gt;
-
-&lt;p&gt;OAuth 定义的四个角色：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;资源拥有者（Resource Owner）&lt;/p&gt;
-
-&lt;p&gt;一个有能力授权访问受保护资源的实体。当资源拥有者是一个人时，被成为最终用户。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;资源服务器（Resource Server）&lt;/p&gt;
-
-&lt;p&gt;存放受保护资源的服务器，其有能力通过使用访问令牌的前提下接受和回应受保护资源的请求。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;客户端（Client）&lt;/p&gt;
-
-&lt;p&gt;一个通过请求资源拥有者并获得授权代表操作受保护资源的应用。“Client” 一词并不指任何特定的实现特征（无论应用运行在服务器上，桌面电脑上，还是其他设备上都可以）&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;认证服务器（Authorization Server）&lt;/p&gt;
-
-&lt;p&gt;在成功获得资源拥有者授权后，分发给对应客户端访问令牌的服务器。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;认证服务器与资源服务器之间的交互的具体细节超出本规范的说明范围。
-认证服务器可能和资源服务器在同一台服务器实体中，也可能分开在不同服务器实体上。
-一个单独的认证服务器可能分发访问令牌供多台资源服务器接受。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-2-协议流:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.2 协议流&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/oauth2-1-1.jpg&#34; alt=&#34;抽象协议流&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;上图阐述了四个角色之间的交互，包括流程步骤：&lt;/p&gt;
-
-&lt;p&gt;A)  客户端向资源拥有者请求认证。认证请求可以直接发送给资源拥有者，或者最好间接的通过认证服务器作为媒介。&lt;/p&gt;
-
-&lt;p&gt;B)  客户端接收到一个相当于代表资源拥有者授权的凭证（Authorization Grant），该凭证使用本规范定义四种授权类型之一或者其扩展授权类型。
-该授权类型取决于客户端请求授权的方法和认证服务器支持的授权类型。&lt;/p&gt;
-
-&lt;p&gt;C)  客户端通过认证服务器认证并出示授权凭证（Authorization Grant）请求一个访问令牌。&lt;/p&gt;
-
-&lt;p&gt;D)  认证服务器认证客户端并验证授权凭证（Authorization Grant），如果有效，发放一个访问令牌。&lt;/p&gt;
-
-&lt;p&gt;E)  客户端通过出示访问令牌请求资源服务器上的受保护的资源。&lt;/p&gt;
-
-&lt;p&gt;F)  资源服务器验证访问令牌，如果有效，处理服务。&lt;/p&gt;
-
-&lt;p&gt;客户端从资源拥有者获取授权凭证时，使用认证服务器作为媒介是最好的方法。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-3-认证授权-authorization-grant:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.3 认证授权（Authorization Grant）&lt;/h2&gt;
-
-&lt;p&gt;认证授权是一个代表资源拥有者的凭证（访问受保护资源），其用于客户端获取访问令牌。
-本规范定义了 4 种授权类型 &amp;mdash;- 授权码类型（authorization code），简化类型（implicit），
-资源拥有者密码资格类型（resource owner password credentials），以及客户端资格类型（client credentials），以及扩展机制额外的类型。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-3-1-授权码类型-authorization-code:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.3.1 授权码类型（Authorization Code）&lt;/h2&gt;
-
-&lt;p&gt;授权码是通过认证服务器获取，该过程中认证服务器作为客户端和资源拥有者之间的中间媒介，代替了直接请求资源拥有者获得方式。
-客户端引导资源拥有者到认证服务器（通过 &lt;a href=&#34;http://tools.ietf.org/html/rfc2616&#34;&gt;RFC2616&lt;/a&gt; 定义的用户代理），认证服务器会反向携带授权码返回该客户端。&lt;/p&gt;
-
-&lt;p&gt;在认证服务器会反向携带授权码返回该客户端之前，认证服务器需要验证资源拥有者身份并获取授权。因为资源拥有者只会授权认证服务器，资源拥有者的认证信息永远不会分享给客户端。&lt;/p&gt;
-
-&lt;p&gt;授权码提供了一些安全优势，例如有能力授权客户端，以及直接传送访问令牌而不需要通过资源拥有者的用户代理，也防止暴露给其他人包括资源拥有者本人。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-3-2-简化类型-implicit:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.3.2 简化类型（implicit）&lt;/h2&gt;
-
-&lt;p&gt;简化类型可以认为是一个简化的授权码类型，为实现在浏览器中使用像 JavaScript 的脚本语言而优化的类型。
-在简化授权码类型中，不再分发给客户端授权码，客户端被直接分发一个访问令牌（作为资源拥有者的认证）。在该流程中，没有中间认证信息（例如授权码）被分发（也就不存在使用授权码获取访问令牌的流程）。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>2016 年读书计划</title>
-      <link>http://oubnpdea.github.io/2016/01/read-plan-2016/</link>
-      <pubDate>Fri, 01 Jan 2016 00:00:00 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2016/01/read-plan-2016/</guid>
-      <description>&lt;p&gt;新的一年里开启新的读书计划，并在这篇博客里进行持续总结更新ing&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.amazon.cn/阿弥陀佛么么哒-大冰/dp/B0157N1ZM6/&#34;&gt;《阿弥陀佛么么哒》&lt;/a&gt;   傻了吧唧的书名，有点鸡汤，不过比较喜欢里面那些人和故事，有些温情，有些戏谑。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.amazon.cn/加贺探案集4-恶意-东野圭吾/dp/B00AZCJAHM/&#34;&gt;《恶意》&lt;/a&gt;   妒忌真的是一件很可怕的东西。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>PDO 中 PDOStatement::bindParam 的一个容易忽视的盲点</title>
-      <link>http://oubnpdea.github.io/2015/12/php-pdo-bindparam/</link>
-      <pubDate>Wed, 16 Dec 2015 22:31:24 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2015/12/php-pdo-bindparam/</guid>
-      <description>&lt;p&gt;前段时间开发中无意中碰到了一处PDO 中 PDOStatement::bindParam 的一个容易忽视的盲点，导致深陷其中还一时不知道原因，所以今天特别总结记录下来。用一个简单的例子说明一下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$pdoObj = new PDO(&#39;mysql:host=localhost;dbname=bpcoder&#39;, &amp;quot;redocpb&amp;quot;);
-$sql = &amp;quot;INSERT INTO `bpcoder` (`username`, `passwd`) VALUES (:username, :passwd)&amp;quot;;
-$pdoStatement = $pdoobj-&amp;gt;prepare($sql);
-$params = array(
-    &amp;quot;:username&amp;quot; =&amp;gt; &amp;quot;bpcoder&amp;quot;,
-    &amp;quot;:passwd&amp;quot; =&amp;gt; &amp;quot;redocpb&amp;quot;,
-);
-foreach ($params as $key =&amp;gt; $value )
-{
-    $pdoStatement-&amp;gt;bindParam($key, $value);
-}
-$pdoStatement-&amp;gt;execute();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;整体上看起来好像没什么问题，不过最后发现最终执行的 SQL 并不是我们期望的那样，反而是：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;INSERT INTO `user` (`username`, `password`) VALUES (&amp;quot;redocpb&amp;quot;, &amp;quot;redocpb&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;不过细查一下文档才知道，原来是一直都想当然认为 PDO 的方法是值传递，结果大意了，这个居然是引用传递。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bool PDOStatement::bindParam ( mixed $parameter , mixed &amp;amp;$variable [, int $data_type = PDO::PARAM_STR [, int $length [, mixed $driver_options ]]] )
-绑定一个PHP变量到用作预处理的SQL语句中的对应命名占位符或问号占位符。 不同于 PDOStatement::bindValue() ，此变量作为引用被绑定，并只在 PDOStatement::execute() 被调用的时候才取其值。
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>让 Vim 成为 Go 的编辑器</title>
-      <link>http://oubnpdea.github.io/2015/12/vim-go/</link>
-      <pubDate>Tue, 15 Dec 2015 18:17:24 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2015/12/vim-go/</guid>
-      <description>
-
-&lt;p&gt;最近工作上接手了一个 Go 相关的项目，所以需要做一些关于工作环境上的准备，因为一直是 Vim 的忠实粉，这时候就想着能找到一个 Vim 的插件让 Vim 支持 Go。这时候就找到了 &lt;a href=&#34;https://github.com/fatih/vim-go&#34;&gt;vim-go&lt;/a&gt;，使用了一天感觉还不错。&lt;/p&gt;
-
-&lt;p&gt;vim-go 提供以下功能：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;保存后自动格式化&lt;/li&gt;
-&lt;li&gt;代码自动补全&lt;/li&gt;
-&lt;li&gt;代码高亮&lt;/li&gt;
-&lt;li&gt;支持 Go 工具链的命令&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;安装-vim-go:d6ac5b2eecfc12afd25350cc0802f0f4&#34;&gt;安装 vim-go&lt;/h2&gt;
-
-&lt;p&gt;安装方式使用 Vundle 安装，只需要修改 .vimrc 文件，添加如下配置即可（详细 Vundle 可查看 &lt;a href=&#34;http://blog.bpcoder.com/2015/12/vim-vundle/&#34;&gt;Vim 的插件管理工具 Vundle&lt;/a&gt;）&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Plugin &#39;fatih/vim-go&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装完成后，需要确认已安装了必须的二进制文件（包括 gocode，godef，goimports等等）。你可以在 Vim 内执行如下命令简易安装。（前提你已经安装好了 Go 的环境变量）&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;:GoInstallBinaries
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果后面有更新二进制文件需求，仅需执行下面命令即可：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;:GoUpdateBinaries
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果查看在 vim 中可执行的命令仅需执行下面命令查看即可：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;:help vim-go
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;配置-vim-go:d6ac5b2eecfc12afd25350cc0802f0f4&#34;&gt;配置 vim-go&lt;/h2&gt;
-
-&lt;p&gt;配置部分可通过查看官方文档，设置属于自己的喜好配置，具体的文档文件在 ~/.vim/bundle/vim-go/doc/vim-go.txt 文件中。&lt;/p&gt;
-
-&lt;p&gt;今天这篇写的有点简单，算是自己的学习笔记，希望对于其他人也能有所帮助。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Tmux 配置管理工具 Tmuxinator</title>
-      <link>http://oubnpdea.github.io/2015/12/tmux-advanced/</link>
-      <pubDate>Mon, 14 Dec 2015 16:07:54 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2015/12/tmux-advanced/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/tmuxinator/tmuxinator&#34;&gt;Tmuxinator&lt;/a&gt; 是一个简单的管理不同的 tmux 配置的命令行工具。使用简单的 YAML 格式来定义窗口布局和命令，然后就可以使用 tmuxinator 命令登录了。和其他方法不同，tmuxinator 为配置文件提供了一个集中的位置和一个更简单的办法来创建复杂的布局。它还允许在每个窗口创建之前运行特定的命令。&lt;/p&gt;
-
-&lt;p&gt;Tmuxinator 由 Ruby 开发完成，所以运行需要系统中拥有 Ruby 解释器，不过 OS X 上 Ruby 是默认安装的。不过由于不可说的原因，导致使用 gem 安装任何东西时都会安装不成功，故建议使用淘宝提供的 RubyGems 镜像。修改镜像的方式为：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ gem sources --add https://ruby.taobao.org/ --remove https://rubygems.org/
-$ gem sources -l
-*** CURRENT SOURCES ***
-
-https://ruby.taobao.org/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安装-tmuxinator:302e394fc82200d871119ae6c4f327a6&#34;&gt;安装 Tmuxinator&lt;/h2&gt;
-
-&lt;p&gt;安装方式很简单，前提是已经安装了 Ruby 解释器及修改了镜像源。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ gem install tmuxinator
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;并在 .zshrc 文件中配置 $EDITOR 环境变量，即设置 Vim 为默认编辑器。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;export EDITOR=vim
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;使用-tmuxinator:302e394fc82200d871119ae6c4f327a6&#34;&gt;使用 Tmuxinator&lt;/h2&gt;
-
-&lt;p&gt;常规查看 tmuxinator 命令的使用方法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ tmuxinator --help
-tmuxinator commands:
-tmuxinator commands                 # Lists commands available in tmuxinator
-tmuxinator completions [arg1 arg2]  # Used for shell completion
-tmuxinator copy [EXISTING] [NEW]    #  Copy an existing project to a new project and open it in your editor
-tmuxinator debug [PROJECT] [ARGS]   # Output the shell commands that are generated by tmuxinator
-tmuxinator delete [PROJECT]         # Deletes given project
-tmuxinator doctor                   # Look for problems in your configuration
-tmuxinator help [COMMAND]           # Describe available commands or one specific command
-tmuxinator implode                  # Deletes all tmuxinator projects
-tmuxinator list                     # Lists all tmuxinator projects
-tmuxinator local                    # Start a tmux session using ./.tmuxinator.yml
-tmuxinator new [PROJECT]            # Create a new project file and open it in your editor
-tmuxinator start [PROJECT] [ARGS]   #  Start a tmux session using a project&#39;s tmuxinator config, with an optional [ALIAS] for project reuse
-tmuxinator version                  # Display installed tmuxinator version
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建新配置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ tmuxinator new [project-name]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后通过个人使用习惯编辑即可，贴出个人的一个配置文件：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# ~/.tmuxinator/blog.yml
-
-name: blog
-root: ~/git/hugo-blog
-
-windows:
-  - editor:
-    layout: 68d2,238x55,0,0[238x44,0,0{184x44,0,0,0,53x44,185,0,2},238x10,0,45,1]
-    panes:
-      - cd content/post &amp;amp;&amp;amp; clear
-      - clear
-      - hugo server -w
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/tmux-advanced.jpg&#34; alt=&#34;效果图&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这样就可以根据个人喜好配置很多适合自己的开发环境了。使用 Tmuxinator 相对于直接使用 Tmux 对于配置管理更加方便，也可以配置很多适合自己的环境配置。&lt;/p&gt;
-
-&lt;p&gt;配置简单分析：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;name        会话名称
-root        根目录
-windows     窗口
-layout      窗格布局样式
-panes       下面填写各个窗格
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意：&lt;/p&gt;
+&lt;h2&gt;Lua 的注释&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;配置文件缩进为2个空格&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;layout 的结果，可执行调节窗格，输入 tmux list-windows 获取样式码填入&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用具体配置的命令为     tmuxinator [配置名称]&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;配置文件具体的存储位置为主目录的 .tmuxinator 目录下&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;单行注释 &amp;#8211;  功能等同于 C++ 中的 //&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;多行注释 &amp;#8211;[[  注释的内容  ]]   功能等同于C++中的 /**/&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;多行注释 &amp;#8211;[====[   注释和内容  ]====],  也等同于C++中的/**/,   这个主要用于注释的内容里面有像arr[arr2[idx]] 这种文本,  如果使用&amp;#8211;[[  ]] 遇到arr[arr2[idx]]后面的]]注释就结束,这显示与我们的意图不相符合。所以使用&amp;#8211;[===[  ]===] 来注释内容, 就不用担心了, 两边的等号数量要相同, 多少个没有关系。&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&#34;参考资料:302e394fc82200d871119ae6c4f327a6&#34;&gt;参考资料&lt;/h2&gt;
+&lt;h2&gt;Lua 基础数据类型&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;nil         空（无效值）
+boolean     布尔（true/false）
+number      实数（类同 C/C++ 的 double 类型）
+string      字符串
+table       表（关联数组）
+function    函数
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Lua 表达式&lt;/h2&gt;
+
+&lt;p&gt;算数运算符和关系运算符，与大多数语言一致，唯一特殊的是 不等于运算的写法为 ~=。&lt;/p&gt;
+
+&lt;h5&gt;逻辑运算符&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;and     逻辑与
+or      逻辑或
+not     逻辑非
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lua 中的 and 和 or 不同于大多数语言。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://aquaregia.gitbooks.io/tmux-productive-mouse-free-development_zh/content/index.html&#34;&gt;《tmux: Productive Mouse-Free Development》中文翻译版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;a and b   如果 a 为 nil或false，则返回 a，否则返回 b&lt;/li&gt;
+&lt;li&gt;a or b    如果 a 为 nil或false，则返回 b，否则返回 a&lt;/li&gt;
 &lt;/ul&gt;
-</description>
+
+&lt;h2&gt;Lua 函数&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;function functionName(args..) 
+    ....
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lua 函数的使用：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;函数的定义一定要在函数调用前。&lt;/li&gt;
+&lt;li&gt;函数的参数为按值传递，唯一例外的是表数据类型，是按址传递。&lt;/li&gt;
+&lt;li&gt;函数参数支持变长参数。&lt;/li&gt;
+&lt;li&gt;函数支持多个返回值。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Lua 模块&lt;/h2&gt;
+
+&lt;p&gt;从Lua5.1版本开始，就对模块和包添加了新的支持，可以使用require和module来定义和使用模块和包。require用于使用模块，module用于创建模块。简单的说，一个模块就是一个程序库，可以通过require来加载。然后便得到了一个全局变量，表示一个table。这个table就像是一个命名空间，其内容就是模块中导出的所有东西，比如函数和常量，一个符合规范的模块还应使require返回这个table。&lt;/p&gt;
+
+&lt;p&gt;使用实例：&lt;/p&gt;
+
+&lt;p&gt;complex.lua 文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;local _M = {}   -- 局部变量，模块名称
+
+function _M.new(r, i)
+    return {r = r, i = i}
+end
+
+_M.i =  _M.new(0, 1)     -- 定义一个table型常量i
+
+function  _M.add(c1, c2)  --复数加法
+    return  _M.new(c1.r + c2.r, c1.i + c2.i)
+end
+
+function  _M.sub(c1, c2)  --复数减法
+    return  _M.new(c1.r - c2.r, c1.i - c2.i)
+end
+
+return  _M  -- 返回模块的table
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;main.lua 文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;local complex = require &#34;complex&#34;
+
+local com1 = complex.new(0, 1)
+local com2 = complex.new(1, 2)
+
+local ans = complex.add(com1, com2)
+print(ans.r, ans.i)      --&amp;gt;output  1     3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Lua 类库&lt;/h2&gt;
+
+&lt;p&gt;Lua 提供丰富的标准库，便于开发使用。&lt;a href=&#34;http://www.lua.org/manual/5.1/&#34;&gt;在线手册&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Lua 文件操作&lt;/h2&gt;
+
+&lt;p&gt;Lua I/O库提供两种不同的方式处理文件：隐式文件描述，显式文件描述。&lt;/p&gt;
+
+&lt;h6&gt;隐式文件描述&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;file = io.input(&#34;test1.txt&#34;)  --使用io.input()函数打开文件
+
+repeat
+    line = io.read()      --逐行读取内容，文件结束时返回nil
+    if nil == line then
+        break
+end
+print(line)
+until (false)
+
+io.close(file)       --关闭文件
+
+--&amp;gt;output
+my test file
+hello
+lua
+
+
+file = io.open(&#34;test1.txt&#34;, &#34;a+&#34;) --使用io.open()函数，以添加模式打开文件
+io.output(file)                    --使用io.output()函数，设置默认输出文件
+io.write(&#34;\nhello world&#34;)          --使用io.write()函数，把内容写到文件
+io.close(file)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6&gt;显示文件描述&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;file = io.open(&#34;test2.txt&#34;, &#34;r&#34;)  --使用io.open()函数，以只读模式打开文件
+
+for line in file:lines() do          --使用file:lines()函数逐行读取文件
+    print(line)
+end
+
+file:close()
+
+--&amp;gt;output
+my test2
+hello lua
+
+
+file = io.open(&#34;test2.txt&#34;, &#34;a&#34;)  --使用io.open()函数，以添加模式打开文件
+file:write(&#34;\nhello world&#34;)       --使用file:open()函数，在文件的最后添加一行内容
+file:close()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;具体其他操作文件的函数，查询 &lt;a href=&#34;http://www.lua.org/manual/5.1/&#34;&gt;在线手册&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gitbook.com/book/moonbingbing/openresty-best-practices&#34;&gt;OpenResty最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;script type=&#39;text/javascript&#39;&gt;
+$(document).ready(function(){
+  if($(&#39;code&#39;).length&gt;0){
+    $(&#39;code&#39;).parent().addClass(&#39;prettyprint linenums&#39;);
+    prettyPrint();
+};
+});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</description>
     </item>
     
     <item>
-      <title>Tmux 提高效率的利器</title>
-      <link>http://oubnpdea.github.io/2015/12/acquaintance-tmux/</link>
-      <pubDate>Sun, 13 Dec 2015 21:00:08 +0800</pubDate>
+      <title>Search Results</title>
+      <link>http://oubnpdea.github.io/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2015/12/acquaintance-tmux/</guid>
-      <description>
-
-&lt;p&gt;Tmux 是一个终端复用器（terminal multiplexer）。它让我们可以使用单一环境就可以登录多个终端或窗口，每个终端或窗口都运行着独立的进程或程序。例如，我们可以打开 tmux 然后运行 Vim 编辑器。然后可以新建一个窗口运行一个数据库控制台，然后在这些程序之间来回切换，这一切都是在一个会话（session）中进行的。&lt;/p&gt;
-
-&lt;p&gt;有了 Tmux 某种程度上减少了对于鼠标的操作，转而集中在键盘上的操作，就大大提高我们的工作效率。这简直对于 Vim 和 终端使用的重度用户来说，简直爱不释手。&lt;/p&gt;
-
-&lt;h2 id=&#34;安装-tmux:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;安装 Tmux&lt;/h2&gt;
-
-&lt;p&gt;在安装方式上强烈推荐使用包管理器安装方式，当然如果你对于最新版本有着强烈的需求，可以选择源码编译构建安装方式。&lt;/p&gt;
-
-&lt;p&gt;在 OS X 上的安装方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ brew install tmux
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;tmux-的会话-窗口-窗格:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;Tmux 的会话、窗口、窗格&lt;/h2&gt;
-
-&lt;p&gt;Tmux 的会话比较类似于 Screen 的会话，可以在分离出（detaching）当前会话后，原会话仍然后台运行。&lt;/p&gt;
-
-&lt;h5 id=&#34;快捷键前缀:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;快捷键前缀&lt;/h5&gt;
-
-&lt;p&gt;首先说明一下快捷键前缀问题，这个和 Screen 很相似，就是每一个快捷键的使用，都需要先执行快捷键前缀，然后在执行对应的快捷键才行。Tmux 的默认快捷键前缀为 C-b （即 Ctrl-b），后面会大量使用，后续简写为 PREFIX。&lt;/p&gt;
-
-&lt;h4 id=&#34;1-会话:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;1. 会话&lt;/h4&gt;
-
-&lt;p&gt;创建会话命令：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ tmux new -s [session-name]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看所有会话列表：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ tmux ls
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;分离会话使用快捷键：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新连接会话&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tmux attach -t [session-name]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;关闭会话有两种方法：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在会话中使用 exit 命令进行关闭会话操作。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;命令行执行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ tmux kill-session -t [session-name]
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&#34;2-窗口:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;2. 窗口&lt;/h4&gt;
-
-&lt;p&gt;创建窗口有两种方法：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在创建会话时一并创建：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ tmux new -s [session-name] -n [window-name]
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;在会话中创建使用快捷键&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + c
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;窗口切换有两种方法：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;相邻间窗口切换快捷键：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + n      下一个窗口
-PREFIX + p      上一个窗口
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用窗口数字下标快捷键切换：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + [数字下标]
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;关闭窗口有两种方式：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在窗口中使用 exit 命令进行关闭窗口的操作。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用快捷键关闭当前窗口&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&#34;3-窗格:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;3. 窗格&lt;/h4&gt;
-
-&lt;p&gt;创建窗格可以使用快捷键方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + %      左右一分为二方式分格
-PREFIX + &amp;quot;      上下一分为二方式分格
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;窗格之间切换也有两种方式：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;窗格间循环方式切换的快捷键：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + o
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;指定方向方式切换的快捷键：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + [UP/DOWN/LEFT/RIGHT]       使用上下左右键
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;关闭窗格有两种方式：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在窗格中使用 exit 命令进行关闭窗格的操作。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用快捷键关闭当前窗格&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;PREFIX + X      （注：大写的X）
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;自定义配置:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;自定义配置&lt;/h2&gt;
-
-&lt;p&gt;tmux 的配置文件存放在 /etc/tmux.conf 和 当前主目录下的 .tmux.conf 中，不过 .tmux.conf 的优先级更高。为了更方便的使用，建议修改 .tux.conf，防止修改全局配置文件影响到其他业务。&lt;/p&gt;
-
-&lt;p&gt;先贴出我个人的配置文件：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# 解绑原前缀快捷键
-unbind C-b
-# 设置新前缀快捷键
-set -g prefix C-a
-
-# 修改延时为 1ms
-set -sg escape-time 1
-
-# 修改窗口默认起始数字为1
-set -g base-index 1
-# 修改窗格默认起始数字为1
-setw -g pane-base-index 1
-
-# 设置重新加载配置文件的快捷键
-bind r source-file ~/.tmux.conf \; display &amp;quot;Reloaded!&amp;quot;
-
-# 设置允许 C-a 发送到 tmux 内部程序
-bind C-a send-prefix
-
-# 修改创建窗格快捷键
-bind | split-window -h
-bind - split-window -v
-
-# 修改原上下左右键为vim方式
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
-
-# 修改切换窗口快捷键
-bind -r C-h select-window -t :-
-bind -r C-l select-window -t :+
-
-# 调整窗格快捷键设置
-bind -r H resize-pane -L 5
-bind -r J resize-pane -D 5
-bind -r K resize-pane -U 5
-bind -r L resize-pane -R 5
-
-set -g mouse on
-
-set -g default-terminal &amp;quot;screen-256color&amp;quot;
-
-set -g status-fg white
-set -g status-bg colour240
-
-setw -g window-status-fg cyan
-setw -g window-status-bg colour240
-setw -g window-status-attr dim
-
-setw -g window-status-current-fg white
-setw -g window-status-current-bg red
-setw -g window-status-current-attr bright
-
-set -g pane-border-fg green
-set -g pane-border-bg black
-set -g pane-active-border-fg white
-set -g pane-active-border-bg colour21
-
-set -g message-fg white
-set -g message-bg black
-set -g message-attr bright
-
-set -g status-justify centre
-set -g status-left &amp;quot;[#S]&amp;quot;
-set -g status-right &amp;quot;%b-%d %R&amp;quot;
-set -g status-utf8 on
-
-set -g status-interval 60
-
-setw -g monitor-activity on
-set -g visual-activity on
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;配置主要涉及对于快捷键自定义的设置，因为原生的快捷键的确有些难记，可以根据个人喜好设置；还有一些关于显示样式的设置，如果对于具体配置不是很了解建议详细阅读 &lt;a href=&#34;https://aquaregia.gitbooks.io/tmux-productive-mouse-free-development_zh/content/index.html&#34;&gt;《tmux: Productive Mouse-Free Development》&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;补充内容:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;补充内容&lt;/h2&gt;
-
-&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-14 更新）&lt;/font&gt; 添加效果图&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/acquaintance-tmux.jpg&#34; alt=&#34;效果图&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;参考资料:e9df9cc9c4e959182bebbff738539f1e&#34;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://aquaregia.gitbooks.io/tmux-productive-mouse-free-development_zh/content/index.html&#34;&gt;《tmux: Productive Mouse-Free Development》中文翻译版&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>插入排序 Insertion Sort（Go 实现）</title>
-      <link>http://oubnpdea.github.io/2015/12/insertion-sort/</link>
-      <pubDate>Sat, 12 Dec 2015 23:58:39 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2015/12/insertion-sort/</guid>
-      <description>&lt;p&gt;插入排序是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。（来源：&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F&#34;&gt;维基百科&lt;/a&gt;）&lt;/p&gt;
-
-&lt;p&gt;它的具体原理类似于现实场景中的排序扑克牌。
-即从第二个元素开始与前一个元素（即第一个元素）开始比较，如果第二个小于第一个则第一个元素位置向后退一个位（即第二个元素位置），第二个元素占到第一个元素位置，这样第一个元素与第二个元素就排序完成；之后以此类推，第三个元素与前一个元素进行比较&amp;hellip;..直到最后一个元素排序完成。&lt;/p&gt;
-
-&lt;p&gt;具体逻辑如图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/insertion-sort-1.jpg&#34; alt=&#34;实例1&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Go 实现代码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;func insertionSort(num []int) []int {
-    if len(num) &amp;lt;= 1 {
-        return num
-    }
-
-    for i := 1; i &amp;lt; len(num); i++ {
-        tmp := num[i]
-        j := i - 1
-
-        for j &amp;gt; -1 &amp;amp;&amp;amp; num[j] &amp;gt; tmp {
-            num[j+1] = num[j]
-            j--
-        }
-        num[j+1] = tmp
-    }
-    return num
-} 
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Oh My Zsh 让你愉快地使用 Zsh</title>
-      <link>http://oubnpdea.github.io/2015/12/oh-my-zsh/</link>
-      <pubDate>Fri, 11 Dec 2015 09:38:22 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
-      <guid>http://oubnpdea.github.io/2015/12/oh-my-zsh/</guid>
-      <description>
-
-&lt;p&gt;一提到 Shell 我们程序猿们就会感觉特别亲切，几乎每天的工作都会使用到。&lt;/p&gt;
-
-&lt;p&gt;Shell 在计算机科学中，是指“为用户提供用户界面”的软件，通常指的是命令行界面的解析器。一般来说，这个词是指操作系统中，提供访问内核所提供之服务的程序。Shell也用于泛指所有为用户提供操作界面的程序，也就是程序和用户交互的层面。因此与之相对的是程序内核，内核不提供和用户的交互功能。（来源：&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E6%AE%BC%E5%B1%A4&#34;&gt;维基百科&lt;/a&gt;）&lt;/p&gt;
-
-&lt;p&gt;当然，Shell 也有很多的版本，比如 sh、bash、csh 等等，这里介绍一下 zsh。&lt;/p&gt;
-
-&lt;h5 id=&#34;zsh-具有以下主要功能:61b56cb87ae1650e6c4b000f4a8f6bd8&#34;&gt;Zsh 具有以下主要功能：&lt;/h5&gt;
-
-&lt;ul&gt;
-&lt;li&gt;开箱即用、可编程的命令行补全功能可以帮助用户输入各种参数以及选项。&lt;/li&gt;
-&lt;li&gt;在用户启动的所有shell中共享命令历史。&lt;/li&gt;
-&lt;li&gt;通过扩展的文件通配符，可以不利用外部命令达到find命令一般展开文件名。&lt;/li&gt;
-&lt;li&gt;改进的变量与数组处理。&lt;/li&gt;
-&lt;li&gt;在缓冲区中编辑多行命令。&lt;/li&gt;
-&lt;li&gt;多种兼容模式，例如使用/bin/sh运行时可以伪装成Bourne shell。&lt;/li&gt;
-&lt;li&gt;可以定制呈现形式的提示符；包括在屏幕右端显示信息，并在键入长命令时自动隐藏。&lt;/li&gt;
-&lt;li&gt;可加载的模块，提供其他各种支持：完整的TCP与Unix域套接字控制，FTP客户端与扩充过的数学函数。&lt;/li&gt;
-&lt;li&gt;完全可定制化。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;除了上面维基上罗列的功能，还有比如 Tab 显示全目录选择文件以及各种实用插件都会让你喜欢上 Zsh。不过由于本身其过于复杂的配置，让很多人望而却步（比如一开始的我），幸而有了 &lt;a href=&#34;https://github.com/robbyrussell/oh-my-zsh&#34;&gt;oh-my-zsh&lt;/a&gt; 帮助我快速使用上 Zsh。&lt;/p&gt;
-
-&lt;h2 id=&#34;安装-zsh:61b56cb87ae1650e6c4b000f4a8f6bd8&#34;&gt;安装 Zsh&lt;/h2&gt;
-
-&lt;p&gt;首先你可以查看一下，现在机器支持的 Shell 有哪些。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;➜  /Users/BPCoder &amp;gt; cat /etc/shells
-# List of acceptable shells for chpass(1).
-# Ftpd will not allow users to connect who are not using
-# one of these shells.
-
-/bin/bash
-/bin/csh
-/bin/ksh
-/bin/sh
-/bin/tcsh
-/bin/zsh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;OS X 用户基本不用考虑安装 Zsh 的事情，因为默认安装了。其他系统也很简单，只需要通过自己的软件包管理器就可以安装了。最后将默认 Shell 切换成 zsh 即可&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;➜  /Users/BPCoder &amp;gt; chsh -s /bin/zsh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安装-oh-my-zsh:61b56cb87ae1650e6c4b000f4a8f6bd8&#34;&gt;安装 Oh My Zsh&lt;/h2&gt;
-
-&lt;p&gt;curl 方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sh -c &amp;quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;wget 方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sh -c &amp;quot;$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样就安装完成了，重新开启一个窗口就会发现变化了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/oh-my-zsh-1.jpg&#34; alt=&#34;zsh 界面&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;配置-zsh:61b56cb87ae1650e6c4b000f4a8f6bd8&#34;&gt;配置 Zsh&lt;/h2&gt;
-
-&lt;p&gt;基本已经安装完成，剩下就是根据个人喜好进行一下自定义配置。使用 Zsh 后，配置文件就是当前用户根目录下的 .zshrc 文件。&lt;/p&gt;
-
-&lt;p&gt;下面是我自己的简易配置。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;export ZSH=/Users/BPCoder/.oh-my-zsh
-ZSH_THEME=&amp;quot;robbyrussell&amp;quot;
-plugins=(git autojump)
-source $ZSH/oh-my-zsh.sh
-alias -s ll=&amp;quot;ls -al&amp;quot;
-alias -s php=vim
-alias -s go=vim
-alias -s py=vim
-alias -s c=vim
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;简单说明一下：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;ZSH_THEME 是主题的设置， oh my zsh 提供了很多主题，可根据个人的需求选择甚至自己编写主题，我现在的是 robbyrussell，并做了一些简单的修改。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;local ret_status=&amp;quot;%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)&amp;quot;
-PROMPT=&#39;${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$reset_color%}&amp;gt; &#39;
-
-
-ZSH_THEME_GIT_PROMPT_PREFIX=&amp;quot;git:(%{$fg[red]%}&amp;quot;
-ZSH_THEME_GIT_PROMPT_SUFFIX=&amp;quot;%{$reset_color%}&amp;quot;
-ZSH_THEME_GIT_PROMPT_DIRTY=&amp;quot;%{$fg[blue]%}) %{$fg[yellow]%}✗%{$reset_color%}&amp;quot;
-ZSH_THEME_GIT_PROMPT_CLEAN=&amp;quot;%{$fg[blue]%})&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;插件方面 oh my zsh 也提供了大量的插件，我这里只是简单添加了两个 git 和 &lt;a href=&#34;http://oubnpdea.github.io/2015/12/autojump/&#34;&gt;autojump&lt;/a&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;然后就是&amp;rdquo;alias -s php=vim&amp;rdquo;，表示为在命令行直接输入后缀为 php 的文件名，会用 vim 打开，很实用推荐。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;剩下的其他没有提到的功能，后面会慢慢找时间补充，不过现在已经可以体验到 Zsh 给我们带来的乐趣了。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考资料:61b56cb87ae1650e6c4b000f4a8f6bd8&#34;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://zhuanlan.zhihu.com/mactalk/19556676&#34;&gt;终极 Shell——ZSH&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://zsh.sourceforge.net/Doc/zsh_a4.pdf&#34;&gt;Zsh 手册&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
+      <guid>http://oubnpdea.github.io/search/</guid>
+      <description>&lt;gcse:searchresults-only linktarget=&#34;_parent&#34;&gt;&lt;/gcse:searchresults-only&gt;
+&lt;script&gt;
+      (function() {
+        var cx = &#39;005313549283914002768:xsmmjjsbaui&#39;;
+        var gcse = document.createElement(&#39;script&#39;);
+        gcse.type = &#39;text/javascript&#39;;
+        gcse.async = true;
+        gcse.src = (document.location.protocol == &#39;https:&#39; ? &#39;https:&#39; : &#39;http:&#39;) +
+            &#39;//cse.google.com/cse.js?cx=&#39; + cx;
+        var s = document.getElementsByTagName(&#39;script&#39;)[0];
+        s.parentNode.insertBefore(gcse, s);
+      })();
+&lt;/script&gt;
 </description>
     </item>
     
