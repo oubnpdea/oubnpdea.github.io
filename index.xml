@@ -8,8 +8,186 @@
     <language>zh</language>
     <managingEditor>345345345345@163.com (oubnpdea)</managingEditor>
     <webMaster>345345345345@163.com (oubnpdea)</webMaster>
-    <lastBuildDate>Thu, 03 Dec 2015 23:46:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 12 Mar 2016 19:20:41 +0000</lastBuildDate>
     <atom:link href="http://oubnpdea.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>利用Hugo搭建博客系统</title>
+      <link>http://oubnpdea.github.io/2016/03/hugo-install-blog/</link>
+      <pubDate>Sat, 12 Mar 2016 19:20:41 +0000</pubDate>
+      <author>345345345345@163.com (oubnpdea)</author>
+      <guid>http://oubnpdea.github.io/2016/03/hugo-install-blog/</guid>
+      <description>&lt;p&gt;(来源：苦X工程师，&lt;a href=&#34;http://kevensya.github.io/post/hugo-install/&#34;&gt;原文链接&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;选择的两种静态网页博客系统比较&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Octopress&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Octopress 是一款基于Jekyll 的静态站点生成系统,使用ruby编写的，使用这个博客系统需要对ruby语言有一定的掌握。因为自己也学习过ruby，而且现在有个朋友正在使用octopress 2.x作为他的博客系统，所以这次的首选是octopress，但是安装过程稍显复杂，目前octopress 3.x版本的安装相关说明基本上没有，加上很多人抱怨octopress的在post数量超过一定数量后，每次生成页面的速度很慢，综合考虑后放弃octopress。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hugo&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;利用Go语言编写的静态站点生成系统，从速度上来说Hugo完胜，网上对octopress的速度很多人不满，150个post的情况下，octopress生成网页的速度大概需要40秒，而hugo不到一秒就完成页面的生成了，因此也有不少人从octopress换到Hugo，与其到时候更换，还不如从刚开始就选择Hugo，所以最终决定使用Hogo。目前来说只有一个post的情况下，速度方面有多少优势目前还不得知，但是目前来说，速度，发布方式各个方面还是比较满意。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Hugo的安装&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;安装环境&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;OS: OS X Yosemite 10.10.4&lt;br /&gt;
+Ruby: ruby 2.2.2p95&lt;br /&gt;
+Homebrew: 0.9.5&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;因为已经安装过Homebrew了，所以最简单的办法就是利用Homebrew安装&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果未安装过Homebrew，可以按照&lt;a href=&#34;http://brew.sh/&#34;&gt;Homebrew官网&lt;/a&gt;的指示进行安装(注意：安装Homebrew之前需要安装&lt;a href=&#34;https://www.ruby-lang.org/&#34;&gt;Ruby&lt;/a&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install Hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果没有安装过Homebrew，不想折腾安装Homebrew，可以直接从&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;https://github.com/spf13/hugo/releases&lt;/a&gt;下载最新的binary版本。&lt;/p&gt;
+
+&lt;p&gt;安装后，执行下面的命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo version
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果命令能够正确执行并输出安装的hugo版本表示安装成功，接着就可以利用Hugo生成site。&lt;br /&gt;
+&lt;strong&gt;博客site的生成&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;生成site&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo new site &amp;lt;path&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;此命令的目的在path生成site的scaffolding，生成的的文件结构如下&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;|- archetypes&lt;br /&gt;
+|- content&lt;br /&gt;
+|- data&lt;br /&gt;
+|- layouts&lt;br /&gt;
+|- static&lt;br /&gt;
+|- config.toml&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;进入path目录，接下来，安装主题(themes)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone --recursive https://github.com/spf13/hugoThemes themes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个将从github下载所有的Hugo主题，大小大概有230M左右，下载完成需要等待一段时间。 themes下载完后，修改config.toml的配置&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;baseUrl= &amp;ldquo;&lt;a href=&#34;http://kevensya.github.io/&amp;quot;&#34;&gt;http://kevensya.github.io/&amp;quot;&lt;/a&gt; &amp;ndash; 发布时的博客url&lt;br /&gt;
+languageCode = &amp;ldquo;zh-cn&amp;rdquo; &amp;ndash; 语言（目前还没有发现有什么特殊的作用）&lt;br /&gt;
+title = &amp;ldquo;苦X工程师&amp;rdquo; &amp;ndash; 博客标题&lt;br /&gt;
+theme = &amp;ldquo;greyshade&amp;rdquo; &amp;ndash; 主题名&lt;br /&gt;
+Paginate = 10 &amp;ndash; 分页大小&lt;/p&gt;
+
+&lt;p&gt;[author]&lt;br /&gt;
+name = &amp;ldquo;kevenxia&amp;rdquo;&lt;br /&gt;
+email = &amp;ldquo;xxxx@mail.com&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;[params]&lt;br /&gt;
+  githubName = &amp;ldquo;kevensya&amp;rdquo;&lt;br /&gt;
+  description = &amp;ldquo;Java,VC++,C++,ObjC,C#使用中&amp;rdquo; &amp;ndash; 博客的描述&lt;br /&gt;
+  disqusShortname = &amp;ldquo;crazykeven&amp;rdquo;&lt;br /&gt;
+  github_user = &amp;ldquo;kevensya&amp;rdquo;&lt;br /&gt;
+  excerpt_link = &amp;ldquo;[阅读全文]&amp;rdquo; &amp;ndash; 博客首页显示博客概要时代替Read More的文本&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;每个主题的配置方法都稍微有些不一样，需要研究主题的layout以及官方关于&lt;a href=&#34;http://gohugo.io/templates/overview/&#34;&gt;Template的说明&lt;/a&gt;进行配置，我这里使用的是&lt;a href=&#34;https://github.com/cxfksword/greyshade&#34;&gt;greyshade主题&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;配置好后，可以生成一个post测试一下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo new post/welcome.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进入content/目录，多了一个post目录，post目录下多了一个welcome.md文件。&lt;/p&gt;
+
+&lt;p&gt;启动本地预览服务器&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo server -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里加上了-w option，这样编写的博客或者layout有变化后能实时反映到web页面上，不用每次重新启动服务器（但是修改了config.toml文件就必须重新启动服务器后修改才能得到反映）。&lt;/p&gt;
+
+&lt;p&gt;在浏览器输入 &lt;a href=&#34;http://localhost:1313&#34;&gt;http://localhost:1313&lt;/a&gt; 就可以看到博客的首页了,首页上显示了刚才生成的welcome的博客。&lt;br /&gt;
+&lt;strong&gt;发布到Github&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;每个github账号可以发布一个个人页面的站点（Github pages），我就利用这次这个功能发布hugo生成的静态页面。首先在github建立一个repository，这个repository的名字必须是下面两种格式。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;github账户名.github.com&lt;br /&gt;
+github账户名.github.io&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://oubnpdea.github.io/img/Create-a-New-Repository.png&#34; alt=&#34;Create-a-New-Repository&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;创建repository&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;创建完repository后，暂时回到本地进行操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo -t greyshade
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用主题greyshade生成静态html页面，所有的静态页面都在public/中。&lt;/p&gt;
+
+&lt;p&gt;进入public目录，创建本地git仓库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将.DS_Store文件添加到忽略列表中（.DS_Store是OSX的系统文件）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;.DS_Store&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行下面的命令将生成的页面添加到git仓库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add -A
+git commit -m &amp;quot;Initial commit&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将github仓库添加到本地仓库的远程服务器中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote add origin https://github.com/kevensya/kevensya.github.io.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将本地仓库推送到github&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就能通过 kevensya.github.io 来访问博客了，如果博客有更新，可以利用下面的命令再次push到github。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo -t greyshade
+git add -A
+git commit -m &amp;quot;Update public files&amp;quot;
+git push
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;参考文档&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Hugo官方文档：&lt;a href=&#34;http://gohugo.io/overview/introduction/&#34;&gt;http://gohugo.io/overview/introduction/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hugo静态网站生成器中文教程：&lt;a href=&#34;http://nanshu.wang/post/2015-01-31/&#34;&gt;http://nanshu.wang/post/2015-01-31/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
     
     <item>
       <title>初识 Lua</title>
@@ -395,6 +573,209 @@ $ git push origin master
 &lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://sa.muel.be/tags/hugo/&#34;&gt;Hugo · Samuel Debruyn&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://oubnpdea.github.io/1/01/hugo-install-blog.md/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>345345345345@163.com (oubnpdea)</author>
+      <guid>http://oubnpdea.github.io/1/01/hugo-install-blog.md/</guid>
+      <description>﻿&lt;!doctype html public &#39;-//W3C//DTD HTML 4.0 Transitional //EN&#39;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;hugo-install-blog&lt;/title&gt;
+&lt;meta charset=&#39;UTF-8&#39; /&gt;
+&lt;meta name=&#39;generator&#39; content=&#39;EverEdit&#39; /&gt;
+&lt;link href=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\default.css&#39; rel=&#39;stylesheet&#39;&gt;&lt;/link&gt;
+&lt;link href=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\prettify.css&#39; rel=&#39;stylesheet&#39;&gt;&lt;/link&gt;
+&lt;script type=&#39;text/javascript&#39; src=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\prettify.js&#39;&gt;&lt;/script&gt;
+&lt;script type=&#39;text/javascript&#39; src=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\jquery-1.10.2.min.js&#39;&gt;&lt;/script&gt;
+&lt;script type=&#39;text/javascript&#39; src=&#39;C:\SoftInsWin7V64\everedit\mode\markdown\toc.js&#39;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&#39;generated-toc&#39;&gt;&lt;/div&gt;
+&lt;p&gt;+++
+date = &#34;2016-03-12T19:20:41&#34;
+title = &#34;利用Hugo搭建博客系统&#34;
+tags = [&#34;Hugo&#34;]
+description = &#34;使用Hugo&amp;amp;GitHub构建个人博客静态网站;Hugo是一个多用途的网站框架;Hugo是一个静态网站生成器;安装Hugo;选择GitHub Pages;结合GitHub Pages搭建个人博客静态网站Step by Step;创建两个GitHub仓库;创建一个Hugo的新站点项目;选择模板;编辑配置信息;新建文章;实时预览;建立生成静态文件的代码目录;生成静态站点并发布;设置自己域名的站点&#34;
++++&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;选择的两种静态网页博客系统比较&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Octopress&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Octopress 是一款基于Jekyll 的静态站点生成系统,使用ruby编写的，使用这个博客系统需要对ruby语言有一定的掌握。因为自己也学习过ruby，而且现在有个朋友正在使用octopress 2.x作为他的博客系统，所以这次的首选是octopress，但是安装过程稍显复杂，目前octopress 3.x版本的安装相关说明基本上没有，加上很多人抱怨octopress的在post数量超过一定数量后，每次生成页面的速度很慢，综合考虑后放弃octopress。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Hugo&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;利用Go语言编写的静态站点生成系统，从速度上来说Hugo完胜，网上对octopress的速度很多人不满，150个post的情况下，octopress生成网页的速度大概需要40秒，而hugo不到一秒就完成页面的生成了，因此也有不少人从octopress换到Hugo，与其到时候更换，还不如从刚开始就选择Hugo，所以最终决定使用Hogo。目前来说只有一个post的情况下，速度方面有多少优势目前还不得知，但是目前来说，速度，发布方式各个方面还是比较满意。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Hugo的安装&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;安装环境&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;OS: OS X Yosemite 10.10.4 &lt;br&gt;
+  Ruby: ruby 2.2.2p95 &lt;br&gt;
+  Homebrew: 0.9.5  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;因为已经安装过Homebrew了，所以最简单的办法就是利用Homebrew安装&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果未安装过Homebrew，可以按照&lt;a href=&#34;http://brew.sh/&#34;&gt;Homebrew官网&lt;/a&gt;的指示进行安装(注意：安装Homebrew之前需要安装&lt;a href=&#34;https://www.ruby-lang.org/&#34;&gt;Ruby&lt;/a&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install Hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果没有安装过Homebrew，不想折腾安装Homebrew，可以直接从&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;https://github.com/spf13/hugo/releases&lt;/a&gt;下载最新的binary版本。&lt;/p&gt;
+
+&lt;p&gt;安装后，执行下面的命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo version
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果命令能够正确执行并输出安装的hugo版本表示安装成功，接着就可以利用Hugo生成site。 &lt;br&gt;
+&lt;strong&gt;博客site的生成&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;生成site&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo new site &amp;lt;path&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;此命令的目的在path生成site的scaffolding，生成的的文件结构如下&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;|- archetypes &lt;br&gt;
+  |- content &lt;br&gt;
+  |- data &lt;br&gt;
+  |- layouts &lt;br&gt;
+  |- static &lt;br&gt;
+  |- config.toml  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;进入path目录，接下来，安装主题(themes)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone --recursive https://github.com/spf13/hugoThemes themes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个将从github下载所有的Hugo主题，大小大概有230M左右，下载完成需要等待一段时间。 themes下载完后，修改config.toml的配置&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;baseUrl= &#34;&lt;a href=&#34;http://kevensya.github.io/&#34;&gt;http://kevensya.github.io/&lt;/a&gt;&#34; -- 发布时的博客url &lt;br&gt;
+  languageCode = &#34;zh-cn&#34; -- 语言（目前还没有发现有什么特殊的作用） &lt;br&gt;
+  title = &#34;苦X工程师&#34; -- 博客标题 &lt;br&gt;
+  theme = &#34;greyshade&#34; -- 主题名 &lt;br&gt;
+  Paginate = 10 -- 分页大小  &lt;/p&gt;
+  
+  &lt;p&gt;[author] &lt;br&gt;
+  name = &#34;kevenxia&#34; &lt;br&gt;
+  email = &#34;xxxx@mail.com&#34;  &lt;/p&gt;
+  
+  &lt;p&gt;[params] &lt;br&gt;
+    githubName = &#34;kevensya&#34; &lt;br&gt;
+    description = &#34;Java,VC++,C++,ObjC,C#使用中&#34; -- 博客的描述 &lt;br&gt;
+    disqusShortname = &#34;crazykeven&#34; &lt;br&gt;
+    github_user = &#34;kevensya&#34; &lt;br&gt;
+    excerpt_link = &#34;[阅读全文]&#34; -- 博客首页显示博客概要时代替Read More的文本  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;每个主题的配置方法都稍微有些不一样，需要研究主题的layout以及官方关于&lt;a href=&#34;http://gohugo.io/templates/overview/&#34;&gt;Template的说明&lt;/a&gt;进行配置，我这里使用的是&lt;a href=&#34;https://github.com/cxfksword/greyshade&#34;&gt;greyshade主题&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;配置好后，可以生成一个post测试一下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo new post/welcome.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进入content/目录，多了一个post目录，post目录下多了一个welcome.md文件。&lt;/p&gt;
+
+&lt;p&gt;启动本地预览服务器&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo server -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里加上了-w option，这样编写的博客或者layout有变化后能实时反映到web页面上，不用每次重新启动服务器（但是修改了config.toml文件就必须重新启动服务器后修改才能得到反映）。&lt;/p&gt;
+
+&lt;p&gt;在浏览器输入 &lt;a href=&#34;http://localhost:1313&#34;&gt;http://localhost:1313&lt;/a&gt; 就可以看到博客的首页了,首页上显示了刚才生成的welcome的博客。 &lt;br&gt;
+&lt;strong&gt;发布到Github&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;每个github账号可以发布一个个人页面的站点（Github pages），我就利用这次这个功能发布hugo生成的静态页面。首先在github建立一个repository，这个repository的名字必须是下面两种格式。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;github账户名.github.com &lt;br&gt;
+  github账户名.github.io&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://oubnpdea.github.io/img/Create-a-New-Repository.png&#34; alt=&#34;Create-a-New-Repository&#34; title=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;创建repository&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;创建完repository后，暂时回到本地进行操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo -t greyshade
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用主题greyshade生成静态html页面，所有的静态页面都在public/中。&lt;/p&gt;
+
+&lt;p&gt;进入public目录，创建本地git仓库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将.DS_Store文件添加到忽略列表中（.DS_Store是OSX的系统文件）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &#34;.DS_Store&#34; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行下面的命令将生成的页面添加到git仓库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add -A
+git commit -m &#34;Initial commit&#34;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将github仓库添加到本地仓库的远程服务器中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote add origin https://github.com/kevensya/kevensya.github.io.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将本地仓库推送到github&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就能通过 kevensya.github.io 来访问博客了，如果博客有更新，可以利用下面的命令再次push到github。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo -t greyshade
+git add -A
+git commit -m &#34;Update public files&#34;
+git push
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;参考文档&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Hugo官方文档：&lt;a href=&#34;http://gohugo.io/overview/introduction/&#34;&gt;http://gohugo.io/overview/introduction/&lt;/a&gt;&lt;/p&gt;
+  
+  &lt;p&gt;Hugo静态网站生成器中文教程：&lt;a href=&#34;http://nanshu.wang/post/2015-01-31/&#34;&gt;http://nanshu.wang/post/2015-01-31/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script type=&#39;text/javascript&#39;&gt;
+$(document).ready(function(){
+  if($(&#39;code&#39;).length&gt;0){
+    $(&#39;code&#39;).parent().addClass(&#39;prettyprint linenums&#39;);
+    prettyPrint();
+};
+});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</description>
     </item>
     
     <item>

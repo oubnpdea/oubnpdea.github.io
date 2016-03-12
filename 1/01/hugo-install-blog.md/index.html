@@ -14,8 +14,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
         <link rel="shortcut icon" href="http://oubnpdea.github.io/icons/favicon.ico">
-        <meta name="description" content="使用Hugo&amp;GitHub构建个人博客静态网站;Hugo是一个多用途的网站框架;Hugo是一个静态网站生成器;安装Hugo;选择GitHub Pages;结合GitHub Pages搭建个人博客静态网站Step by Step;创建两个GitHub仓库;创建一个Hugo的新站点项目;选择模板;编辑配置信息;新建文章;实时预览;建立生成静态文件的代码目录;生成静态站点并发布;设置自己域名的站点">
-        <title>利用 Hugo &amp; GitHub 搭建个人博客静态网站_oubnpdea Blog</title>
+        <meta name="description" content="﻿ hugo-install-blog &#43;&#43;&#43; date = &#34;2016-03-12T19:20:41&#34; title = &#34;利用Hugo搭建博客系统&#34; tags = [&#34;Hugo&#34;] description = &#34;使用Hugo&amp;GitHub构建个人博客静态网站;Hugo是一个多用途的网站框架;Hugo是一个静态网站生成器;安装Hugo;选择GitHub Pages;结合GitHub Pages搭建个人博客静态网站Step by Step;创建两个GitHub仓库;创建一个Hugo的新站点项目;选择模板;编辑配置信息;新建文章;实时预览;建立生成静态文件的代码目录;生成静态站点并发布;设置自己域名的站点&#34; &#43;&#43;&#43; 选择的两种静态网页博客系统比较 Octopress Octopress 是一款基于Jekyll 的静态站点生成系统,使用ruby编写的，使用这个博客系统需要对ruby语言有一定的掌握。因为自己也学习过ruby，而且现在有个朋友正在使用octopress 2.x作为他的博客系统，所以这次的首选是octopress，但是安装过程稍显复杂，目前octopress 3.x版本的安装相关说明基本上没有，加上很多人抱怨octopress的在post数量超过一定数量后，每次生成页面的速度很慢，综合考虑后放弃octopress。 Hugo 利用Go语言编写的静态站点生成系统，从速度上来说Hugo完胜，网上对octopress的速度很多人不满，150个post的情况下，octopress生成网页的速度大概需要40秒，而hugo不到一秒就完成页面的生成了，因此也有不少人从octopress换到Hugo，与其到时候更换，还不如从刚开始就选择Hugo，所以最终决定使用Hogo。目前来说只有一个post的情况下，速度方面有多少优势目前还不得知，但是目前来说，速度，发布方式各个方面还是比较满意。 Hugo的安装 安装环境 OS: OS X Yosemite 10.10.4 Ruby: ruby 2.2.2p95 Homebrew: 0.9.5 因为已经安装过Homebrew了，所以最简单的办法就是利用Homebrew安装 如果未安装过Homebrew，可以按照Homebrew官网的指示进行安装(注意：安装Homebrew之前需要安装Ruby) brew install Hugo 如果没有安装过Homebrew，不想折腾安装Homebrew，可以直接从https://github.com/spf13/hugo/releases下载最新的binary版本。 安装后，执行下面的命令 hugo version 如果命令能够正确执行并输出安装的hugo版本表示安装成功，接着就可以利用Hugo生成site。 博客site的生成 生成site hugo new site &lt;path&gt; 此命令的目的在path生成site的scaffolding，生成的的文件结构如下 |- archetypes |- content |- data |- layouts |- static |- config.toml">
+        <title>_oubnpdea Blog</title>
         
           
         <style>
@@ -682,190 +682,209 @@ footer a:hover
 
 <article class="post">
     <div class="post-stamp">
-        <time datetime="2015-12-01T12:55:48&#43;08:00">
-            1 Dec 2015
+        <time datetime="0001-01-01T00:00:00Z">
+            1 Jan 0001
         </time>
         <span class="taglist">
         
-        &middot; 
-            
-                <a href="http://oubnpdea.github.io/tags/hugo/">Hugo</a>
-            
-        
         </span>
     </div>
-    <h1 class="post-title">利用 Hugo &amp; GitHub 搭建个人博客静态网站</h1>
-    
+    <h1 class="post-title"></h1>
+    ﻿<!doctype html public '-//W3C//DTD HTML 4.0 Transitional //EN'>
+<html>
+<head>
+<title>hugo-install-blog</title>
+<meta charset='UTF-8' />
+<meta name='generator' content='EverEdit' />
+<link href='C:\SoftInsWin7V64\everedit\mode\markdown\default.css' rel='stylesheet'></link>
+<link href='C:\SoftInsWin7V64\everedit\mode\markdown\prettify.css' rel='stylesheet'></link>
+<script type='text/javascript' src='C:\SoftInsWin7V64\everedit\mode\markdown\prettify.js'></script>
+<script type='text/javascript' src='C:\SoftInsWin7V64\everedit\mode\markdown\jquery-1.10.2.min.js'></script>
+<script type='text/javascript' src='C:\SoftInsWin7V64\everedit\mode\markdown\toc.js'></script>
+</head>
+<body>
+<div id='generated-toc'></div>
+<p>+++
+date = "2016-03-12T19:20:41"
+title = "利用Hugo搭建博客系统"
+tags = ["Hugo"]
+description = "使用Hugo&amp;GitHub构建个人博客静态网站;Hugo是一个多用途的网站框架;Hugo是一个静态网站生成器;安装Hugo;选择GitHub Pages;结合GitHub Pages搭建个人博客静态网站Step by Step;创建两个GitHub仓库;创建一个Hugo的新站点项目;选择模板;编辑配置信息;新建文章;实时预览;建立生成静态文件的代码目录;生成静态站点并发布;设置自己域名的站点"
++++</p>
 
-<p><a href="http://gohugo.io/">Hugo</a> 是一个多用途的网站框架，准确地说，Hugo 是一个静态网站生成器。这意味它不像是 Wordpress、Ghost 以及 Drupal 那样需要运行在其依赖环境的服务器上，也不需要不断的去维护它。Hugo 可以让我们更加专注于撰写自己喜欢的博客，不会因为复杂的操作管理功能浪费我们更多的时间（没错我就是在黑 Wordpress）。</p>
-
-<p>Hugo 生成静态网站的速度相对于 Jekyll 以及 Hexo 来说几乎是瞬间即可完成。而生成的静态代码可以安全地托管到任何地方，例如 Heroku，GoDaddy，DreamHost，GitHub Pages，Google Cloud Storage，Amazon S3 and CloudFront, 以及运行良好的 CDN 。</p>
-
-<p>最 6 的就是 Hugo 拥有一个 watch 的编写调试模式，可以在我们编辑修改文章时，通过检测变更自动完成构建网站并刷新浏览器等操作，实现了实时预览的炒鸡好用的功能。Hugo 是由 Go 编写的静态网站构建工具，使用 MarkDown 作为其文本语法，这等种种优势让我不得不选择 Hugo 作为我的博客网站生成器。</p>
-
-<h2 id="安装-hugo:c9eed481fd05f69ed1cb75c5891de126">安装 Hugo</h2>
-
-<p>对于 Mac 用户来说安装简单的不行，只要已经安装了 <a href="http://brew.sh/">Homebrew</a> 以及 <a href="https://golang.org/">Go</a> 即可。</p>
-
-<pre><code>$ brew install hugo
-</code></pre>
-
-<p>其他的系统的安装可查看<a href="http://gohugo.io/overview/installing/">官网</a>。</p>
-
-<h2 id="选择-github-pages:c9eed481fd05f69ed1cb75c5891de126">选择 GitHub Pages</h2>
-
-<p><a href="https://pages.github.com/">GitHub Pages</a> 是 GitHub 提供的一个免费的静态站点。（当然其他的也可以，比如国内的 <a href="https://gitcafe.com/">GitCafe</a>）</p>
-
-<p>其中 GitHub Pages 提供两种模式：</p>
-
-<ol>
-<li>个人用户或企业站点 （User or organization site）</li>
-<li>项目站点 （Project site）</li>
-</ol>
-
-<p>由于我们使用 GitHub Pages 作为个人博客站点，就是选用第一种模式。而其有几个要求限制：</p>
-
-<ol>
-<li>每个 GitHub 用户只能创建一个且项目名称必须为 [your-github-account].github.io</li>
-<li>master 分支内容被用于构建和发布页面</li>
-<li>访问的 URL 为 http://[your-github-account].github.io/</li>
-</ol>
-
-<h2 id="结合-github-pages-搭建个人博客静态网站-step-by-step:c9eed481fd05f69ed1cb75c5891de126">结合 GitHub Pages 搭建个人博客静态网站 Step by Step</h2>
-
-<h6 id="1-创建两个-github-仓库:c9eed481fd05f69ed1cb75c5891de126">1. 创建两个 GitHub 仓库</h6>
+<p><strong>选择的两种静态网页博客系统比较</strong></p>
 
 <ul>
-<li>Hugo 结构代码的代码仓库       [your-github-account]-hugo</li>
-<li>Hugo 生成静态文件的代码仓库   [your-github-account].github.io</li>
+<li><p><strong>Octopress</strong></p>
+
+<blockquote>
+  <p>Octopress 是一款基于Jekyll 的静态站点生成系统,使用ruby编写的，使用这个博客系统需要对ruby语言有一定的掌握。因为自己也学习过ruby，而且现在有个朋友正在使用octopress 2.x作为他的博客系统，所以这次的首选是octopress，但是安装过程稍显复杂，目前octopress 3.x版本的安装相关说明基本上没有，加上很多人抱怨octopress的在post数量超过一定数量后，每次生成页面的速度很慢，综合考虑后放弃octopress。</p>
+</blockquote></li>
+<li><p><strong>Hugo</strong></p>
+
+<blockquote>
+  <p>利用Go语言编写的静态站点生成系统，从速度上来说Hugo完胜，网上对octopress的速度很多人不满，150个post的情况下，octopress生成网页的速度大概需要40秒，而hugo不到一秒就完成页面的生成了，因此也有不少人从octopress换到Hugo，与其到时候更换，还不如从刚开始就选择Hugo，所以最终决定使用Hogo。目前来说只有一个post的情况下，速度方面有多少优势目前还不得知，但是目前来说，速度，发布方式各个方面还是比较满意。</p>
+</blockquote></li>
 </ul>
 
-<h6 id="2-创建一个-hugo-的新站点项目:c9eed481fd05f69ed1cb75c5891de126">2. 创建一个 Hugo 的新站点项目</h6>
+<p><strong>Hugo的安装</strong></p>
 
-<pre><code>$ hugo new site [your-github-account]-hugo
-$ cd [your-github-account]-hugo
-$ git init
-$ echo .DS_Store &gt;&gt; .gitignore
-$ git remote add origin git@github.com:[your-github-account]/[your-github-account]-hugo.git
+<p>安装环境</p>
+
+<blockquote>
+  <p>OS: OS X Yosemite 10.10.4 <br>
+  Ruby: ruby 2.2.2p95 <br>
+  Homebrew: 0.9.5  </p>
+</blockquote>
+
+<p>因为已经安装过Homebrew了，所以最简单的办法就是利用Homebrew安装</p>
+
+<blockquote>
+  <p>如果未安装过Homebrew，可以按照<a href="http://brew.sh/">Homebrew官网</a>的指示进行安装(注意：安装Homebrew之前需要安装<a href="https://www.ruby-lang.org/">Ruby</a>)</p>
+</blockquote>
+
+<pre><code>brew install Hugo
 </code></pre>
 
-<p>命令很简单，用于构建 Hugo 站点项目。</p>
+<p>如果没有安装过Homebrew，不想折腾安装Homebrew，可以直接从<a href="https://github.com/spf13/hugo/releases">https://github.com/spf13/hugo/releases</a>下载最新的binary版本。</p>
 
-<h6 id="3-选择模板:c9eed481fd05f69ed1cb75c5891de126">3. 选择模板</h6>
+<p>安装后，执行下面的命令</p>
 
-<p>Hugo 提供了一个官方收录的模板列表 <a href="https://github.com/spf13/hugoThemes">hugoThemes</a>，从中选择你喜欢的一个作为你的模板。</p>
-
-<pre><code>$ git submodule add git@github.com:Zenithar/hugo-theme-crisp.git themes/crisp
+<pre><code>hugo version
 </code></pre>
 
-<h6 id="4-编辑配置信息:c9eed481fd05f69ed1cb75c5891de126">4. 编辑配置信息</h6>
+<p>如果命令能够正确执行并输出安装的hugo版本表示安装成功，接着就可以利用Hugo生成site。 <br>
+<strong>博客site的生成</strong></p>
 
-<p>针对 Crisp 设置对应配置信息</p>
+<p>生成site</p>
 
-<pre><code>baseurl = &quot;http://blog.bpcoder.com/&quot;
-languageCode = &quot;zh-cn&quot;
-title = &quot;BPCoder&quot;
-paginate = 8
-theme = &quot;crisp&quot;
-[params]
-    description = &quot;积累分享，愉快生活&quot;
-    email = &quot;mingyangcoder@163.com&quot;
-    hostname = &quot;blog.bpcoder.com&quot;
-[permalinks]
-    post = &quot;/:year/:title/&quot;
-    addendum = &quot;/addendum/:year/:title/&quot;
+<pre><code>hugo new site &lt;path&gt;
 </code></pre>
 
-<h6 id="5-新建文章:c9eed481fd05f69ed1cb75c5891de126">5. 新建文章</h6>
+<p>此命令的目的在path生成site的scaffolding，生成的的文件结构如下</p>
 
-<pre><code>$ hugo new posts/hugo-create-blog.md
+<blockquote>
+  <p>|- archetypes <br>
+  |- content <br>
+  |- data <br>
+  |- layouts <br>
+  |- static <br>
+  |- config.toml  </p>
+</blockquote>
+
+<p>进入path目录，接下来，安装主题(themes)</p>
+
+<pre><code>git clone --recursive https://github.com/spf13/hugoThemes themes
 </code></pre>
 
-<p>编辑 content/posts/hugo-create-blog.md 的内容即可，使用 MarkDown 语法。</p>
+<p>这个将从github下载所有的Hugo主题，大小大概有230M左右，下载完成需要等待一段时间。 themes下载完后，修改config.toml的配置</p>
 
-<pre><code>+++
-date = &quot;2015-12-01T12:55:48+08:00&quot;
-title = &quot;利用 Hugo &amp; GitHub 搭建个人博客静态网站&quot;
-tags = [&quot;Hugo&quot;]
-+++
-......
+<blockquote>
+  <p>baseUrl= "<a href="http://kevensya.github.io/">http://kevensya.github.io/</a>" -- 发布时的博客url <br>
+  languageCode = "zh-cn" -- 语言（目前还没有发现有什么特殊的作用） <br>
+  title = "苦X工程师" -- 博客标题 <br>
+  theme = "greyshade" -- 主题名 <br>
+  Paginate = 10 -- 分页大小  </p>
+  
+  <p>[author] <br>
+  name = "kevenxia" <br>
+  email = "xxxx@mail.com"  </p>
+  
+  <p>[params] <br>
+    githubName = "kevensya" <br>
+    description = "Java,VC++,C++,ObjC,C#使用中" -- 博客的描述 <br>
+    disqusShortname = "crazykeven" <br>
+    github_user = "kevensya" <br>
+    excerpt_link = "[阅读全文]" -- 博客首页显示博客概要时代替Read More的文本  </p>
+</blockquote>
+
+<p>每个主题的配置方法都稍微有些不一样，需要研究主题的layout以及官方关于<a href="http://gohugo.io/templates/overview/">Template的说明</a>进行配置，我这里使用的是<a href="https://github.com/cxfksword/greyshade">greyshade主题</a>。</p>
+
+<p>配置好后，可以生成一个post测试一下。</p>
+
+<pre><code>hugo new post/welcome.md
 </code></pre>
 
-<h6 id="6-实时预览:c9eed481fd05f69ed1cb75c5891de126">6. 实时预览</h6>
+<p>进入content/目录，多了一个post目录，post目录下多了一个welcome.md文件。</p>
 
-<pre><code>$ hugo server -w
-0 draft content
-0 future content
-1 pages created
-3 paginator pages created
-1 tags created
-0 categories created
-in 20 ms
-Watching for changes in /Users/BPCoder/git/MingYangCoder-hugo/{data,content,layouts,static,themes}
-Serving pages from memory
-Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
-Press Ctrl+C to stop
+<p>启动本地预览服务器</p>
+
+<pre><code>hugo server -w
 </code></pre>
 
-<p>这个时候根据提示访问 <a href="http://localhost:1313/">http://localhost:1313/</a> 进行预览。这时修改博客文档包括样式文件均可实时查看，配置文件为特例。</p>
+<p>这里加上了-w option，这样编写的博客或者layout有变化后能实时反映到web页面上，不用每次重新启动服务器（但是修改了config.toml文件就必须重新启动服务器后修改才能得到反映）。</p>
 
-<h6 id="7-建立生成静态文件的代码目录:c9eed481fd05f69ed1cb75c5891de126">7. 建立生成静态文件的代码目录</h6>
+<p>在浏览器输入 <a href="http://localhost:1313">http://localhost:1313</a> 就可以看到博客的首页了,首页上显示了刚才生成的welcome的博客。 <br>
+<strong>发布到Github</strong></p>
 
-<pre><code>$ rm -rf public
-$ git submodule add git@github.com:[your-github-account]/[your-github-account].github.io.git public
+<p>每个github账号可以发布一个个人页面的站点（Github pages），我就利用这次这个功能发布hugo生成的静态页面。首先在github建立一个repository，这个repository的名字必须是下面两种格式。</p>
+
+<blockquote>
+  <p>github账户名.github.com <br>
+  github账户名.github.io</p>
+</blockquote>
+
+<p><img src="/img/Create-a-New-Repository.png" alt="Create-a-New-Repository" title="" /></p>
+
+<p><strong>创建repository</strong></p>
+
+<p>创建完repository后，暂时回到本地进行操作</p>
+
+<pre><code>hugo -t greyshade
 </code></pre>
 
-<h6 id="8-生成静态站点并发布:c9eed481fd05f69ed1cb75c5891de126">8. 生成静态站点并发布</h6>
+<p>利用主题greyshade生成静态html页面，所有的静态页面都在public/中。</p>
 
-<pre><code>$ hugo
-$ cd public
-$ git add -A &amp;&amp; git commit -m &quot;first post&quot;
-$ git push origin master
-$ cd ..
-$ git add -A &amp;&amp; git commit -m &quot;init hugo coder&quot;
-$ git push origin master
+<p>进入public目录，创建本地git仓库</p>
+
+<pre><code>git init
 </code></pre>
 
-<p>这是访问你的 http://[your-github-account].github.io/ 站点网址即可查看。</p>
+<p>将.DS_Store文件添加到忽略列表中（.DS_Store是OSX的系统文件）</p>
 
-<h6 id="9-可选-设置自己域名的站点:c9eed481fd05f69ed1cb75c5891de126">9. 【可选】设置自己域名的站点</h6>
-
-<pre><code>$ cd public
-$ echo [your.domain.name] &gt;&gt; CNAME
-$ git add -A &amp;&amp; git commit -m &quot;add CNAME file&quot;
-$ git push origin master
+<pre><code>echo ".DS_Store" &gt;&gt; .gitignore
 </code></pre>
 
-<p>然后到你的域名管理界面配置对应CNAME记录类型即可</p>
+<p>执行下面的命令将生成的页面添加到git仓库</p>
 
-<h2 id="补充内容:c9eed481fd05f69ed1cb75c5891de126">补充内容</h2>
+<pre><code>git add -A
+git commit -m "Initial commit"
+</code></pre>
 
-<p><font style="font-weight: 700;text-decoration: none;color: #e74c3c;">（2015-12-10 更新）</font>通过一段时间的使用，感觉 GitHub Pages 提供的服务实在不稳定，访问速度也比较慢，特别影响体验。通过了解发现国内的 GitCafe 同样提供 Pages 服务，所以尝试使用一下，发现明显提高不少。可通过<a href="https://gitcafe.com/GitCafe/Help/wiki/Pages-%E7%9B%B8%E5%85%B3%E5%B8%AE%E5%8A%A9">官方文档</a> 一步一步全新配置。</p>
+<p>将github仓库添加到本地仓库的远程服务器中</p>
 
-<h6 id="简单整理迁移方案:c9eed481fd05f69ed1cb75c5891de126">简单整理迁移方案：</h6>
+<pre><code>git remote add origin https://github.com/kevensya/kevensya.github.io.git
+</code></pre>
 
-<ul>
-<li>在 GitCafe 创建与用户名相同的项目，并创建分支 gitcafe-pages 用于发布。</li>
-<li>对现有静态文件的代码目录（public），添加上面新建的 remote。</li>
-<li>然后就是提交时，提交到 gitcafe-pages 分支下即可，这时候访问 http://[your-gitcafe-account].gitcafe.io/ 就可以访问了。</li>
-<li>至于域名设置，GitCafe 比 GitHub 好一些提供一个界面化管理页面，添加支持域名，无需 CNAME 文件。</li>
-<li>最后和 GitHub 设置域名解析的方式一下，在域名管理界面配置对应的 CNAME 记录类型即可。</li>
-</ul>
+<p>将本地仓库推送到github</p>
 
-<p><font style="font-weight: 700;text-decoration: none;color: #e74c3c;">（2015-12-10 更新）</font>由于博客内容会存在一些图片或者比较大的js文件，推荐存储在国内<a href="https://portal.qiniu.com/signup?code=3le4lzknkl2z6">七牛云存储</a>上，稳定速度快。</p>
+<pre><code>git push -u origin master
+</code></pre>
 
-<p><font style="font-weight: 700;text-decoration: none;color: #e74c3c;">（2015-12-13 更新）</font>又迁回 GitHub，虽然有时候 GitHub 有点慢，但是贵在稳定啊！经历一次 GitCafe Pages 停止服务的情况，没办法又迁回 GitHub，希望国内能有一个稳定的 Pages 服务。</p>
+<p>这样就能通过 kevensya.github.io 来访问博客了，如果博客有更新，可以利用下面的命令再次push到github。</p>
 
-<h2 id="参考资料:c9eed481fd05f69ed1cb75c5891de126">参考资料</h2>
+<pre><code>hugo -t greyshade
+git add -A
+git commit -m "Update public files"
+git push
+</code></pre>
 
-<ul>
-<li><p><a href="http://kaichu.io/2015/07/my-first-post/">在 Github Pages 建立 Hugo 靜態網站</a></p></li>
+<p><strong>参考文档</strong></p>
 
-<li><p><a href="http://blog.coderzh.com/2015/08/29/hugo/">使用hugo搭建个人博客站点</a></p></li>
-
-<li><p><a href="http://sa.muel.be/tags/hugo/">Hugo · Samuel Debruyn</a></p></li>
-</ul>
-
+<blockquote>
+  <p>Hugo官方文档：<a href="http://gohugo.io/overview/introduction/">http://gohugo.io/overview/introduction/</a></p>
+  
+  <p>Hugo静态网站生成器中文教程：<a href="http://nanshu.wang/post/2015-01-31/">http://nanshu.wang/post/2015-01-31/</a></p>
+</blockquote>
+<script type='text/javascript'>
+$(document).ready(function(){
+  if($('code').length>0){
+    $('code').parent().addClass('prettyprint linenums');
+    prettyPrint();
+};
+});
+</script>
+</body>
+</html>
     
 
     <div id="disqus_thread"></div>
