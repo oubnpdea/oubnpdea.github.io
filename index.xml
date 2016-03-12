@@ -787,7 +787,7 @@ $(document).ready(function(){
       <description>&lt;gcse:searchresults-only linktarget=&#34;_parent&#34;&gt;&lt;/gcse:searchresults-only&gt;
 &lt;script&gt;
       (function() {
-        var cx = &#39;005313549283914002768:xsmmjjsbaui&#39;;
+        var cx = &#39;:&#39;;
         var gcse = document.createElement(&#39;script&#39;);
         gcse.type = &#39;text/javascript&#39;;
         gcse.async = true;
