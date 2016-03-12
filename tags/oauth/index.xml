@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oauth on 345345345 Blog</title>
+    <link>http://oubnpdea.github.io/tags/oauth/</link>
+    <description>Recent content in Oauth on 345345345 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
+    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <lastBuildDate>Sat, 02 Jan 2016 15:33:09 +0800</lastBuildDate>
+    <atom:link href="http://oubnpdea.github.io/tags/oauth/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>OAuth 2.0 Authorization Framework 文档（一）</title>
+      <link>http://oubnpdea.github.io/2016/01/oauth2-1/</link>
+      <pubDate>Sat, 02 Jan 2016 15:33:09 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/01/oauth2-1/</guid>
+      <description>
+
+&lt;p&gt;最近因为接手一个开放平台的项目，因为其中涉及到 &lt;a href=&#34;http://oauth.net/2/&#34;&gt;OAuth 2.0&lt;/a&gt; 的功能，对于 Server 端的功能并不是很完善。
+虽然之前做过 Client 端的开发，对于 OAuth 2.0 协议下的 Server 并不是很了解，也就借着这个机会完整学习一下。
+不过因为之前看英文文档不多，着实有点吃力，不过看完后，感觉还是做一个笔记，也能帮助认知，加深理解。（下面为个人做的官方 &lt;a href=&#34;http://tools.ietf.org/html/rfc6749&#34;&gt;RFC 6749&lt;/a&gt; 的翻译，如果有翻译不当的地方，欢迎批评指正。）&lt;/p&gt;
+
+&lt;h2 id=&#34;摘要:dd7f59640e19f800a811f4b09c994d04&#34;&gt;摘要&lt;/h2&gt;
+
+&lt;p&gt;OAuth 2.0 授权框架能够提供一个让第三方应用拥有一定访问限制的 HTTP 服务。
+无论是资源拥有者（Resource Owner）与 HTTP 服务之间精心设计地交互，还是通过被资源拥有者（Resource Owner）授权的第三方应用地访问。
+本规范将取代并淘汰在 RFC 5849 所描述的 OAuth 1.0 协议。&lt;/p&gt;
+
+&lt;h2 id=&#34;简介:dd7f59640e19f800a811f4b09c994d04&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;在传统的 客户端-服务器 认证模型中，客户端通过服务器对其资源拥有者（Resource Owner）资格验证的方式，获取在服务器上的访问受限的资源（受保护的资源）。
+为了使第三方应用访问受限制资源，需要资源拥有者（Resource Owner）将操作资格授权给第三方应用。不过这样就带来了一些问题和限制：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;第三方应用为了后续的使用，会需要保存下来资源拥有者（Resource Owner）的认证信息，通常情况下是明文的密码。&lt;/li&gt;
+&lt;li&gt;服务器需要提供密码校验服务，尽管在密码上存在着安全隐患。&lt;/li&gt;
+&lt;li&gt;第三方应用拥有过多地访问资源拥有者（Resource Owner）受保护资源的权限，资源拥有者（Resource Owner）失去任何对于失效时间或者受保护资源访问范围的限制能力。&lt;/li&gt;
+&lt;li&gt;资源拥有者（Resource Owner）无法在不撤销所有第三方应用权限的前提下，单独撤销一个第三方应用。而且只能通过修改第三方所拥有的密码的方式来达到撤销的目的。&lt;/li&gt;
+&lt;li&gt;任何第三方应用遭到破解将导致最终用户密码被破解，而所有的数据却都是通过密码来保护的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;OAuth 通过引入资格认证层和从资源拥有者（Resource Owner）分割出不同客户端角色来解决这些问题。
+在 OAuth 中，客户端请求访问被资源拥有者（Resource Owner）控制并由资源服务器（Resource Server）响应，客户端也会获得一组不同于资源拥有者（Resource Owner）的资格认证信息。&lt;/p&gt;
+
+&lt;p&gt;为了替代通过使用资源拥有者（Resource Owner）的权限方式访问受保护的资源，客户端需要获取一个访问令牌（Access Token）&amp;mdash;- 一个表示具体范围、生命周期以及其他访问属性的字符串。
+访问令牌（Access Token）通过一个授权服务器（Authorization Server）在资源拥有者（Resource Owner）认可的情况下派发给第三方客户端。
+第三方客户端通过使用访问令牌（Access Token）访问在资源服务器（Resource Server）上的受保护资源。&lt;/p&gt;
+
+&lt;p&gt;举一个例子，一个最终用户（资源拥有者）可以授权一个打印服务（客户端）访问其存放在图片分享服务（资源服务器）上的受保护的图片，
+而不需要分享给打印服务其用户名和密码。
+最终用户通过直接与图片分享服务信任的服务器（认证服务器）进行认证，然后由认证服务器分发一个特殊范围的认证信息（访问令牌）。&lt;/p&gt;
+
+&lt;p&gt;该标准规范是为使用 HTTP（&lt;a href=&#34;http://tools.ietf.org/html/rfc2616&#34;&gt;RFC2616&lt;/a&gt;） 协议设计的，通过 HTTP 之外的其他协议使用 OAuth 均超出本规范范围。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-1-角色:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.1 角色&lt;/h2&gt;
+
+&lt;p&gt;OAuth 定义的四个角色：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;资源拥有者（Resource Owner）&lt;/p&gt;
+
+&lt;p&gt;一个有能力授权访问受保护资源的实体。当资源拥有者是一个人时，被成为最终用户。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;资源服务器（Resource Server）&lt;/p&gt;
+
+&lt;p&gt;存放受保护资源的服务器，其有能力通过使用访问令牌的前提下接受和回应受保护资源的请求。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;客户端（Client）&lt;/p&gt;
+
+&lt;p&gt;一个通过请求资源拥有者并获得授权代表操作受保护资源的应用。“Client” 一词并不指任何特定的实现特征（无论应用运行在服务器上，桌面电脑上，还是其他设备上都可以）&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;认证服务器（Authorization Server）&lt;/p&gt;
+
+&lt;p&gt;在成功获得资源拥有者授权后，分发给对应客户端访问令牌的服务器。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;认证服务器与资源服务器之间的交互的具体细节超出本规范的说明范围。
+认证服务器可能和资源服务器在同一台服务器实体中，也可能分开在不同服务器实体上。
+一个单独的认证服务器可能分发访问令牌供多台资源服务器接受。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-2-协议流:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.2 协议流&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/oauth2-1-1.jpg&#34; alt=&#34;抽象协议流&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图阐述了四个角色之间的交互，包括流程步骤：&lt;/p&gt;
+
+&lt;p&gt;A)  客户端向资源拥有者请求认证。认证请求可以直接发送给资源拥有者，或者最好间接的通过认证服务器作为媒介。&lt;/p&gt;
+
+&lt;p&gt;B)  客户端接收到一个相当于代表资源拥有者授权的凭证（Authorization Grant），该凭证使用本规范定义四种授权类型之一或者其扩展授权类型。
+该授权类型取决于客户端请求授权的方法和认证服务器支持的授权类型。&lt;/p&gt;
+
+&lt;p&gt;C)  客户端通过认证服务器认证并出示授权凭证（Authorization Grant）请求一个访问令牌。&lt;/p&gt;
+
+&lt;p&gt;D)  认证服务器认证客户端并验证授权凭证（Authorization Grant），如果有效，发放一个访问令牌。&lt;/p&gt;
+
+&lt;p&gt;E)  客户端通过出示访问令牌请求资源服务器上的受保护的资源。&lt;/p&gt;
+
+&lt;p&gt;F)  资源服务器验证访问令牌，如果有效，处理服务。&lt;/p&gt;
+
+&lt;p&gt;客户端从资源拥有者获取授权凭证时，使用认证服务器作为媒介是最好的方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-3-认证授权-authorization-grant:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.3 认证授权（Authorization Grant）&lt;/h2&gt;
+
+&lt;p&gt;认证授权是一个代表资源拥有者的凭证（访问受保护资源），其用于客户端获取访问令牌。
+本规范定义了 4 种授权类型 &amp;mdash;- 授权码类型（authorization code），简化类型（implicit），
+资源拥有者密码资格类型（resource owner password credentials），以及客户端资格类型（client credentials），以及扩展机制额外的类型。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-3-1-授权码类型-authorization-code:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.3.1 授权码类型（Authorization Code）&lt;/h2&gt;
+
+&lt;p&gt;授权码是通过认证服务器获取，该过程中认证服务器作为客户端和资源拥有者之间的中间媒介，代替了直接请求资源拥有者获得方式。
+客户端引导资源拥有者到认证服务器（通过 &lt;a href=&#34;http://tools.ietf.org/html/rfc2616&#34;&gt;RFC2616&lt;/a&gt; 定义的用户代理），认证服务器会反向携带授权码返回该客户端。&lt;/p&gt;
+
+&lt;p&gt;在认证服务器会反向携带授权码返回该客户端之前，认证服务器需要验证资源拥有者身份并获取授权。因为资源拥有者只会授权认证服务器，资源拥有者的认证信息永远不会分享给客户端。&lt;/p&gt;
+
+&lt;p&gt;授权码提供了一些安全优势，例如有能力授权客户端，以及直接传送访问令牌而不需要通过资源拥有者的用户代理，也防止暴露给其他人包括资源拥有者本人。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-3-2-简化类型-implicit:dd7f59640e19f800a811f4b09c994d04&#34;&gt;1.3.2 简化类型（implicit）&lt;/h2&gt;
+
+&lt;p&gt;简化类型可以认为是一个简化的授权码类型，为实现在浏览器中使用像 JavaScript 的脚本语言而优化的类型。
+在简化授权码类型中，不再分发给客户端授权码，客户端被直接分发一个访问令牌（作为资源拥有者的认证）。在该流程中，没有中间认证信息（例如授权码）被分发（也就不存在使用授权码获取访问令牌的流程）。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

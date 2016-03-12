@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Php on 345345345 Blog</title>
+    <link>http://oubnpdea.github.io/tags/php/</link>
+    <description>Recent content in Php on 345345345 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
+    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <lastBuildDate>Tue, 23 Feb 2016 17:36:00 +0800</lastBuildDate>
+    <atom:link href="http://oubnpdea.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PHP 项目关于开发，测试，生产环境配置文件的解决方案</title>
+      <link>http://oubnpdea.github.io/2016/02/php-config/</link>
+      <pubDate>Tue, 23 Feb 2016 17:36:00 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/02/php-config/</guid>
+      <description>
+
+&lt;p&gt;对于大部分做过 PHP 项目的人来说，如何处理开发，测试，生产环境配置文件的设置，甚至如何处理对于生产环境强权限校验导致开发中功能测的不便尤为重要。
+我也接手及维护过很多这样类型的项目，对于那些没有处理好这方面问题的项目，开发测试过程中，简直是恶梦。
+当然也看到过很多做的好的项目，故这次进行一下总结分析。&lt;/p&gt;
+
+&lt;h3 id=&#34;如何判断配置设计方案好坏呢:04c78871de61d2016fc52b670aee642f&#34;&gt;如何判断配置设计方案好坏呢？&lt;/h3&gt;
+
+&lt;p&gt;我认为配置方案至少要解决几个必要问题：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;搭建任何（开发，测试，生产）运行环境很方便。&lt;/li&gt;
+&lt;li&gt;维护配置文件清晰，不会导致开发人员错误提交导致配置文件异常。&lt;/li&gt;
+&lt;li&gt;由于有众多开发人员，导致各个开发环境配置文件不一致，该方案应该妥善解决该问题。&lt;/li&gt;
+&lt;li&gt;配置文件应同样进入版本控制中，防止仅通过运维同学单独手动上传出现的不可控异常情况。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;抛砖引玉:04c78871de61d2016fc52b670aee642f&#34;&gt;抛砖引玉&lt;/h3&gt;
+
+&lt;p&gt;因为希望所有代码均通过版本控制包括配置信息，便于不了解业务代码的运维同学仍然能使用常规持续交付方式上线部署。
+所以我选择在运行环境入手，让不同环境通过获取 php.ini 文件中的某些配置参数判断当前环境，选择不同的配置文件，甚至选择不同的绕过逻辑。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在 php.ini 中添加自定义参数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[BPCODERENV]
+;bpcoder.env = &amp;quot;Dev|Test&amp;quot;
+bpcoder.env = &amp;quot;Dev&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;在项目读取配置文件入口处，使用内置函数 get_cfg_var() 获取 bpcoder.env 配置。判断情况为读取参数为 Dev 为开发环境则加载测试环境的配置文件，Test 为测试环境则加载测试环境的配置文件，如果获取不到则加载生产环境配置文件。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;switch(get_cfg_var(&amp;quot;bpcoder.env&amp;quot;))
+{
+    case &amp;quot;Dev&amp;quot;:
+        include &amp;quot;config.dev.php&amp;quot;;
+        break;
+    case &amp;quot;Test&amp;quot;:
+        include &amp;quot;config.test.php&amp;quot;;
+        break;
+    default:
+        include &amp;quot;config.php&amp;quot;;
+        break;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中 config.php 和 config.test.php 由版本控制，这样对于测试环境和生产环境的上线部署就变得很容易，而开发环境不同开发人员仅需部署时复制一个config.php文件为config.dev.php文件即可，并根据个人情况修改 config.dev.php 即可。谨慎做法将 config.dev.php 文件设置为版本控制忽略的文件，防止开发人员手误错误提交。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;建议将配置文件及功能框架代码分为两个版本控制，配置文件由专人管理维护。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;进一步帮助，在一些特殊情况如开发中需要所有接口有强权限校验，而在开发测试中不能方便的进行单元测试时，可以一样通过 get_cfg_var() 实现开发环境绕过，提高开发测试效率。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;总结:04c78871de61d2016fc52b670aee642f&#34;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;本文只是个人对于常见出现配置文件异常情况尝试的个人解决方案，也在部分项目中尝试使用。当然如果有更好的方案也会继续分享出来，也希望其他人有好的方案也分享出来大家学习。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHP 读写 Excel 文件</title>
+      <link>http://oubnpdea.github.io/2016/02/php-execl/</link>
+      <pubDate>Thu, 04 Feb 2016 14:20:51 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/02/php-execl/</guid>
+      <description>
+
+&lt;p&gt;在部分类似报表相关的业务中，涉及到报表数据导出或导入 Excel 文件的场景。这篇博客总结并推荐一个开源项目来解决这类问题 &amp;mdash; &lt;a href=&#34;https://github.com/PHPOffice/PHPExcel&#34;&gt;PHPExcel&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;PHPExcel 是一个完全有 PHP 代码编写的类库。它提供了一系列类来实现读写不同格式电子表格文件，它支持 Excel (BIFF) .xls, Excel 2007 (OfficeOpenXML) .xlsx, CSV, Libre/OpenOffice Calc .ods, Gnumeric, PDF, HTML 等等。&lt;/p&gt;
+
+&lt;h2 id=&#34;phpexcel-具体支持的文件格式:74a1a2077a411f0f128d238982b77be8&#34;&gt;PHPExcel 具体支持的文件格式&lt;/h2&gt;
+
+&lt;h4 id=&#34;读方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;读方式&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BIFF 5-8 (.xls) Excel 95 and above&lt;/li&gt;
+&lt;li&gt;Office Open XML (.xlsx) Excel 2007 and above&lt;/li&gt;
+&lt;li&gt;SpreadsheetML (.xml) Excel 2003&lt;/li&gt;
+&lt;li&gt;Open Document Format/OASIS (.ods)&lt;/li&gt;
+&lt;li&gt;Gnumeric&lt;/li&gt;
+&lt;li&gt;HTML&lt;/li&gt;
+&lt;li&gt;SYLK&lt;/li&gt;
+&lt;li&gt;CSV&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;写方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;写方式&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BIFF 8 (.xls) Excel 95 and above&lt;/li&gt;
+&lt;li&gt;Office Open XML (.xlsx) Excel 2007 and above&lt;/li&gt;
+&lt;li&gt;HTML&lt;/li&gt;
+&lt;li&gt;CSV&lt;/li&gt;
+&lt;li&gt;PDF (需要使用 tcPDF、DomPDF 或者 mPDF 类库实现)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;使用前提依赖:74a1a2077a411f0f128d238982b77be8&#34;&gt;使用前提依赖&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;需要 PHP 5.2.0 以上版本（现在应该没人用这以下版本了吧）。&lt;/li&gt;
+&lt;li&gt;需要安装 php_zip 扩展（如果你需要对 .xlsx .ods 或者 .gnumeric 文件的处理）&lt;/li&gt;
+&lt;li&gt;需要安装 php_xml 扩展&lt;/li&gt;
+&lt;li&gt;需要安装 php_gd2 扩展（可选，但对于计算列宽是必须的）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;使用样例:74a1a2077a411f0f128d238982b77be8&#34;&gt;使用样例&lt;/h2&gt;
+
+&lt;h4 id=&#34;创建一个新的-excel-2007-文件:74a1a2077a411f0f128d238982b77be8&#34;&gt;创建一个新的 Excel 2007 文件&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+include &amp;quot;../Classes/PHPExcel.php&amp;quot;;
+$objPHPExcel = new PHPExcel();
+
+$objPHPExcel-&amp;gt;getProperties()
+    -&amp;gt;setCreator(&amp;quot;BPCoder Yang&amp;quot;)                    // 设置文件创建者
+    -&amp;gt;setLastModifiedBy(&amp;quot;BPCoder Yang&amp;quot;)             // 设置文件最后编辑者
+    -&amp;gt;setTitle(&amp;quot;Office 2007 XLSX Test Document&amp;quot;)    // 设置标题
+    -&amp;gt;setSubject(&amp;quot;Office 2007 XLSX Test Document&amp;quot;)  // 设置主题
+    -&amp;gt;setDescription(&amp;quot;Test document for Office 2007 XLSX, generated using PHP classes.&amp;quot;)    // 设置描述
+    -&amp;gt;setKeywords(&amp;quot;office 2007 openxml php&amp;quot;)        // 设置 Keywords
+    -&amp;gt;setCategory(&amp;quot;Test result file&amp;quot;);              // 设置类别
+
+$objPHPExcel-&amp;gt;setActiveSheetIndex(0)        // 设置第一个内置表
+    -&amp;gt;setCellValue(&#39;A1&#39;, &#39;Hello&#39;)
+    -&amp;gt;setCellValue(&#39;B2&#39;, &#39;world!&#39;)
+    -&amp;gt;setCellValue(&#39;C1&#39;, 12)
+    -&amp;gt;setCellValue(&#39;D2&#39;, 12)
+    -&amp;gt;setCellValue(&#39;D3&#39;, true)
+    -&amp;gt;setCellValue(&#39;D4&#39;, &#39;=SUM(C1:D2)&#39;);
+
+// 得到当前活动表
+$objActSheet = $objPHPExcel-&amp;gt;getActiveSheet();
+// 设置表名称
+$objActSheet-&amp;gt;setTitle(&#39;Demo00&#39;);
+
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, &amp;quot;Excel2007&amp;quot;);
+$objWriter-&amp;gt;save(&amp;quot;demo.xlsx&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;提供一个下载-excel-2007-文件的方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;提供一个下载 Excel 2007 文件的方式&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+// 前面都一样
+....
+
+header(&#39;Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&#39;);
+header(&#39;Content-Disposition: attachment;filename=&amp;quot;demo.xlsx&amp;quot;&#39;);
+header(&#39;Cache-Control: max-age=0&#39;);
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, &amp;quot;Excel2007&amp;quot;);
+$objWriter-&amp;gt;save( &#39;php://output&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;读取-excel-2007-文件的方式:74a1a2077a411f0f128d238982b77be8&#34;&gt;读取 Excel 2007 文件的方式&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+$objReader = new PHPExcel_Reader_Excel2007();
+$objPHPExcel = $objReader-&amp;gt;load(&amp;quot;./demo.xlsx&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHP 数组去重小 Tips</title>
+      <link>http://oubnpdea.github.io/2016/02/php-array-remove-duplicate/</link>
+      <pubDate>Wed, 03 Feb 2016 21:49:55 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/02/php-array-remove-duplicate/</guid>
+      <description>&lt;p&gt;在使用 PHP 开发程序会遇到对于数组去重的场景，多半会使用内置方法 array_unique()。虽然多数情况下很好，但如果在处理大数组会出现性能异常情况，运行异常缓慢。&lt;/p&gt;
+
+&lt;p&gt;这个时候可以选择一个取巧的方法规避一下这个问题。因为 PHP 数组本质上一个 HashMap 数据结构，所以它遵循 key 值唯一。
+所以通过 Key 与 Value 的反转，再反转就可以实现去重功能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+$array = array(&#39;bpcoder0&#39;, &#39;bpcoder1&#39;, &#39;bpcoder0&#39;, &#39;bpcoder2&#39;);
+
+$array = array_flip($array);
+$array = array_flip($array);
+
+// 结果：Array(2 =&amp;gt; bpcoder0, 1 =&amp;gt; bpcoder1, 3 =&amp;gt; bpcoder2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;看起来效果是达到了，但是产生出的结果反而有些异常，因为 key 不是正常序列。如果需要得到正常序列的结果，可使用下面方式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+$array = array(&#39;bpcoder0&#39;, &#39;bpcoder1&#39;, &#39;bpcoder0&#39;, &#39;bpcoder2&#39;);
+
+$array = array_flip($array);
+$array = array_keys($array);
+
+// 结果：Array(0 =&amp;gt; bpcoder0, 1 =&amp;gt; bpcoder1, 2 =&amp;gt; bpcoder2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上方法即实现了对于大数组情况的数据去重处理，可用于一些特殊场景下的使用。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHP 实现解析二维码</title>
+      <link>http://oubnpdea.github.io/2016/02/php-zbarcode/</link>
+      <pubDate>Mon, 01 Feb 2016 09:53:51 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/02/php-zbarcode/</guid>
+      <description>
+
+&lt;p&gt;前些日因为一些原因，需要找到一个解决 PHP 端解析二维码的需求，并借着这个机会学习到了 &lt;a href=&#34;https://github.com/mkoppanen/php-zbarcode&#34;&gt;php-zbarcode&lt;/a&gt; 开源项目。
+php-zbarcode 是一个 PHP 扩展，仅需要通过常规安装方式就可以进行使用，简单可靠，可以解析绝大多数二维码图片，尤其是信息量较大的二维码信息。&lt;/p&gt;
+
+&lt;h2 id=&#34;php-zbarcode-扩展的安装:0357e8ff61a5e9c122c23ea6bba18fcb&#34;&gt;php-zbarcode 扩展的安装&lt;/h2&gt;
+
+&lt;p&gt;首先 php-zbarcode 扩展依赖 &lt;a href=&#34;http://zbar.sourceforge.net/&#34;&gt;ZBar&lt;/a&gt; 及 &lt;a href=&#34;http://www.imagemagick.org/&#34;&gt;ImageMagick&lt;/a&gt;，需要优先安装这两个。当然还是以 OS X 为例使用 Homebrew 安装。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install zbar
+$ brew install ImageMagick
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;很方便，只要网络稳定，很快就安装好了，剩下就是安装 php-zbarcode 扩展了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git clone git@github.com:mkoppanen/php-zbarcode.git
+$ cd php-zbarcode
+$ phpize
+$ ./configure &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;简单就这样安装好了。&lt;/p&gt;
+
+&lt;h2 id=&#34;使用实例:0357e8ff61a5e9c122c23ea6bba18fcb&#34;&gt;使用实例&lt;/h2&gt;
+
+&lt;p&gt;来解析下面这个信息量相对较大的二维码&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/php-zbarcode.png&#34; alt=&#34;二维码图片样例&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;简单代码调用使用样例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/* Create new image object */
+$image = new ZBarCodeImage(&amp;quot;./image.png&amp;quot;);
+
+/* Create a barcode scanner */
+$scanner = new ZBarCodeScanner();
+
+/* Scan the image */
+$barcode = $scanner-&amp;gt;scan($image);
+
+print_r($barcode);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;输出结果如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Array
+(
+    [0] =&amp;gt; Array
+        (
+            [data] =&amp;gt; ZBar is an open source software suite for reading bar codes from various sources, such as video streams, image files and raw intensity sensors. It supports many popular symbologies (types of bar codes) including EAN-13/UPC-A, UPC-E, EAN-8, Code 128, Code 39, Interleaved 2 of 5 and QR Code.
+            [type] =&amp;gt; QR-Code
+            [quality] =&amp;gt; 1
+        )
+
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;总结:0357e8ff61a5e9c122c23ea6bba18fcb&#34;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;其实这个扩展是依赖于 ZBar 实现的，而 ZBar 是除了支持解析二维码之外，还支持 EAN-13/UPC-A, UPC-E, EAN-8, Code 128, Code 39, Interleaved 2 of 5 的开源项目。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PDO 中 PDOStatement::bindParam 的一个容易忽视的盲点</title>
+      <link>http://oubnpdea.github.io/2015/12/php-pdo-bindparam/</link>
+      <pubDate>Wed, 16 Dec 2015 22:31:24 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2015/12/php-pdo-bindparam/</guid>
+      <description>&lt;p&gt;前段时间开发中无意中碰到了一处PDO 中 PDOStatement::bindParam 的一个容易忽视的盲点，导致深陷其中还一时不知道原因，所以今天特别总结记录下来。用一个简单的例子说明一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$pdoObj = new PDO(&#39;mysql:host=localhost;dbname=bpcoder&#39;, &amp;quot;redocpb&amp;quot;);
+$sql = &amp;quot;INSERT INTO `bpcoder` (`username`, `passwd`) VALUES (:username, :passwd)&amp;quot;;
+$pdoStatement = $pdoobj-&amp;gt;prepare($sql);
+$params = array(
+    &amp;quot;:username&amp;quot; =&amp;gt; &amp;quot;bpcoder&amp;quot;,
+    &amp;quot;:passwd&amp;quot; =&amp;gt; &amp;quot;redocpb&amp;quot;,
+);
+foreach ($params as $key =&amp;gt; $value )
+{
+    $pdoStatement-&amp;gt;bindParam($key, $value);
+}
+$pdoStatement-&amp;gt;execute();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;整体上看起来好像没什么问题，不过最后发现最终执行的 SQL 并不是我们期望的那样，反而是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO `user` (`username`, `password`) VALUES (&amp;quot;redocpb&amp;quot;, &amp;quot;redocpb&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不过细查一下文档才知道，原来是一直都想当然认为 PDO 的方法是值传递，结果大意了，这个居然是引用传递。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bool PDOStatement::bindParam ( mixed $parameter , mixed &amp;amp;$variable [, int $data_type = PDO::PARAM_STR [, int $length [, mixed $driver_options ]]] )
+绑定一个PHP变量到用作预处理的SQL语句中的对应命名占位符或问号占位符。 不同于 PDOStatement::bindValue() ，此变量作为引用被绑定，并只在 PDOStatement::execute() 被调用的时候才取其值。
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>初探 PHP 7</title>
+      <link>http://oubnpdea.github.io/2015/12/acquaintance-php7/</link>
+      <pubDate>Wed, 02 Dec 2015 22:05:52 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2015/12/acquaintance-php7/</guid>
+      <description>
+
+&lt;p&gt;真的是千呼万唤始出来啊，PHP 7 终于发布了！这一次的大版本更新基本相当于是有着 PHP 语法的“另一种语言”了。而且这次大版本升级主要的推动者就是鸟哥 &lt;a href=&#34;http://weibo.com/laruence&#34;&gt;@laruence&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;这次的升级带来很多令人兴奋的提升与功能：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;性能的大幅提升：PHP 7 速度是 PHP 5.6 的两倍&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;显著的减少内存的使用&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;抽象语法树&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;64 位的 Int 支持&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;许多重大错误可以进行异常处理&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;安全随机数生成器&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;移除了旧的和不支持的 SAPIs 和扩展&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;null 合并操作符(??)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;增加了返回类型的声明&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;匿名类&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;php-7-安装:3bc74ae603b5ce5f226d3666146819be&#34;&gt;PHP 7 安装&lt;/h2&gt;
+
+&lt;h6 id=&#34;1-安装依赖:3bc74ae603b5ce5f226d3666146819be&#34;&gt;1. 安装依赖&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install -y libxml2 libxml2-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;2-安装-php-7:3bc74ae603b5ce5f226d3666146819be&#34;&gt;2. 安装 PHP 7&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tar zxf php-7.0.0.tar.gz
+$ cd php-7.0.0
+$ sudo ./configure --prefix=/usr/local/php
+$ sudo make
+$ sudo make install
+$ php -v
+PHP 7.0.0 (cli) (built: Dec  4 2015 10:02:55) ( NTS )
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v3.0.0, Copyright (c) 1998-2015 Zend Technologies
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;让-php-7-进一步达到最高性能:3bc74ae603b5ce5f226d3666146819be&#34;&gt;让 PHP 7 进一步达到最高性能&lt;/h2&gt;
+
+&lt;h6 id=&#34;1-opcache:3bc74ae603b5ce5f226d3666146819be&#34;&gt;1. Opcache&lt;/h6&gt;
+
+&lt;p&gt;启用Zend Opcache（PHP 7即使不启用Opcache速度也比PHP-5.6启用了Opcache快），在php.ini配置文件中加入:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;zend_extension=opcache.so
+opcache.enable=1
+opcache.enable_cli=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;2-使用新的-gcc-编译器:3bc74ae603b5ce5f226d3666146819be&#34;&gt;2. 使用新的 GCC 编译器&lt;/h6&gt;
+
+&lt;p&gt;使用 GCC 4.8 以上的编译器，因为只有 GCC 4.8 以上 PHP 才会开启 Global Register for opline and execute_data 支持，这个会带来5%左右的性能提升(Wordpres的QPS角度衡量)。&lt;/p&gt;
+
+&lt;h6 id=&#34;3-hugepage:3bc74ae603b5ce5f226d3666146819be&#34;&gt;3. HugePage&lt;/h6&gt;
+
+&lt;p&gt;首先在系统中开启 HugePages，然后开启 Opcache 的 huge_code_pages。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo sysctl vm.nr_hugepages=512
+vm.nr_hugepages = 512
+$ cat /proc/meminfo  | grep Huge
+AnonHugePages:    106496 kB
+HugePages_Total:     512
+HugePages_Free:      504
+HugePages_Rsvd:       27
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在 php.ini 中加入：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;opcache.huge_code_pages=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样一来，PHP会把自身的text段，以及内存分配中的huge都采用大内存页来保存，减少TLB miss，从而提高性能。&lt;/p&gt;
+
+&lt;p&gt;详细具体的 HugePage 相关文章查看鸟哥博客 &lt;a href=&#34;http://www.laruence.com/2015/10/02/3069.html&#34;&gt;让你的PHP7更快之Hugepage&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h6 id=&#34;4-opcache-file-cache-实验性:3bc74ae603b5ce5f226d3666146819be&#34;&gt;4. Opcache file cache（实验性）&lt;/h6&gt;
+
+&lt;p&gt;通过开启这个，我们可以让Opcache把opcode缓存缓存到外部文件中，对于一些脚本，会有很明显的性能提升。在 php.ini 中加入：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;opcache.file_cache=/tmp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样PHP就会在 /tmp 目录下Cache一些Opcode的二进制导出文件，可以跨PHP生命周期存在。&lt;/p&gt;
+
+&lt;h6 id=&#34;5-pgo:3bc74ae603b5ce5f226d3666146819be&#34;&gt;5. PGO&lt;/h6&gt;
+
+&lt;p&gt;如果你的 PHP 是专门为一个项目服务，比如只是为你的Wordpress，或者drupal，或者其他什么，那么你就可以尝试通过 PGO 来提升PHP，专门为你的这个项目提高性能。&lt;/p&gt;
+
+&lt;p&gt;以 Wordpress 4.1 为例。首先在编译 PHP 的时候首先：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ make prof-gen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后用你的项目训练 PHP，比如对于 Wordpress：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sapi/cgi/php-cgi -T 100 /home/huixinchen/local/www/htdocs/wordpress/index.php &amp;gt;/dev/null
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也就是让php-cgi跑100遍wordpress的首页，从而生成一些在这个过程中的profile信息，最后：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ make prof-clean
+$ make prof-use &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个时候你编译得到的 PHP 7 就是为你的项目量身打造的最高性能的编译版本。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考资料:3bc74ae603b5ce5f226d3666146819be&#34;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.laruence.com/2015/12/04/3086.html&#34;&gt;让PHP7达到最高性能的几个Tips&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

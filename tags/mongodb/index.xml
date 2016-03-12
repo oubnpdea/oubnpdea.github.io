@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mongodb on 345345345 Blog</title>
+    <link>http://oubnpdea.github.io/tags/mongodb/</link>
+    <description>Recent content in Mongodb on 345345345 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
+    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <lastBuildDate>Thu, 03 Mar 2016 07:00:00 +0800</lastBuildDate>
+    <atom:link href="http://oubnpdea.github.io/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MongoDB 学习笔记（二）</title>
+      <link>http://oubnpdea.github.io/2016/03/mongodb-3/</link>
+      <pubDate>Thu, 03 Mar 2016 07:00:00 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/03/mongodb-3/</guid>
+      <description>
+
+&lt;h2 id=&#34;php-篇:329d44cf14e5929d78d602751fb22339&#34;&gt;PHP 篇&lt;/h2&gt;
+
+&lt;h4 id=&#34;安装-mongodb-的-php-驱动扩展:329d44cf14e5929d78d602751fb22339&#34;&gt;安装 MongoDB 的 PHP 驱动扩展&lt;/h4&gt;
+
+&lt;p&gt;PHP 关于 MongoDB 的扩展拥有两个，分别是 php-mongodb 及 php-mongo 其中分别支持的情况如下。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/mongodb-2-1.jpg&#34; alt=&#34;php-mongodb 及 php-mongo 支持情况&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/mongodb-2-2.jpg&#34; alt=&#34;php-mongodb 及 php-mongo 对 PHP 版本的支持&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;根据比较情况 php-mongodb 显然支持更高版本的 MongoDB，而且其还支持 PHP7 及 HHVM，所以选择安装 php-mongodb 扩展。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install php56-mongodb
+==&amp;gt; Installing php56-mongodb from homebrew/php
+==&amp;gt; Downloading https://homebrew.bintray.com/bottles-php/php56-mongodb-1.1.2.el_capitan.bottle.tar.gz
+######################################################################## 100.0%
+==&amp;gt; Pouring php56-mongodb-1.1.2.el_capitan.bottle.tar.gz
+==&amp;gt; Caveats
+To finish installing mongodb for PHP 5.6:
+  * /usr/local/etc/php/5.6/conf.d/ext-mongodb.ini was created,
+    do not forget to remove it upon extension removal.
+  * Validate installation via one of the following methods:
+  *
+  * Using PHP from a webserver:
+  * - Restart your webserver.
+  * - Write a PHP page that calls &amp;quot;phpinfo();&amp;quot;
+  * - Load it in a browser and look for the info on the mongodb module.
+  * - If you see it, you have been successful!
+  *
+  * Using PHP from the command line:
+  * - Run `php -i &amp;quot;(command-line &#39;phpinfo()&#39;)&amp;quot;`
+  * - Look for the info on the mongodb module.
+  * - If you see it, you have been successful!
+==&amp;gt; Summary
+🍺  /usr/local/Cellar/php56-mongodb/1.1.2: 5 files, 751.1K
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;mongodb-的-crub-操作:329d44cf14e5929d78d602751fb22339&#34;&gt;MongoDB 的 CRUB 操作&lt;/h4&gt;
+
+&lt;p&gt;php-mongodb 使用的管理器方式处理的，分离为多个类方法。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;插入操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$bulk = new MongoDB\Driver\BulkWrite;
+
+
+$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;1&amp;quot;));
+$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;2&amp;quot;));
+$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;3&amp;quot;));
+$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;4&amp;quot;));
+$bulk-&amp;gt;insert(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;5&amp;quot;));
+
+
+$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
+$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 100);
+$result = $manager-&amp;gt;executeBulkWrite(&#39;yangming.bpcoder&#39;, $bulk, $writeConcern);
+echo &amp;quot;getInsertedCount: &amp;quot; . $result-&amp;gt;getInsertedCount();
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;更新操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$bulk = new MongoDB\Driver\BulkWrite;
+
+
+$bulk-&amp;gt;update(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;1&amp;quot;), array(&#39;$set&#39; =&amp;gt; array(&amp;quot;color&amp;quot; =&amp;gt; &amp;quot;blue&amp;quot;)));
+$bulk-&amp;gt;update(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;3&amp;quot;), array(&#39;$set&#39; =&amp;gt; array(&amp;quot;color&amp;quot; =&amp;gt; &amp;quot;red&amp;quot;)));
+$bulk-&amp;gt;update(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;6&amp;quot;), array(&#39;$set&#39; =&amp;gt; array(&amp;quot;color&amp;quot; =&amp;gt; &amp;quot;orange&amp;quot;)), array(&amp;quot;multi&amp;quot; =&amp;gt; false, &amp;quot;upsert&amp;quot; =&amp;gt; true));
+
+
+$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
+$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 100);
+$result = $manager-&amp;gt;executeBulkWrite(&#39;yangming.bpcoder&#39;, $bulk, $writeConcern);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;删除操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$bulk = new MongoDB\Driver\BulkWrite;
+
+
+$bulk-&amp;gt;delete(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;2&amp;quot;));
+$bulk-&amp;gt;delete(array(&amp;quot;name&amp;quot; =&amp;gt; &amp;quot;4&amp;quot;));
+
+
+$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
+$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 100);
+$result = $manager-&amp;gt;executeBulkWrite(&#39;yangming.bpcoder&#39;, $bulk, $writeConcern);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;查询操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$manager = new MongoDB\Driver\Manager(&amp;quot;mongodb://127.0.0.1:27017/&amp;quot;);
+$filter = array(&amp;quot;name&amp;quot; =&amp;gt; array(&#39;$gt&#39; =&amp;gt; &amp;quot;1&amp;quot;));
+$options = array();
+$query = new MongoDB\Driver\Query($filter, $options);
+$cursor = $manager-&amp;gt;executeQuery(&#39;yangming.bpcoder&#39;, $query);
+
+
+foreach ($cursor as $document)
+{
+    print_r($document);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;总结:329d44cf14e5929d78d602751fb22339&#34;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;相对来说，新的 PHP 的 MongoDB 扩展比原有的扩展好很多，也更加易用，只要根据个人的项目开发需求进行相应的封装即可，而且更加面向对象设计。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MongoDB 学习笔记（一）</title>
+      <link>http://oubnpdea.github.io/2016/03/mongodb-2/</link>
+      <pubDate>Wed, 02 Mar 2016 07:00:00 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/03/mongodb-2/</guid>
+      <description>
+
+&lt;p&gt;整理学习通过常见编程语言操作使用 MongoDB，因为阅读的书籍和资料多以 Ruby 为主，所以一并整理并总结两种编程语言的使用方式（Ruby &amp;amp; PHP），整理 PHP 主要原因是因为工作项目使用。&lt;/p&gt;
+
+&lt;h2 id=&#34;ruby-篇:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;Ruby 篇&lt;/h2&gt;
+
+&lt;h4 id=&#34;安装-mongodb-的-ruby-驱动:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;安装 MongoDB 的 Ruby 驱动&lt;/h4&gt;
+
+&lt;p&gt;因为 Ruby 拥有自己的包管理系统 RubyGems，故使用其安装即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gem install mongo
+Fetching: bson-4.0.3.gem (100%)
+Building native extensions.  This could take a while...
+Successfully installed bson-4.0.3
+Fetching: mongo-2.2.3.gem (100%)
+Successfully installed mongo-2.2.3
+Parsing documentation for bson-4.0.3
+Installing ri documentation for bson-4.0.3
+Parsing documentation for mongo-2.2.3
+Installing ri documentation for mongo-2.2.3
+Done installing documentation for bson, mongo after 4 seconds
+2 gems installed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过安装流程可以看出安装两部分 bson-4.0.3.gem 及 mongo-2.2.3.gem（实际情况可能安装版本号有出路），其中 BSON 是受 JSON 启发的二进制格式，MongoDB 用他来表示文档。而 bson-4.0.3.gem 是用来将 Ruby 对象序列化为 BSON 或者将 BSON 反序列化为 Ruby 对象的。&lt;/p&gt;
+
+&lt;h4 id=&#34;连接-mongodb-样例:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;连接 MongoDB 样例&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require &#39;mongo&#39;
+
+#client = Mongo::Client.new([ &#39;127.0.0.1:27017&#39; ], :database =&amp;gt; &#39;tutorial&#39;)
+client = Mongo::Client.new(&#39;mongodb://127.0.0.1:27017/tutorial&#39;)
+
+输出Debug结果：
+D, [2016-03-01T12:40:20.613274 #27736] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;代码很简单，两种连接方式均可，如果你开启了 DEBUG 模式，运行一下就可以看到运行情况。&lt;/p&gt;
+
+&lt;h4 id=&#34;基本的-crud-操作样例:ea3507c75d66dd829edd9ad47c95a86d&#34;&gt;基本的 CRUD 操作样例&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;插入操作：insert_one | insert_many&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;result = client[:users].insert_one({&#39;username&#39;: &#39;Ming Yang&#39;}) 
+
+
+输出Debug结果：
+D, [2016-03-01T12:45:52.390855 #27778] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
+D, [2016-03-01T12:45:52.392778 #27778] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | STARTED | {&amp;quot;insert&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;documents&amp;quot;=&amp;gt;[{:username=&amp;gt;&amp;quot;Ming Yang&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51e807ae7216c8236bcde&#39;)}], &amp;quot;ordered&amp;quot;=&amp;gt;true}
+D, [2016-03-01T12:45:52.393603 #27778] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | SUCCEEDED | 0.000754s
+
+
+result = client[:users].insert_many([{&#39;username&#39;: &#39;robot0&#39;},{&#39;username&#39;: &#39;robot1&#39;},{&#39;username&#39;: &#39;robot2&#39;}])
+
+
+输出Debug结果：
+D, [2016-03-01T12:46:56.891338 #27803] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
+D, [2016-03-01T12:46:56.893884 #27803] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | STARTED | {&amp;quot;insert&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;documents&amp;quot;=&amp;gt;[{:username=&amp;gt;&amp;quot;robot0&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51ec07ae7216c9b4f2a66&#39;)}, {:username=&amp;gt;&amp;quot;robot1&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51ec07ae7216c9b4f2a67&#39;)}, {:username=&amp;gt;&amp;quot;robot2&amp;quot;, :_id=&amp;gt;BSON::ObjectId(&#39;56d51ec07ae7216c9b4f2a68&#39;)}...
+D, [2016-03-01T12:46:56.894697 #27803] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.insert | SUCCEEDED | 0.000741s
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;查询操作：find&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;client[:users].find({&#39;username&#39;: &#39;Yang&#39;}).each do |doc|
+    puts doc
+end
+
+
+输出Debug结果：
+D, [2016-03-01T13:50:57.343763 #28019] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
+D, [2016-03-01T13:50:57.345945 #28019] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.find | STARTED | {&amp;quot;find&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;filter&amp;quot;=&amp;gt;{&amp;quot;username&amp;quot;=&amp;gt;&amp;quot;Yang&amp;quot;}}
+D, [2016-03-01T13:50:57.346787 #28019] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.find | SUCCEEDED | 0.0007689999999999999s
+{&amp;quot;_id&amp;quot;=&amp;gt;BSON::ObjectId(&#39;56d3f2cdc78712267ac63daf&#39;), &amp;quot;username&amp;quot;=&amp;gt;&amp;quot;Yang&amp;quot;, &amp;quot;country&amp;quot;=&amp;gt;&amp;quot;China&amp;quot;}
+
+
+puts client[:users].find({&#39;username&#39;: &#39;Yang&#39;}).count
+
+
+输出结果：
+1
+
+
+client[:users].find.distinct(:username).each do |doc|
+    puts doc
+end
+
+
+输出结果：
+BPCoder
+Yang
+robot0
+robot1
+robot2
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;更新操作：update_one | update_many | replace_one | find_one_and_update | find_one_and_replace&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).update_one({&#39;country&#39;: &#39;China&#39;})
+
+
+输出Debug结果：
+D, [2016-03-01T14:07:04.920829 #28221] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
+D, [2016-03-01T14:07:04.923163 #28221] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.update | STARTED | {&amp;quot;update&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;updates&amp;quot;=&amp;gt;[{&amp;quot;q&amp;quot;=&amp;gt;{&amp;quot;username&amp;quot;=&amp;gt;&amp;quot;robot0&amp;quot;}, &amp;quot;u&amp;quot;=&amp;gt;{:country=&amp;gt;&amp;quot;China&amp;quot;}, &amp;quot;multi&amp;quot;=&amp;gt;false, &amp;quot;upsert&amp;quot;=&amp;gt;false}], &amp;quot;ordered&amp;quot;=&amp;gt;true}
+D, [2016-03-01T14:07:04.924070 #28221] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.update | SUCCEEDED | 0.000846s
+
+
+client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).update_many({&#39;country&#39;: &#39;China&#39;})
+client[:users].find({&#39;username&#39;: &#39;Yang&#39;}).replace_one({&amp;quot;$set&amp;quot;: {&#39;city&#39;: &#39;Shenyang&#39;}})
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;删除操作：delete_one | delete_many&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).delete_one
+
+
+输出Debug结果：
+D, [2016-03-01T15:17:27.455187 #28994] DEBUG -- : MONGODB | Adding 127.0.0.1:27017 to the cluster.
+D, [2016-03-01T15:17:27.457425 #28994] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.delete | STARTED | {&amp;quot;delete&amp;quot;=&amp;gt;&amp;quot;users&amp;quot;, &amp;quot;deletes&amp;quot;=&amp;gt;[{&amp;quot;q&amp;quot;=&amp;gt;{&amp;quot;city&amp;quot;=&amp;gt;&amp;quot;Shenyang&amp;quot;}, &amp;quot;limit&amp;quot;=&amp;gt;1}], &amp;quot;ordered&amp;quot;=&amp;gt;true}
+D, [2016-03-01T15:17:27.458301 #28994] DEBUG -- : MONGODB | 127.0.0.1:27017 | tutorial.delete | SUCCEEDED | 0.000799s
+
+
+client[:users].find({&#39;username&#39;: &#39;robot0&#39;}).delete_many
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>初识 MongoDB</title>
+      <link>http://oubnpdea.github.io/2016/03/mongodb-1/</link>
+      <pubDate>Tue, 01 Mar 2016 07:00:00 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2016/03/mongodb-1/</guid>
+      <description>
+
+&lt;p&gt;之前对于 MongoDB 的了解比较泛泛，也是因为在工作中使用的比较少的缘故，好吧就是没用过。。。最近工作上新项目使用的主要数据库为 MongoDB，那么正好系统的了解学习一下。&lt;/p&gt;
+
+&lt;h3 id=&#34;简介:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;简介&lt;/h3&gt;
+
+&lt;p&gt;MongoDB 是一款为 Web 应用程序和互联网基础设施设计的数据库管理系统。MongoDB 的数据模型和持久化策略的设计目标是提供高读写吞吐量，在易于伸缩同时还能进行自动故障转移。&lt;/p&gt;
+
+&lt;p&gt;MongoDB 的主要特性：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;文档数据模型&lt;/li&gt;
+&lt;li&gt;即时查询（无需预先定义系统接受的查询类型）&lt;/li&gt;
+&lt;li&gt;二级索引（B树）&lt;/li&gt;
+&lt;li&gt;备份复制&lt;/li&gt;
+&lt;li&gt;速度与持久性&lt;/li&gt;
+&lt;li&gt;数据库扩展&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;MongoDB 与其他主流数据库的对比（图片来自《MongoDB 实战》）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/mongodb-1-1.jpg&#34; alt=&#34;MongoDB 与其他主流数据库的对比&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;使用场景:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;使用场景&lt;/h3&gt;
+
+&lt;p&gt;对于任何软件来说，它的使用场景往往才是技术选型时最为关注的，而 MongoDB 由于其具备的特性，适用的场景很多：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Web 应用程序&lt;/li&gt;
+&lt;li&gt;敏捷开发&lt;/li&gt;
+&lt;li&gt;分析和日志&lt;/li&gt;
+&lt;li&gt;缓存&lt;/li&gt;
+&lt;li&gt;可变的Schema&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;安装:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;安装&lt;/h3&gt;
+
+&lt;p&gt;先创建数据目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo mkdir -p /data/db
+$ sudo chown `id -u` /data/db
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还是老样子以 Mac 为例安装，简单的不行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install mongodb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后全程自动化，然后就安好了。最后对 /usr/local/etc/mongod.conf 文件进行编辑，注释掉原默认信息，并添加如下配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dbpath=/data/db
+logpath=/usr/local/var/log/mongodb/mongo.log
+rest=true
+fork=true
+port=27017
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就安装完成了，其中 MongoDB 即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ mongod -f /usr/local/etc/mongod.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;基本的-crud-操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;基本的 CRUD 操作&lt;/h3&gt;
+
+&lt;p&gt;MongoDB 也提供了一个类似于 MySQL Client 一样的 Shell，不过是一个 JavaScript Shell，只要对于 JS 基本语法了解使用起来很容易。&lt;/p&gt;
+
+&lt;p&gt;切换数据库命令和 MySQL 完全一致：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; use tutorial
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注：MongoDB 数据库和集合不需要显示创建，均都是在第一次插入文档时才会被创建。&lt;/p&gt;
+
+&lt;h5 id=&#34;插入操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;插入操作&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.insert({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;})     // 插入一条文档
+&amp;gt; db.users.save({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;})          // 如果 _id 存在为更新，如果 _id 不存在为插入
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;删除操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;删除操作&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.remove({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;})        // 根据条件删除
+&amp;gt; db.users.drop()                              // 删除集合以及它的全部索引
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;查询操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;查询操作&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.find()                                   // 查询全部
+&amp;gt; db.users.count()                                  // 查询总条数
+&amp;gt; db.users.find({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;})               // 根据条件查询
+&amp;gt; db.users.find({&amp;quot;favorites.citys&amp;quot;: &amp;quot;Shenyang&amp;quot;})    // 复杂结构匹配查询
+&amp;gt; db.numbers.find({&amp;quot;num&amp;quot;: {&amp;quot;$gt&amp;quot;: 20, &amp;quot;$lt&amp;quot;: 26}})     // 条件查询方式（$lt 小于 &amp;amp; $gt 大于）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;更新操作:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;更新操作&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;}, {$set: {&amp;quot;country&amp;quot;: &amp;quot;China&amp;quot;}}, false, true)   // 添加一个新的 country 属性（最后一个参数开启多项更新）
+&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;Yang&amp;quot;}, {$unset: {&amp;quot;country&amp;quot;: 1}})       // 删除一个 country 属性
+&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;}, {$set: {&amp;quot;favorites&amp;quot;:  {&amp;quot;citys&amp;quot;: [&amp;quot;Shenyang&amp;quot;, &amp;quot;Dalian&amp;quot;], &amp;quot;movies&amp;quot;: [&amp;quot;嫌疑人 X 的献身&amp;quot;]}}})  // 复杂结构
+&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;}, {$push: {&amp;quot;favorites.citys&amp;quot;: &amp;quot;Tianjing&amp;quot;}}) // 单独添加一个元素（不保证唯一性）
+&amp;gt; db.users.update({&amp;quot;username&amp;quot;: &amp;quot;BPCoder&amp;quot;}, {$addToSet: {&amp;quot;favorites.citys&amp;quot;: &amp;quot;Tianjing&amp;quot;}}) // 单独添加一个元素（保证唯一性）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;设置索引:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;设置索引&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; db.numbers.ensureIndex({&amp;quot;num&amp;quot;: 1})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;获取该集合已经设置索引信息:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;获取该集合已经设置索引信息&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; db.numbers.getIndexes()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;基本管理命令:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;基本管理命令&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; show dbs              // 获取数据库信息
+&amp;gt; db.stats()            // 获取数据库或者集合更底层的信息 （db.users.stats()）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;总结:e442ee6fc7fb3e7c045e584ae1a72e13&#34;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;简单整理对于 MongoDB 的安装及基本操作，后续会在深入了解后补充博客，那就到这了。。。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

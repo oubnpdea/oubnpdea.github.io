@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on 345345345 Blog</title>
+    <link>http://oubnpdea.github.io/tags/hugo/</link>
+    <description>Recent content in Hugo on 345345345 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
+    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <lastBuildDate>Tue, 01 Dec 2015 12:55:48 +0800</lastBuildDate>
+    <atom:link href="http://oubnpdea.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>利用 Hugo &amp; GitHub 搭建个人博客静态网站</title>
+      <link>http://oubnpdea.github.io/2015/12/hugo-create-blog/</link>
+      <pubDate>Tue, 01 Dec 2015 12:55:48 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2015/12/hugo-create-blog/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; 是一个多用途的网站框架，准确地说，Hugo 是一个静态网站生成器。这意味它不像是 Wordpress、Ghost 以及 Drupal 那样需要运行在其依赖环境的服务器上，也不需要不断的去维护它。Hugo 可以让我们更加专注于撰写自己喜欢的博客，不会因为复杂的操作管理功能浪费我们更多的时间（没错我就是在黑 Wordpress）。&lt;/p&gt;
+
+&lt;p&gt;Hugo 生成静态网站的速度相对于 Jekyll 以及 Hexo 来说几乎是瞬间即可完成。而生成的静态代码可以安全地托管到任何地方，例如 Heroku，GoDaddy，DreamHost，GitHub Pages，Google Cloud Storage，Amazon S3 and CloudFront, 以及运行良好的 CDN 。&lt;/p&gt;
+
+&lt;p&gt;最 6 的就是 Hugo 拥有一个 watch 的编写调试模式，可以在我们编辑修改文章时，通过检测变更自动完成构建网站并刷新浏览器等操作，实现了实时预览的炒鸡好用的功能。Hugo 是由 Go 编写的静态网站构建工具，使用 MarkDown 作为其文本语法，这等种种优势让我不得不选择 Hugo 作为我的博客网站生成器。&lt;/p&gt;
+
+&lt;h2 id=&#34;安装-hugo:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;安装 Hugo&lt;/h2&gt;
+
+&lt;p&gt;对于 Mac 用户来说安装简单的不行，只要已经安装了 &lt;a href=&#34;http://brew.sh/&#34;&gt;Homebrew&lt;/a&gt; 以及 &lt;a href=&#34;https://golang.org/&#34;&gt;Go&lt;/a&gt; 即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其他的系统的安装可查看&lt;a href=&#34;http://gohugo.io/overview/installing/&#34;&gt;官网&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;选择-github-pages:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;选择 GitHub Pages&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://pages.github.com/&#34;&gt;GitHub Pages&lt;/a&gt; 是 GitHub 提供的一个免费的静态站点。（当然其他的也可以，比如国内的 &lt;a href=&#34;https://gitcafe.com/&#34;&gt;GitCafe&lt;/a&gt;）&lt;/p&gt;
+
+&lt;p&gt;其中 GitHub Pages 提供两种模式：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;个人用户或企业站点 （User or organization site）&lt;/li&gt;
+&lt;li&gt;项目站点 （Project site）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;由于我们使用 GitHub Pages 作为个人博客站点，就是选用第一种模式。而其有几个要求限制：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;每个 GitHub 用户只能创建一个且项目名称必须为 [your-github-account].github.io&lt;/li&gt;
+&lt;li&gt;master 分支内容被用于构建和发布页面&lt;/li&gt;
+&lt;li&gt;访问的 URL 为 http://[your-github-account].github.io/&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;结合-github-pages-搭建个人博客静态网站-step-by-step:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;结合 GitHub Pages 搭建个人博客静态网站 Step by Step&lt;/h2&gt;
+
+&lt;h6 id=&#34;1-创建两个-github-仓库:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;1. 创建两个 GitHub 仓库&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Hugo 结构代码的代码仓库       [your-github-account]-hugo&lt;/li&gt;
+&lt;li&gt;Hugo 生成静态文件的代码仓库   [your-github-account].github.io&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;2-创建一个-hugo-的新站点项目:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;2. 创建一个 Hugo 的新站点项目&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo new site [your-github-account]-hugo
+$ cd [your-github-account]-hugo
+$ git init
+$ echo .DS_Store &amp;gt;&amp;gt; .gitignore
+$ git remote add origin git@github.com:[your-github-account]/[your-github-account]-hugo.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;命令很简单，用于构建 Hugo 站点项目。&lt;/p&gt;
+
+&lt;h6 id=&#34;3-选择模板:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;3. 选择模板&lt;/h6&gt;
+
+&lt;p&gt;Hugo 提供了一个官方收录的模板列表 &lt;a href=&#34;https://github.com/spf13/hugoThemes&#34;&gt;hugoThemes&lt;/a&gt;，从中选择你喜欢的一个作为你的模板。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git submodule add git@github.com:Zenithar/hugo-theme-crisp.git themes/crisp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;4-编辑配置信息:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;4. 编辑配置信息&lt;/h6&gt;
+
+&lt;p&gt;针对 Crisp 设置对应配置信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;baseurl = &amp;quot;http://blog.bpcoder.com/&amp;quot;
+languageCode = &amp;quot;zh-cn&amp;quot;
+title = &amp;quot;BPCoder&amp;quot;
+paginate = 8
+theme = &amp;quot;crisp&amp;quot;
+[params]
+    description = &amp;quot;积累分享，愉快生活&amp;quot;
+    email = &amp;quot;mingyangcoder@163.com&amp;quot;
+    hostname = &amp;quot;blog.bpcoder.com&amp;quot;
+[permalinks]
+    post = &amp;quot;/:year/:title/&amp;quot;
+    addendum = &amp;quot;/addendum/:year/:title/&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;5-新建文章:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;5. 新建文章&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo new posts/hugo-create-blog.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑 content/posts/hugo-create-blog.md 的内容即可，使用 MarkDown 语法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+++
+date = &amp;quot;2015-12-01T12:55:48+08:00&amp;quot;
+title = &amp;quot;利用 Hugo &amp;amp; GitHub 搭建个人博客静态网站&amp;quot;
+tags = [&amp;quot;Hugo&amp;quot;]
++++
+......
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;6-实时预览:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;6. 实时预览&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo server -w
+0 draft content
+0 future content
+1 pages created
+3 paginator pages created
+1 tags created
+0 categories created
+in 20 ms
+Watching for changes in /Users/BPCoder/git/MingYangCoder-hugo/{data,content,layouts,static,themes}
+Serving pages from memory
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+Press Ctrl+C to stop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个时候根据提示访问 &lt;a href=&#34;http://localhost:1313/&#34;&gt;http://localhost:1313/&lt;/a&gt; 进行预览。这时修改博客文档包括样式文件均可实时查看，配置文件为特例。&lt;/p&gt;
+
+&lt;h6 id=&#34;7-建立生成静态文件的代码目录:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;7. 建立生成静态文件的代码目录&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rm -rf public
+$ git submodule add git@github.com:[your-github-account]/[your-github-account].github.io.git public
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;8-生成静态站点并发布:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;8. 生成静态站点并发布&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo
+$ cd public
+$ git add -A &amp;amp;&amp;amp; git commit -m &amp;quot;first post&amp;quot;
+$ git push origin master
+$ cd ..
+$ git add -A &amp;amp;&amp;amp; git commit -m &amp;quot;init hugo coder&amp;quot;
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这是访问你的 http://[your-github-account].github.io/ 站点网址即可查看。&lt;/p&gt;
+
+&lt;h6 id=&#34;9-可选-设置自己域名的站点:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;9. 【可选】设置自己域名的站点&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd public
+$ echo [your.domain.name] &amp;gt;&amp;gt; CNAME
+$ git add -A &amp;amp;&amp;amp; git commit -m &amp;quot;add CNAME file&amp;quot;
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后到你的域名管理界面配置对应CNAME记录类型即可&lt;/p&gt;
+
+&lt;h2 id=&#34;补充内容:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;补充内容&lt;/h2&gt;
+
+&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-10 更新）&lt;/font&gt;通过一段时间的使用，感觉 GitHub Pages 提供的服务实在不稳定，访问速度也比较慢，特别影响体验。通过了解发现国内的 GitCafe 同样提供 Pages 服务，所以尝试使用一下，发现明显提高不少。可通过&lt;a href=&#34;https://gitcafe.com/GitCafe/Help/wiki/Pages-%E7%9B%B8%E5%85%B3%E5%B8%AE%E5%8A%A9&#34;&gt;官方文档&lt;/a&gt; 一步一步全新配置。&lt;/p&gt;
+
+&lt;h6 id=&#34;简单整理迁移方案:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;简单整理迁移方案：&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在 GitCafe 创建与用户名相同的项目，并创建分支 gitcafe-pages 用于发布。&lt;/li&gt;
+&lt;li&gt;对现有静态文件的代码目录（public），添加上面新建的 remote。&lt;/li&gt;
+&lt;li&gt;然后就是提交时，提交到 gitcafe-pages 分支下即可，这时候访问 http://[your-gitcafe-account].gitcafe.io/ 就可以访问了。&lt;/li&gt;
+&lt;li&gt;至于域名设置，GitCafe 比 GitHub 好一些提供一个界面化管理页面，添加支持域名，无需 CNAME 文件。&lt;/li&gt;
+&lt;li&gt;最后和 GitHub 设置域名解析的方式一下，在域名管理界面配置对应的 CNAME 记录类型即可。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-10 更新）&lt;/font&gt;由于博客内容会存在一些图片或者比较大的js文件，推荐存储在国内&lt;a href=&#34;https://portal.qiniu.com/signup?code=3le4lzknkl2z6&#34;&gt;七牛云存储&lt;/a&gt;上，稳定速度快。&lt;/p&gt;
+
+&lt;p&gt;&lt;font style=&#34;font-weight: 700;text-decoration: none;color: #e74c3c;&#34;&gt;（2015-12-13 更新）&lt;/font&gt;又迁回 GitHub，虽然有时候 GitHub 有点慢，但是贵在稳定啊！经历一次 GitCafe Pages 停止服务的情况，没办法又迁回 GitHub，希望国内能有一个稳定的 Pages 服务。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考资料:c9eed481fd05f69ed1cb75c5891de126&#34;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://kaichu.io/2015/07/my-first-post/&#34;&gt;在 Github Pages 建立 Hugo 靜態網站&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://blog.coderzh.com/2015/08/29/hugo/&#34;&gt;使用hugo搭建个人博客站点&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://sa.muel.be/tags/hugo/&#34;&gt;Hugo · Samuel Debruyn&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

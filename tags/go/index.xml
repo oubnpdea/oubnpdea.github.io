@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on 345345345 Blog</title>
+    <link>http://oubnpdea.github.io/tags/go/</link>
+    <description>Recent content in Go on 345345345 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
+    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <lastBuildDate>Sat, 12 Dec 2015 23:58:39 +0800</lastBuildDate>
+    <atom:link href="http://oubnpdea.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>插入排序 Insertion Sort（Go 实现）</title>
+      <link>http://oubnpdea.github.io/2015/12/insertion-sort/</link>
+      <pubDate>Sat, 12 Dec 2015 23:58:39 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2015/12/insertion-sort/</guid>
+      <description>&lt;p&gt;插入排序是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。（来源：&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F&#34;&gt;维基百科&lt;/a&gt;）&lt;/p&gt;
+
+&lt;p&gt;它的具体原理类似于现实场景中的排序扑克牌。
+即从第二个元素开始与前一个元素（即第一个元素）开始比较，如果第二个小于第一个则第一个元素位置向后退一个位（即第二个元素位置），第二个元素占到第一个元素位置，这样第一个元素与第二个元素就排序完成；之后以此类推，第三个元素与前一个元素进行比较&amp;hellip;..直到最后一个元素排序完成。&lt;/p&gt;
+
+&lt;p&gt;具体逻辑如图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://7xp22y.com1.z0.glb.clouddn.com/insertion-sort-1.jpg&#34; alt=&#34;实例1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Go 实现代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func insertionSort(num []int) []int {
+    if len(num) &amp;lt;= 1 {
+        return num
+    }
+
+    for i := 1; i &amp;lt; len(num); i++ {
+        tmp := num[i]
+        j := i - 1
+
+        for j &amp;gt; -1 &amp;amp;&amp;amp; num[j] &amp;gt; tmp {
+            num[j+1] = num[j]
+            j--
+        }
+        num[j+1] = tmp
+    }
+    return num
+} 
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Mac 环境下源代码构建 Go 1.5 开发环境</title>
+      <link>http://oubnpdea.github.io/2015/12/go1.5-source-installation/</link>
+      <pubDate>Fri, 04 Dec 2015 16:44:06 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2015/12/go1.5-source-installation/</guid>
+      <description>
+
+&lt;p&gt;Go 1.5 算是其中一个划时代的版本，最大的变化就是移除了所有 C 代码，不论是 runtime 还是编译器都使用 Go 语言和一小部分的汇编来实现。而 Go1.4 及更早的版本中，是使用 GCC 先编译一个使用 C 语言编写的，仅具有基本功能的小编译器作为构建 Go 环境的引导工具。这样也就是说如果想要通过源码安装 Go 1.5 以后的版本，就需要环境中先有一个 Go 运行环境才行。&lt;/p&gt;
+
+&lt;h2 id=&#34;源码安装-go-1-5-开发环境-step-by-step:e293aaaf38b0b8ea3057c6699a24421e&#34;&gt;源码安装 Go 1.5 开发环境 Step by Step&lt;/h2&gt;
+
+&lt;h6 id=&#34;1-设置环境变量:e293aaaf38b0b8ea3057c6699a24421e&#34;&gt;1. 设置环境变量&lt;/h6&gt;
+
+&lt;p&gt;其实安装 Go 1.4 的前提还需要拥有 GCC 依赖，但是 Mac 一般都是默认自带就直接忽略进入配置环境变量阶段。具体修改的文件为 ~/.zshrc 或者 ~/.bashrc，在尾部添加如下配置即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export GOPATH=$HOME/golang/3rdpkg:$HOME/golang/go:$HOME/golang/own
+export GOROOT=$HOME/golang/go
+export PATH=$PATH:$GOROOT/bin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中两个重要的变量 GOPATH（工作目录），GOROOT（GO SDK 的根目录）。至于 GOPATH 的设置，目的是分别设置第三方包目录，Go 官方包目录，个人开发者目录。&lt;/p&gt;
+
+&lt;h6 id=&#34;2-安装-go-1-4:e293aaaf38b0b8ea3057c6699a24421e&#34;&gt;2. 安装 Go 1.4&lt;/h6&gt;
+
+&lt;p&gt;通过 &lt;a href=&#34;https://golang.org/dl/&#34;&gt;Go 官网下载&lt;/a&gt; 源代码包。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ wget https://storage.googleapis.com/golang/go1.4.3.src.tar.gz
+$ tar zxf go1.4.3.src.tar.gz
+$ cp -r go $HOME/golang/go1.4.3
+$ cd $HOME/golang
+$ mkdir 3rdpkg own
+$ ln -s go1.4.3 go
+$ tree -L 1
+.
+├── 3rdpkg
+├── go -&amp;gt; go1.4.3
+├── go1.4.3
+└── own
+$ cd $HOME/golang/go/src
+$ ./all.bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样经过一个短暂的编译以及一个特别漫长的测试校验后， Go 1.4 就安装完成了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ go version
+go version go1.4.3 darwin/amd64
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;3-安装-go-1-5:e293aaaf38b0b8ea3057c6699a24421e&#34;&gt;3. 安装 Go 1.5&lt;/h6&gt;
+
+&lt;p&gt;首先需要配置添加环境变量 GOROOT_BOOTSTRAP，在上面提到过的文件中（~/.zshrc 或者 ~/.bashrc）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export GOROOT_BOOTSTRAP=$HOME/golang/go-bootstrap
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后就可以进入安装过程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ wget https://storage.googleapis.com/golang/go1.5.2.src.tar.gz
+$ tar zxf go1.5.2.src.tar.gz
+$ cp -r go $HOME/golang/go1.5.2
+$ cd $HOME/golang
+$ unlink go &amp;amp;&amp;amp; link -s go1.5.2 go &amp;amp;&amp;amp; link -s go1.4.3 go-bootstrap
+$ tree -L 1
+.
+├── 3rdpkg
+├── go -&amp;gt; go1.5.2
+├── go-bootstrap -&amp;gt; go1.4.3
+├── go1.4.3
+├── go1.5.2
+└── own
+$ cd $HOME/golang/go/src
+$ ./all.bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就算是全部安装完成了，比较简单。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ go version
+go version go1.5.2 darwin/amd64
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考资料:e293aaaf38b0b8ea3057c6699a24421e&#34;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://studygolang.com/articles/3188&#34;&gt;如何从源代码构建 Go 1.5 开发环境&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

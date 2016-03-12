@@ -1,0 +1,901 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+
+    
+
+
+    
+        
+    
+
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="http://oubnpdea.github.io/icons/favicon.ico">
+        <meta name="description" content="初探PHP7;PHP7终于发布;性能的大幅提升;安装依赖;安装PHP7;让PHP7进一步达到最高性能;Opcache;使用新的GCC编译器;HugePage;Opcache file cache;PGO;让PHP7达到最高性能的几个Tips">
+        <title>初探 PHP 7_345345345 Blog</title>
+        
+          
+        <style>
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+body,html
+{
+	font-size: 1em;
+	line-height: 1.65em;
+	font-family: "Lato",sans-serif;
+	font-weight: 300;
+	color: #34495e;
+	background-color: #ecf0f1;
+}
+
+html
+{
+	height: 100%;
+}
+
+body
+{
+	padding: 2em 2.5em 1em 20em;
+}
+
+header
+{
+	border-right: 1px #bdc3c7 solid;
+	padding: 2em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 13.5em;
+	background-color: #2c3e50;
+	color: #ecf0f1;
+}
+
+#content
+{
+	display: block;
+	width: 100%;
+}
+
+footer
+{
+	padding: 1em 0 2.5em;
+	font-size: .8em;
+	line-height: 1.5em;
+	color: #95a5a6;
+}
+
+article
+{
+	border-bottom: .1em #bdc3c7 solid;
+	padding-bottom: 1.7em;
+	max-width: 56em;
+}
+
+h4,h5,h6,hr,p
+{
+	margin-top: .9em;
+	margin-bottom: .9em;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-family: "Oswald","Lato",sans-serif;
+	font-weight: 400!important;
+}
+
+h1
+{
+	font-size: 2.5em;
+	line-height: 1.1em;
+	margin-top: .6em;
+	margin-bottom: .6em;
+}
+
+h2
+{
+	font-size: 1.9em;
+	line-height: 1.2em;
+	margin-top: .7em;
+	margin-bottom: .7em;
+}
+
+h3
+{
+	font-size: 1.4em;
+	line-height: 1.3em;
+	margin-top: .8em;
+	margin-bottom: .8em;
+}
+
+h4
+{
+	font-size: 1.3em;
+}
+
+h5
+{
+	font-size: 1.2em;
+}
+
+h6
+{
+	font-size: 1.1em;
+}
+
+iframe,img
+{
+	max-width: 100%;
+}
+
+a
+{
+	font-weight: 700;
+	text-decoration: none;
+	color: #e74c3c;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a
+{
+	font-weight: 400;
+}
+
+strong
+{
+	font-weight: 700;
+}
+
+blockquote
+{
+	border-left: .4em solid #bdc3c7;
+	padding-left: 1.2em;
+	font-size: 1.3em;
+}
+
+hr
+{
+	border: 0;
+	height: 1px;
+	background: #bdc3c7;
+}
+
+ol,ul
+{
+	margin-left: 3em;
+}
+
+code
+{
+	font-size: 1.2em;
+	background: #bdc3c7;
+}
+
+pre
+{
+	font-size: .8em;
+	line-height: 2em;
+	background: #bdc3c7;
+	padding: 1em;
+	word-break: break-all;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: -moz-pre-wrap;
+	white-space: pre-wrap;
+}
+
+input
+{
+	font-size: 1em;
+	padding: .3em;
+}
+
+header h1
+{
+	font-size: 1.9em;
+	margin-top: .8em;
+	margin-bottom: .6em;
+}
+
+header a
+{
+	color: #1abc9c;
+}
+
+header h1 a:hover
+{
+	text-decoration: none;
+}
+
+header #logo img
+{
+	width: 9em;
+	height: 9em;
+	border-radius: 4.5em;
+	-moz-border-radius: 4.5em;
+	-webkit-border-radius: 4.5em;
+	border: 0;
+}
+
+#follow-icons
+{
+	font-size: .7em;
+	margin-top: -.7em;
+	margin-bottom: 1.5em;
+}
+
+#follow-icons a
+{
+	color: #ccc;
+	margin-right: 0.5em;
+}
+
+#follow-icons span
+{
+	vertical-align: top;
+	margin-left: -.15em;
+	margin-right: -.15em;
+}
+
+#follow-icons span .fa-stack-1x
+{
+	font-size: 1.05em;
+	line-height: 1.9em;
+}
+
+header h6
+{
+	margin-top: .5em;
+}
+
+article span.post-stamp
+{
+	color: #888;
+}
+
+h1.post-title
+{
+	margin-top: .35em;
+	margin-bottom: .6em;
+}
+
+h3.post-title
+{
+	margin-top: .4em;
+	padding-bottom: .9em;
+	border-bottom: 1px solid #bdc3c7;
+	font-size: 1.2em;
+	color: #34495e;
+	font-family: "Lato",sans-serif;
+	font-weight: 700!important;
+}
+
+.sitetaglist
+{
+	list-style-type: none;
+	display: block;
+	margin-left: 0;
+	text-align: center;
+	margin-bottom: 1.25em;
+	font-size: 0.8em;
+}
+
+.sitetaglist li
+{
+	display: inline;
+}
+
+.sitetaglisttitle
+{
+	margin-bottom: .3em;
+}
+
+h3.post-title>time
+{
+	font-family: "Lato",sans-serif;
+	font-weight: 300!important;
+	font-size: .9em;
+}
+
+.post-title .feature-star
+{
+	font-size: .9em;
+}
+
+.feature-star,.separator
+{
+	color: #ccc;
+}
+
+.taglist { color: #ccc }
+
+.taglist a {
+    background-color: #ccc;
+    color: #fff;
+    display: inline-block;
+    line-height: 1.5em;
+    padding: .3em .6em;
+    vertical-align: 20%;
+    font-size: .5em;
+    font-weight: 700!important;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-radius: .25em;
+    -moz-border-radius: .25em;
+    -webkit-border-radius: .25em;
+}
+
+#social-bar
+{
+	margin-top: 1.5em;
+	background-color: #bdc3c7;
+	padding: .5em;
+}
+
+.pagination
+{
+	margin-bottom: 1em;
+}
+
+footer a
+{
+	font-weight: 300;
+	color: #95a5a6;
+	text-decoration: underline;
+}
+
+footer a:hover
+{
+	color: #7f8c8d;
+	text-decoration: none;
+}
+
+.uk-search
+{
+	display: inline-block;
+	position: relative;
+	margin: 0;
+}
+
+.uk-search:before
+{
+	content: "\f002";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1.87em;
+	line-height: 2.5em;
+	text-align: center;
+	font-family: FontAwesome;
+	font-size: 0.87em;
+	color: #1abc9c;
+}
+
+.uk-search-field::-moz-focus-inner
+{
+	border: 0;
+	padding: 0;
+}
+
+.uk-search-field::-webkit-search-cancel-button,.uk-search-field::-webkit-search-decoration
+{
+	-webkit-appearance: none;
+}
+
+.uk-search-field::-ms-clear
+{
+	display: none;
+}
+
+.uk-search-field::-moz-placeholder
+{
+	opacity: 1;
+}
+
+.uk-search-field
+{
+	font-family: "Oswald","Lato",sans-serif;
+	color: #ecf0f1;
+	-webkit-appearance: none;
+	width: 11.25em;
+	height: 1.87em;
+	padding: 0 0 0 1.87em;
+	border: 0;
+	background: rgba(0,0,0,0);
+	-webkit-transition: all linear .2s;
+	transition: all linear .2s;
+	vertical-align: middle;
+}
+
+.uk-search-field:-ms-input-placeholder
+{
+	color: #95a5a6!important;
+}
+
+.uk-search-field::-moz-placeholder
+{
+	color: #95a5a6;
+}
+
+.uk-search-field::-webkit-input-placeholder
+{
+	color: #95a5a6;
+}
+
+.uk-search-field:focus
+{
+	outline: 0;
+}
+
+.uk-search-field:focus,.uk-search.uk-active .uk-search-field
+{
+	width: 11.25em;
+}
+
+.gs-image-box,.gsc-above-wrapper-area,.gsc-cursor-box,.gsc-url-bottom,.gsc-thumbnail,.gs-per-result-labels
+{
+	display: none!important;
+	visibility: hidden!important;
+}
+
+.gsc-control-cse,.gsc-results
+{
+	font: inherit!important;
+	background: inherit!important;
+	border: inherit!important;
+	padding: inherit!important;
+	margin: inherit!important;
+}
+
+.gsc-result
+{
+	border: inherit!important;
+	background: inherit!important;
+	padding: inherit!important;
+}
+
+.gs-title
+{
+	font-family: "Lato",sans-serif!important;
+	color: #e74c3c!important;
+	text-decoration: none!important;
+	height: inherit!important;
+	overflow: inherit!important;
+}
+
+.gs-snippet
+{
+	color: inherit!important;
+	font-family: "Lato",sans-serif!important;
+	height: inherit!important;
+	overflow: inherit!important;
+}
+
+@media only screen and (min-width:1281px)
+{
+	body,html
+	{
+		font-size: 1.1em;
+	};
+}
+
+@media only screen and (max-width:800px)
+{
+	body
+	{
+		padding: 0;
+	}
+
+	header
+	{
+		border-right: 0;
+		border-bottom: 1px #bdc3c7 solid;
+		position: relative;
+		height: auto;
+		width: auto;
+		text-align: center;
+		padding-bottom: 1em;
+	}
+
+	#content
+	{
+		margin-left: 0;
+		padding: 2em 2em 1em;
+		width: auto;
+	}
+
+	footer
+	{
+		padding: 0 2.5em 2em;
+	};
+}
+
+@media only screen and (max-width:31.25em)
+{
+	#content,header
+	{
+		padding: 1.2em 1.2em .6em;
+	}
+
+	footer
+	{
+		padding: 0 1.5em 1.2em;
+	}
+
+	ol,ul
+	{
+		margin-left: 2em;
+	};
+}
+
+.section
+{
+	clear: both;
+	padding: 0;
+	margin: 0;
+}
+
+.col
+{
+	display: block;
+	float: left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.col:first-child
+{
+	margin-left: 0;
+}
+
+.group:before,.group:after
+{
+	content: "";
+	display: table;
+}
+
+.group:after
+{
+	clear: both;
+}
+
+.group
+{
+	zoom: 1;
+}
+
+.span_3_of_3
+{
+	width: 100%;
+}
+
+.span_2_of_3
+{
+	width: 66.13%;
+}
+
+.span_1_of_3
+{
+	width: 32.26%;
+}
+
+@media only screen and (max-width: 480px)
+{
+	.col
+	{
+		margin: 1% 0;
+	}
+
+	.span_3_of_3,.span_2_of_3,.span_1_of_3
+	{
+		width: 100%;
+	};
+}
+
+@media only screen and (max-height: 550px)
+{
+	.sitetaglist, .sitetaglisttitle
+	{
+		display: none;
+		visibility: hidden;
+	}
+}
+
+.portfoliobox
+{
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.portfoliobox img
+{
+	max-height: 10em;
+}
+
+.portfoliobox h4
+{
+	margin-top: 0;
+}
+
+.portfolio-meta
+{
+	margin-bottom: .5em;
+}
+
+.portfolio-meta > *
+{
+	display: block;
+}
+
+.portfolio-tag
+{
+	font-weight: 600;
+}
+</style>
+    </head>
+    <body>
+        <header id="header">
+            <a id="logo" href="http://oubnpdea.github.io/"><img src="http://7xp22y.com1.z0.glb.clouddn.com/avatar.jpg" alt="345345345 Blog" /></a>
+            <h1><a href="http://oubnpdea.github.io/">345345345 Blog</a></h1>
+            <div id="follow-icons">
+	<a href="http://weibo.com/khalil8yang" target="_blank"><i class="fa fa-weibo fa-2x"></i></a>
+	<a href="https://github.com/MingYangCoder" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+	<a href="https://www.linkedin.com/in/bpcoder" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+    
+</div>  
+
+            
+
+
+            <h6 class="sitetaglisttitle">Tags</h6>
+<ul class="sitetaglist">
+    
+        
+            <li><a href="/tags/%E5%B7%A5%E5%85%B7">工具 (9)</a></li>
+        
+    
+        
+            <li><a href="/tags/php">php (6)</a></li>
+        
+    
+        
+            <li><a href="/tags/mongodb">mongodb (3)</a></li>
+        
+    
+        
+            <li><a href="/tags/go">go (2)</a></li>
+        
+    
+        
+            <li><a href="/tags/%E7%9E%8E%E8%AF%B4">瞎说 (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/lua">lua (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/oauth">oauth (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/%E7%AE%97%E6%B3%95">算法 (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/hugo">hugo (1)</a></li>
+        
+    
+</ul>
+
+            <form class="uk-search" action="http://oubnpdea.github.io/search/">
+    <input class="uk-search-field" id="q" name="q" type="search" placeholder="search..." />
+</form>
+
+        </header>
+
+<main id="content">
+
+<article class="post">
+    <div class="post-stamp">
+        <time datetime="2015-12-02T22:05:52&#43;08:00">
+            2 Dec 2015
+        </time>
+        <span class="taglist">
+        
+        &middot; 
+            
+                <a href="http://oubnpdea.github.io/tags/php/">PHP</a>
+            
+        
+        </span>
+    </div>
+    <h1 class="post-title">初探 PHP 7</h1>
+    
+
+<p>真的是千呼万唤始出来啊，PHP 7 终于发布了！这一次的大版本更新基本相当于是有着 PHP 语法的“另一种语言”了。而且这次大版本升级主要的推动者就是鸟哥 <a href="http://weibo.com/laruence">@laruence</a>。</p>
+
+<p>这次的升级带来很多令人兴奋的提升与功能：</p>
+
+<ol>
+<li><p>性能的大幅提升：PHP 7 速度是 PHP 5.6 的两倍</p></li>
+
+<li><p>显著的减少内存的使用</p></li>
+
+<li><p>抽象语法树</p></li>
+
+<li><p>64 位的 Int 支持</p></li>
+
+<li><p>许多重大错误可以进行异常处理</p></li>
+
+<li><p>安全随机数生成器</p></li>
+
+<li><p>移除了旧的和不支持的 SAPIs 和扩展</p></li>
+
+<li><p>null 合并操作符(??)</p></li>
+
+<li><p>增加了返回类型的声明</p></li>
+
+<li><p>匿名类</p></li>
+</ol>
+
+<h2 id="php-7-安装:3bc74ae603b5ce5f226d3666146819be">PHP 7 安装</h2>
+
+<h6 id="1-安装依赖:3bc74ae603b5ce5f226d3666146819be">1. 安装依赖</h6>
+
+<pre><code>$ sudo yum install -y libxml2 libxml2-devel
+</code></pre>
+
+<h6 id="2-安装-php-7:3bc74ae603b5ce5f226d3666146819be">2. 安装 PHP 7</h6>
+
+<pre><code>$ tar zxf php-7.0.0.tar.gz
+$ cd php-7.0.0
+$ sudo ./configure --prefix=/usr/local/php
+$ sudo make
+$ sudo make install
+$ php -v
+PHP 7.0.0 (cli) (built: Dec  4 2015 10:02:55) ( NTS )
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v3.0.0, Copyright (c) 1998-2015 Zend Technologies
+</code></pre>
+
+<h2 id="让-php-7-进一步达到最高性能:3bc74ae603b5ce5f226d3666146819be">让 PHP 7 进一步达到最高性能</h2>
+
+<h6 id="1-opcache:3bc74ae603b5ce5f226d3666146819be">1. Opcache</h6>
+
+<p>启用Zend Opcache（PHP 7即使不启用Opcache速度也比PHP-5.6启用了Opcache快），在php.ini配置文件中加入:</p>
+
+<pre><code>zend_extension=opcache.so
+opcache.enable=1
+opcache.enable_cli=1
+</code></pre>
+
+<h6 id="2-使用新的-gcc-编译器:3bc74ae603b5ce5f226d3666146819be">2. 使用新的 GCC 编译器</h6>
+
+<p>使用 GCC 4.8 以上的编译器，因为只有 GCC 4.8 以上 PHP 才会开启 Global Register for opline and execute_data 支持，这个会带来5%左右的性能提升(Wordpres的QPS角度衡量)。</p>
+
+<h6 id="3-hugepage:3bc74ae603b5ce5f226d3666146819be">3. HugePage</h6>
+
+<p>首先在系统中开启 HugePages，然后开启 Opcache 的 huge_code_pages。</p>
+
+<pre><code>$ sudo sysctl vm.nr_hugepages=512
+vm.nr_hugepages = 512
+$ cat /proc/meminfo  | grep Huge
+AnonHugePages:    106496 kB
+HugePages_Total:     512
+HugePages_Free:      504
+HugePages_Rsvd:       27
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+</code></pre>
+
+<p>然后在 php.ini 中加入：</p>
+
+<pre><code>opcache.huge_code_pages=1
+</code></pre>
+
+<p>这样一来，PHP会把自身的text段，以及内存分配中的huge都采用大内存页来保存，减少TLB miss，从而提高性能。</p>
+
+<p>详细具体的 HugePage 相关文章查看鸟哥博客 <a href="http://www.laruence.com/2015/10/02/3069.html">让你的PHP7更快之Hugepage</a>。</p>
+
+<h6 id="4-opcache-file-cache-实验性:3bc74ae603b5ce5f226d3666146819be">4. Opcache file cache（实验性）</h6>
+
+<p>通过开启这个，我们可以让Opcache把opcode缓存缓存到外部文件中，对于一些脚本，会有很明显的性能提升。在 php.ini 中加入：</p>
+
+<pre><code>opcache.file_cache=/tmp
+</code></pre>
+
+<p>这样PHP就会在 /tmp 目录下Cache一些Opcode的二进制导出文件，可以跨PHP生命周期存在。</p>
+
+<h6 id="5-pgo:3bc74ae603b5ce5f226d3666146819be">5. PGO</h6>
+
+<p>如果你的 PHP 是专门为一个项目服务，比如只是为你的Wordpress，或者drupal，或者其他什么，那么你就可以尝试通过 PGO 来提升PHP，专门为你的这个项目提高性能。</p>
+
+<p>以 Wordpress 4.1 为例。首先在编译 PHP 的时候首先：</p>
+
+<pre><code>$ make prof-gen
+</code></pre>
+
+<p>然后用你的项目训练 PHP，比如对于 Wordpress：</p>
+
+<pre><code>$ sapi/cgi/php-cgi -T 100 /home/huixinchen/local/www/htdocs/wordpress/index.php &gt;/dev/null
+</code></pre>
+
+<p>也就是让php-cgi跑100遍wordpress的首页，从而生成一些在这个过程中的profile信息，最后：</p>
+
+<pre><code>$ make prof-clean
+$ make prof-use &amp;&amp; make install
+</code></pre>
+
+<p>这个时候你编译得到的 PHP 7 就是为你的项目量身打造的最高性能的编译版本。</p>
+
+<h2 id="参考资料:3bc74ae603b5ce5f226d3666146819be">参考资料</h2>
+
+<ul>
+<li><a href="http://www.laruence.com/2015/12/04/3086.html">让PHP7达到最高性能的几个Tips</a></li>
+</ul>
+
+    
+
+    <div id="disqus_thread"></div>
+<script>
+
+
+
+
+(function() { 
+    var d = document, s = d.createElement('script');
+
+    s.src = '//bpcoder.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+    
+
+</article>  
+
+</main>
+		<footer id="footer">
+            <p id="footer-message">版权所有 &copy; 345345345 Blog. 由 <a href="http://gohugo.io/" target="_blank">Hugo</a> 提供技术支持，主题由 <a href="https://github.com/Zenithar/hugo-theme-crisp" target="_blank">Crisp</a> 及 <a href="https://github.com/SamuelDebruyn/sa.muel.be-hugo" target="_blank">sa.muel.be-hugo</a> 提供，感谢 <a href="https://github.com/" target="_blank">GitHub</a> 为本站提供存储访问服务</p>
+		</footer>
+
+    <script>
+      (function(c,f){asyncLoader=function(i,h){i.foreach(function(k,j){e(j,d(j),h)});if(typeof h.callback=="function"){var g=setInterval(function(){if(f.readyState==="complete"){clearInterval(g);h.callback()}},10)}};var d=function(g){var h=g.split(".");return h[h.length-1]},e=function(h,i,g){switch(i){case"js":a(h,g);break;case"css":b(h);break;default:break}},a=function(i,h){var g=document.createElement("script");g.type="text/javascript";g.async=true;g.src=i;document.getElementsByTagName("head")[0].appendChild(g)},b=function(g){var h=document.createElement("link");h.type="text/css";h.rel="stylesheet";h.href=g;document.getElementsByTagName("head")[0].appendChild(h)};Array.prototype.foreach=function(h){for(var g=0;g<this.length;g++){h(g,this[g])}}})(this,document);
+
+      var WebFontConfig={google:{families:["Lato:300italic,700italic,300,400,700","Oswald","PT Sans:400,700"]}};
+      asyncLoader([
+        "//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css",
+        "//7xp22y.com1.z0.glb.clouddn.com/jquery.min.js",
+        "//7xp22y.com1.z0.glb.clouddn.com/webfontloader.js",
+        "//7xp22y.com1.z0.glb.clouddn.com/highlight.min.js"
+      ],{
+        callback:function(){
+          asyncLoader([
+            "http:\/\/oubnpdea.github.io\/css/rrssb.css",
+            "http:\/\/oubnpdea.github.io\/js/gist.min.js", 
+            "http:\/\/oubnpdea.github.io\/js/rrssb.min.js",
+            "//7xp22y.com1.z0.glb.clouddn.com/default.min.css"
+          ], { callback:function() {
+              hljs.initHighlighting();
+              
+          }});
+        }
+      });
+    </script>
+	</body>
+</html>
+

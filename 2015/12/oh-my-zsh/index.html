@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+
+    
+
+
+    
+        
+    
+
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="http://oubnpdea.github.io/icons/favicon.ico">
+        <meta name="description" content="Shell 在计算机科学中，是指“为用户提供用户界面”的软件，通常指的是命令行界面的解析器;Oh My Zsh让你愉快的使用Zsh;安装Zsh;安装Oh My Zsh;配置Zsh">
+        <title>Oh My Zsh 让你愉快地使用 Zsh_345345345 Blog</title>
+        
+          
+        <style>
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+body,html
+{
+	font-size: 1em;
+	line-height: 1.65em;
+	font-family: "Lato",sans-serif;
+	font-weight: 300;
+	color: #34495e;
+	background-color: #ecf0f1;
+}
+
+html
+{
+	height: 100%;
+}
+
+body
+{
+	padding: 2em 2.5em 1em 20em;
+}
+
+header
+{
+	border-right: 1px #bdc3c7 solid;
+	padding: 2em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 13.5em;
+	background-color: #2c3e50;
+	color: #ecf0f1;
+}
+
+#content
+{
+	display: block;
+	width: 100%;
+}
+
+footer
+{
+	padding: 1em 0 2.5em;
+	font-size: .8em;
+	line-height: 1.5em;
+	color: #95a5a6;
+}
+
+article
+{
+	border-bottom: .1em #bdc3c7 solid;
+	padding-bottom: 1.7em;
+	max-width: 56em;
+}
+
+h4,h5,h6,hr,p
+{
+	margin-top: .9em;
+	margin-bottom: .9em;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-family: "Oswald","Lato",sans-serif;
+	font-weight: 400!important;
+}
+
+h1
+{
+	font-size: 2.5em;
+	line-height: 1.1em;
+	margin-top: .6em;
+	margin-bottom: .6em;
+}
+
+h2
+{
+	font-size: 1.9em;
+	line-height: 1.2em;
+	margin-top: .7em;
+	margin-bottom: .7em;
+}
+
+h3
+{
+	font-size: 1.4em;
+	line-height: 1.3em;
+	margin-top: .8em;
+	margin-bottom: .8em;
+}
+
+h4
+{
+	font-size: 1.3em;
+}
+
+h5
+{
+	font-size: 1.2em;
+}
+
+h6
+{
+	font-size: 1.1em;
+}
+
+iframe,img
+{
+	max-width: 100%;
+}
+
+a
+{
+	font-weight: 700;
+	text-decoration: none;
+	color: #e74c3c;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a
+{
+	font-weight: 400;
+}
+
+strong
+{
+	font-weight: 700;
+}
+
+blockquote
+{
+	border-left: .4em solid #bdc3c7;
+	padding-left: 1.2em;
+	font-size: 1.3em;
+}
+
+hr
+{
+	border: 0;
+	height: 1px;
+	background: #bdc3c7;
+}
+
+ol,ul
+{
+	margin-left: 3em;
+}
+
+code
+{
+	font-size: 1.2em;
+	background: #bdc3c7;
+}
+
+pre
+{
+	font-size: .8em;
+	line-height: 2em;
+	background: #bdc3c7;
+	padding: 1em;
+	word-break: break-all;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: -moz-pre-wrap;
+	white-space: pre-wrap;
+}
+
+input
+{
+	font-size: 1em;
+	padding: .3em;
+}
+
+header h1
+{
+	font-size: 1.9em;
+	margin-top: .8em;
+	margin-bottom: .6em;
+}
+
+header a
+{
+	color: #1abc9c;
+}
+
+header h1 a:hover
+{
+	text-decoration: none;
+}
+
+header #logo img
+{
+	width: 9em;
+	height: 9em;
+	border-radius: 4.5em;
+	-moz-border-radius: 4.5em;
+	-webkit-border-radius: 4.5em;
+	border: 0;
+}
+
+#follow-icons
+{
+	font-size: .7em;
+	margin-top: -.7em;
+	margin-bottom: 1.5em;
+}
+
+#follow-icons a
+{
+	color: #ccc;
+	margin-right: 0.5em;
+}
+
+#follow-icons span
+{
+	vertical-align: top;
+	margin-left: -.15em;
+	margin-right: -.15em;
+}
+
+#follow-icons span .fa-stack-1x
+{
+	font-size: 1.05em;
+	line-height: 1.9em;
+}
+
+header h6
+{
+	margin-top: .5em;
+}
+
+article span.post-stamp
+{
+	color: #888;
+}
+
+h1.post-title
+{
+	margin-top: .35em;
+	margin-bottom: .6em;
+}
+
+h3.post-title
+{
+	margin-top: .4em;
+	padding-bottom: .9em;
+	border-bottom: 1px solid #bdc3c7;
+	font-size: 1.2em;
+	color: #34495e;
+	font-family: "Lato",sans-serif;
+	font-weight: 700!important;
+}
+
+.sitetaglist
+{
+	list-style-type: none;
+	display: block;
+	margin-left: 0;
+	text-align: center;
+	margin-bottom: 1.25em;
+	font-size: 0.8em;
+}
+
+.sitetaglist li
+{
+	display: inline;
+}
+
+.sitetaglisttitle
+{
+	margin-bottom: .3em;
+}
+
+h3.post-title>time
+{
+	font-family: "Lato",sans-serif;
+	font-weight: 300!important;
+	font-size: .9em;
+}
+
+.post-title .feature-star
+{
+	font-size: .9em;
+}
+
+.feature-star,.separator
+{
+	color: #ccc;
+}
+
+.taglist { color: #ccc }
+
+.taglist a {
+    background-color: #ccc;
+    color: #fff;
+    display: inline-block;
+    line-height: 1.5em;
+    padding: .3em .6em;
+    vertical-align: 20%;
+    font-size: .5em;
+    font-weight: 700!important;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-radius: .25em;
+    -moz-border-radius: .25em;
+    -webkit-border-radius: .25em;
+}
+
+#social-bar
+{
+	margin-top: 1.5em;
+	background-color: #bdc3c7;
+	padding: .5em;
+}
+
+.pagination
+{
+	margin-bottom: 1em;
+}
+
+footer a
+{
+	font-weight: 300;
+	color: #95a5a6;
+	text-decoration: underline;
+}
+
+footer a:hover
+{
+	color: #7f8c8d;
+	text-decoration: none;
+}
+
+.uk-search
+{
+	display: inline-block;
+	position: relative;
+	margin: 0;
+}
+
+.uk-search:before
+{
+	content: "\f002";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1.87em;
+	line-height: 2.5em;
+	text-align: center;
+	font-family: FontAwesome;
+	font-size: 0.87em;
+	color: #1abc9c;
+}
+
+.uk-search-field::-moz-focus-inner
+{
+	border: 0;
+	padding: 0;
+}
+
+.uk-search-field::-webkit-search-cancel-button,.uk-search-field::-webkit-search-decoration
+{
+	-webkit-appearance: none;
+}
+
+.uk-search-field::-ms-clear
+{
+	display: none;
+}
+
+.uk-search-field::-moz-placeholder
+{
+	opacity: 1;
+}
+
+.uk-search-field
+{
+	font-family: "Oswald","Lato",sans-serif;
+	color: #ecf0f1;
+	-webkit-appearance: none;
+	width: 11.25em;
+	height: 1.87em;
+	padding: 0 0 0 1.87em;
+	border: 0;
+	background: rgba(0,0,0,0);
+	-webkit-transition: all linear .2s;
+	transition: all linear .2s;
+	vertical-align: middle;
+}
+
+.uk-search-field:-ms-input-placeholder
+{
+	color: #95a5a6!important;
+}
+
+.uk-search-field::-moz-placeholder
+{
+	color: #95a5a6;
+}
+
+.uk-search-field::-webkit-input-placeholder
+{
+	color: #95a5a6;
+}
+
+.uk-search-field:focus
+{
+	outline: 0;
+}
+
+.uk-search-field:focus,.uk-search.uk-active .uk-search-field
+{
+	width: 11.25em;
+}
+
+.gs-image-box,.gsc-above-wrapper-area,.gsc-cursor-box,.gsc-url-bottom,.gsc-thumbnail,.gs-per-result-labels
+{
+	display: none!important;
+	visibility: hidden!important;
+}
+
+.gsc-control-cse,.gsc-results
+{
+	font: inherit!important;
+	background: inherit!important;
+	border: inherit!important;
+	padding: inherit!important;
+	margin: inherit!important;
+}
+
+.gsc-result
+{
+	border: inherit!important;
+	background: inherit!important;
+	padding: inherit!important;
+}
+
+.gs-title
+{
+	font-family: "Lato",sans-serif!important;
+	color: #e74c3c!important;
+	text-decoration: none!important;
+	height: inherit!important;
+	overflow: inherit!important;
+}
+
+.gs-snippet
+{
+	color: inherit!important;
+	font-family: "Lato",sans-serif!important;
+	height: inherit!important;
+	overflow: inherit!important;
+}
+
+@media only screen and (min-width:1281px)
+{
+	body,html
+	{
+		font-size: 1.1em;
+	};
+}
+
+@media only screen and (max-width:800px)
+{
+	body
+	{
+		padding: 0;
+	}
+
+	header
+	{
+		border-right: 0;
+		border-bottom: 1px #bdc3c7 solid;
+		position: relative;
+		height: auto;
+		width: auto;
+		text-align: center;
+		padding-bottom: 1em;
+	}
+
+	#content
+	{
+		margin-left: 0;
+		padding: 2em 2em 1em;
+		width: auto;
+	}
+
+	footer
+	{
+		padding: 0 2.5em 2em;
+	};
+}
+
+@media only screen and (max-width:31.25em)
+{
+	#content,header
+	{
+		padding: 1.2em 1.2em .6em;
+	}
+
+	footer
+	{
+		padding: 0 1.5em 1.2em;
+	}
+
+	ol,ul
+	{
+		margin-left: 2em;
+	};
+}
+
+.section
+{
+	clear: both;
+	padding: 0;
+	margin: 0;
+}
+
+.col
+{
+	display: block;
+	float: left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.col:first-child
+{
+	margin-left: 0;
+}
+
+.group:before,.group:after
+{
+	content: "";
+	display: table;
+}
+
+.group:after
+{
+	clear: both;
+}
+
+.group
+{
+	zoom: 1;
+}
+
+.span_3_of_3
+{
+	width: 100%;
+}
+
+.span_2_of_3
+{
+	width: 66.13%;
+}
+
+.span_1_of_3
+{
+	width: 32.26%;
+}
+
+@media only screen and (max-width: 480px)
+{
+	.col
+	{
+		margin: 1% 0;
+	}
+
+	.span_3_of_3,.span_2_of_3,.span_1_of_3
+	{
+		width: 100%;
+	};
+}
+
+@media only screen and (max-height: 550px)
+{
+	.sitetaglist, .sitetaglisttitle
+	{
+		display: none;
+		visibility: hidden;
+	}
+}
+
+.portfoliobox
+{
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.portfoliobox img
+{
+	max-height: 10em;
+}
+
+.portfoliobox h4
+{
+	margin-top: 0;
+}
+
+.portfolio-meta
+{
+	margin-bottom: .5em;
+}
+
+.portfolio-meta > *
+{
+	display: block;
+}
+
+.portfolio-tag
+{
+	font-weight: 600;
+}
+</style>
+    </head>
+    <body>
+        <header id="header">
+            <a id="logo" href="http://oubnpdea.github.io/"><img src="http://7xp22y.com1.z0.glb.clouddn.com/avatar.jpg" alt="345345345 Blog" /></a>
+            <h1><a href="http://oubnpdea.github.io/">345345345 Blog</a></h1>
+            <div id="follow-icons">
+	<a href="http://weibo.com/khalil8yang" target="_blank"><i class="fa fa-weibo fa-2x"></i></a>
+	<a href="https://github.com/MingYangCoder" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+	<a href="https://www.linkedin.com/in/bpcoder" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+    
+</div>  
+
+            
+
+
+            <h6 class="sitetaglisttitle">Tags</h6>
+<ul class="sitetaglist">
+    
+        
+            <li><a href="/tags/%E5%B7%A5%E5%85%B7">工具 (9)</a></li>
+        
+    
+        
+            <li><a href="/tags/php">php (6)</a></li>
+        
+    
+        
+            <li><a href="/tags/mongodb">mongodb (3)</a></li>
+        
+    
+        
+            <li><a href="/tags/go">go (2)</a></li>
+        
+    
+        
+            <li><a href="/tags/%E7%AE%97%E6%B3%95">算法 (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/hugo">hugo (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/oauth">oauth (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/%E7%9E%8E%E8%AF%B4">瞎说 (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/lua">lua (1)</a></li>
+        
+    
+</ul>
+
+            <form class="uk-search" action="http://oubnpdea.github.io/search/">
+    <input class="uk-search-field" id="q" name="q" type="search" placeholder="search..." />
+</form>
+
+        </header>
+
+<main id="content">
+
+<article class="post">
+    <div class="post-stamp">
+        <time datetime="2015-12-11T09:38:22&#43;08:00">
+            11 Dec 2015
+        </time>
+        <span class="taglist">
+        
+        &middot; 
+            
+                <a href="http://oubnpdea.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+            
+        
+        </span>
+    </div>
+    <h1 class="post-title">Oh My Zsh 让你愉快地使用 Zsh</h1>
+    
+
+<p>一提到 Shell 我们程序猿们就会感觉特别亲切，几乎每天的工作都会使用到。</p>
+
+<p>Shell 在计算机科学中，是指“为用户提供用户界面”的软件，通常指的是命令行界面的解析器。一般来说，这个词是指操作系统中，提供访问内核所提供之服务的程序。Shell也用于泛指所有为用户提供操作界面的程序，也就是程序和用户交互的层面。因此与之相对的是程序内核，内核不提供和用户的交互功能。（来源：<a href="https://zh.wikipedia.org/wiki/%E6%AE%BC%E5%B1%A4">维基百科</a>）</p>
+
+<p>当然，Shell 也有很多的版本，比如 sh、bash、csh 等等，这里介绍一下 zsh。</p>
+
+<h5 id="zsh-具有以下主要功能:61b56cb87ae1650e6c4b000f4a8f6bd8">Zsh 具有以下主要功能：</h5>
+
+<ul>
+<li>开箱即用、可编程的命令行补全功能可以帮助用户输入各种参数以及选项。</li>
+<li>在用户启动的所有shell中共享命令历史。</li>
+<li>通过扩展的文件通配符，可以不利用外部命令达到find命令一般展开文件名。</li>
+<li>改进的变量与数组处理。</li>
+<li>在缓冲区中编辑多行命令。</li>
+<li>多种兼容模式，例如使用/bin/sh运行时可以伪装成Bourne shell。</li>
+<li>可以定制呈现形式的提示符；包括在屏幕右端显示信息，并在键入长命令时自动隐藏。</li>
+<li>可加载的模块，提供其他各种支持：完整的TCP与Unix域套接字控制，FTP客户端与扩充过的数学函数。</li>
+<li>完全可定制化。</li>
+</ul>
+
+<p>除了上面维基上罗列的功能，还有比如 Tab 显示全目录选择文件以及各种实用插件都会让你喜欢上 Zsh。不过由于本身其过于复杂的配置，让很多人望而却步（比如一开始的我），幸而有了 <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> 帮助我快速使用上 Zsh。</p>
+
+<h2 id="安装-zsh:61b56cb87ae1650e6c4b000f4a8f6bd8">安装 Zsh</h2>
+
+<p>首先你可以查看一下，现在机器支持的 Shell 有哪些。</p>
+
+<pre><code>➜  /Users/BPCoder &gt; cat /etc/shells
+# List of acceptable shells for chpass(1).
+# Ftpd will not allow users to connect who are not using
+# one of these shells.
+
+/bin/bash
+/bin/csh
+/bin/ksh
+/bin/sh
+/bin/tcsh
+/bin/zsh
+</code></pre>
+
+<p>OS X 用户基本不用考虑安装 Zsh 的事情，因为默认安装了。其他系统也很简单，只需要通过自己的软件包管理器就可以安装了。最后将默认 Shell 切换成 zsh 即可</p>
+
+<pre><code>➜  /Users/BPCoder &gt; chsh -s /bin/zsh
+</code></pre>
+
+<h2 id="安装-oh-my-zsh:61b56cb87ae1650e6c4b000f4a8f6bd8">安装 Oh My Zsh</h2>
+
+<p>curl 方式：</p>
+
+<pre><code>sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+</code></pre>
+
+<p>wget 方式：</p>
+
+<pre><code>sh -c &quot;$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;
+</code></pre>
+
+<p>这样就安装完成了，重新开启一个窗口就会发现变化了。</p>
+
+<p><img src="http://7xp22y.com1.z0.glb.clouddn.com/oh-my-zsh-1.jpg" alt="zsh 界面" /></p>
+
+<h2 id="配置-zsh:61b56cb87ae1650e6c4b000f4a8f6bd8">配置 Zsh</h2>
+
+<p>基本已经安装完成，剩下就是根据个人喜好进行一下自定义配置。使用 Zsh 后，配置文件就是当前用户根目录下的 .zshrc 文件。</p>
+
+<p>下面是我自己的简易配置。</p>
+
+<pre><code>export ZSH=/Users/BPCoder/.oh-my-zsh
+ZSH_THEME=&quot;robbyrussell&quot;
+plugins=(git autojump)
+source $ZSH/oh-my-zsh.sh
+alias -s ll=&quot;ls -al&quot;
+alias -s php=vim
+alias -s go=vim
+alias -s py=vim
+alias -s c=vim
+</code></pre>
+
+<p>简单说明一下：</p>
+
+<ol>
+<li><p>ZSH_THEME 是主题的设置， oh my zsh 提供了很多主题，可根据个人的需求选择甚至自己编写主题，我现在的是 robbyrussell，并做了一些简单的修改。</p>
+
+<pre><code>local ret_status=&quot;%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)&quot;
+PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}% %{$reset_color%}&gt; '
+
+
+ZSH_THEME_GIT_PROMPT_PREFIX=&quot;git:(%{$fg[red]%}&quot;
+ZSH_THEME_GIT_PROMPT_SUFFIX=&quot;%{$reset_color%}&quot;
+ZSH_THEME_GIT_PROMPT_DIRTY=&quot;%{$fg[blue]%}) %{$fg[yellow]%}✗%{$reset_color%}&quot;
+ZSH_THEME_GIT_PROMPT_CLEAN=&quot;%{$fg[blue]%})&quot;
+</code></pre></li>
+
+<li><p>插件方面 oh my zsh 也提供了大量的插件，我这里只是简单添加了两个 git 和 <a href="/2015/12/autojump/">autojump</a>。</p></li>
+
+<li><p>然后就是&rdquo;alias -s php=vim&rdquo;，表示为在命令行直接输入后缀为 php 的文件名，会用 vim 打开，很实用推荐。</p></li>
+</ol>
+
+<p>剩下的其他没有提到的功能，后面会慢慢找时间补充，不过现在已经可以体验到 Zsh 给我们带来的乐趣了。</p>
+
+<h2 id="参考资料:61b56cb87ae1650e6c4b000f4a8f6bd8">参考资料</h2>
+
+<ul>
+<li><p><a href="http://zhuanlan.zhihu.com/mactalk/19556676">终极 Shell——ZSH</a></p></li>
+
+<li><p><a href="http://zsh.sourceforge.net/Doc/zsh_a4.pdf">Zsh 手册</a></p></li>
+</ul>
+
+    
+
+    <div id="disqus_thread"></div>
+<script>
+
+
+
+
+(function() { 
+    var d = document, s = d.createElement('script');
+
+    s.src = '//bpcoder.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+    
+
+</article>  
+
+</main>
+		<footer id="footer">
+            <p id="footer-message">版权所有 &copy; 345345345 Blog. 由 <a href="http://gohugo.io/" target="_blank">Hugo</a> 提供技术支持，主题由 <a href="https://github.com/Zenithar/hugo-theme-crisp" target="_blank">Crisp</a> 及 <a href="https://github.com/SamuelDebruyn/sa.muel.be-hugo" target="_blank">sa.muel.be-hugo</a> 提供，感谢 <a href="https://github.com/" target="_blank">GitHub</a> 为本站提供存储访问服务</p>
+		</footer>
+
+    <script>
+      (function(c,f){asyncLoader=function(i,h){i.foreach(function(k,j){e(j,d(j),h)});if(typeof h.callback=="function"){var g=setInterval(function(){if(f.readyState==="complete"){clearInterval(g);h.callback()}},10)}};var d=function(g){var h=g.split(".");return h[h.length-1]},e=function(h,i,g){switch(i){case"js":a(h,g);break;case"css":b(h);break;default:break}},a=function(i,h){var g=document.createElement("script");g.type="text/javascript";g.async=true;g.src=i;document.getElementsByTagName("head")[0].appendChild(g)},b=function(g){var h=document.createElement("link");h.type="text/css";h.rel="stylesheet";h.href=g;document.getElementsByTagName("head")[0].appendChild(h)};Array.prototype.foreach=function(h){for(var g=0;g<this.length;g++){h(g,this[g])}}})(this,document);
+
+      var WebFontConfig={google:{families:["Lato:300italic,700italic,300,400,700","Oswald","PT Sans:400,700"]}};
+      asyncLoader([
+        "//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css",
+        "//7xp22y.com1.z0.glb.clouddn.com/jquery.min.js",
+        "//7xp22y.com1.z0.glb.clouddn.com/webfontloader.js",
+        "//7xp22y.com1.z0.glb.clouddn.com/highlight.min.js"
+      ],{
+        callback:function(){
+          asyncLoader([
+            "http:\/\/oubnpdea.github.io\/css/rrssb.css",
+            "http:\/\/oubnpdea.github.io\/js/gist.min.js", 
+            "http:\/\/oubnpdea.github.io\/js/rrssb.min.js",
+            "//7xp22y.com1.z0.glb.clouddn.com/default.min.css"
+          ], { callback:function() {
+              hljs.initHighlighting();
+              
+          }});
+        }
+      });
+    </script>
+	</body>
+</html>
+

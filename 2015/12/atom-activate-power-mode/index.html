@@ -1,0 +1,846 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+
+    
+
+
+    
+        
+    
+
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="http://oubnpdea.github.io/icons/favicon.ico">
+        <meta name="description" content="Atom是由GitHub开发的自由及开放源代码的文字与代码编辑器;安装Atom;OS X上安装activate-power-mode插件;简单使用体验;Atom对于Markdown的支持;Atom一些常规快捷键">
+        <title>Atom 酷炫插件 activate-power-mode_345345345 Blog</title>
+        
+          
+        <style>
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+body,html
+{
+	font-size: 1em;
+	line-height: 1.65em;
+	font-family: "Lato",sans-serif;
+	font-weight: 300;
+	color: #34495e;
+	background-color: #ecf0f1;
+}
+
+html
+{
+	height: 100%;
+}
+
+body
+{
+	padding: 2em 2.5em 1em 20em;
+}
+
+header
+{
+	border-right: 1px #bdc3c7 solid;
+	padding: 2em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 13.5em;
+	background-color: #2c3e50;
+	color: #ecf0f1;
+}
+
+#content
+{
+	display: block;
+	width: 100%;
+}
+
+footer
+{
+	padding: 1em 0 2.5em;
+	font-size: .8em;
+	line-height: 1.5em;
+	color: #95a5a6;
+}
+
+article
+{
+	border-bottom: .1em #bdc3c7 solid;
+	padding-bottom: 1.7em;
+	max-width: 56em;
+}
+
+h4,h5,h6,hr,p
+{
+	margin-top: .9em;
+	margin-bottom: .9em;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-family: "Oswald","Lato",sans-serif;
+	font-weight: 400!important;
+}
+
+h1
+{
+	font-size: 2.5em;
+	line-height: 1.1em;
+	margin-top: .6em;
+	margin-bottom: .6em;
+}
+
+h2
+{
+	font-size: 1.9em;
+	line-height: 1.2em;
+	margin-top: .7em;
+	margin-bottom: .7em;
+}
+
+h3
+{
+	font-size: 1.4em;
+	line-height: 1.3em;
+	margin-top: .8em;
+	margin-bottom: .8em;
+}
+
+h4
+{
+	font-size: 1.3em;
+}
+
+h5
+{
+	font-size: 1.2em;
+}
+
+h6
+{
+	font-size: 1.1em;
+}
+
+iframe,img
+{
+	max-width: 100%;
+}
+
+a
+{
+	font-weight: 700;
+	text-decoration: none;
+	color: #e74c3c;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a
+{
+	font-weight: 400;
+}
+
+strong
+{
+	font-weight: 700;
+}
+
+blockquote
+{
+	border-left: .4em solid #bdc3c7;
+	padding-left: 1.2em;
+	font-size: 1.3em;
+}
+
+hr
+{
+	border: 0;
+	height: 1px;
+	background: #bdc3c7;
+}
+
+ol,ul
+{
+	margin-left: 3em;
+}
+
+code
+{
+	font-size: 1.2em;
+	background: #bdc3c7;
+}
+
+pre
+{
+	font-size: .8em;
+	line-height: 2em;
+	background: #bdc3c7;
+	padding: 1em;
+	word-break: break-all;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: -moz-pre-wrap;
+	white-space: pre-wrap;
+}
+
+input
+{
+	font-size: 1em;
+	padding: .3em;
+}
+
+header h1
+{
+	font-size: 1.9em;
+	margin-top: .8em;
+	margin-bottom: .6em;
+}
+
+header a
+{
+	color: #1abc9c;
+}
+
+header h1 a:hover
+{
+	text-decoration: none;
+}
+
+header #logo img
+{
+	width: 9em;
+	height: 9em;
+	border-radius: 4.5em;
+	-moz-border-radius: 4.5em;
+	-webkit-border-radius: 4.5em;
+	border: 0;
+}
+
+#follow-icons
+{
+	font-size: .7em;
+	margin-top: -.7em;
+	margin-bottom: 1.5em;
+}
+
+#follow-icons a
+{
+	color: #ccc;
+	margin-right: 0.5em;
+}
+
+#follow-icons span
+{
+	vertical-align: top;
+	margin-left: -.15em;
+	margin-right: -.15em;
+}
+
+#follow-icons span .fa-stack-1x
+{
+	font-size: 1.05em;
+	line-height: 1.9em;
+}
+
+header h6
+{
+	margin-top: .5em;
+}
+
+article span.post-stamp
+{
+	color: #888;
+}
+
+h1.post-title
+{
+	margin-top: .35em;
+	margin-bottom: .6em;
+}
+
+h3.post-title
+{
+	margin-top: .4em;
+	padding-bottom: .9em;
+	border-bottom: 1px solid #bdc3c7;
+	font-size: 1.2em;
+	color: #34495e;
+	font-family: "Lato",sans-serif;
+	font-weight: 700!important;
+}
+
+.sitetaglist
+{
+	list-style-type: none;
+	display: block;
+	margin-left: 0;
+	text-align: center;
+	margin-bottom: 1.25em;
+	font-size: 0.8em;
+}
+
+.sitetaglist li
+{
+	display: inline;
+}
+
+.sitetaglisttitle
+{
+	margin-bottom: .3em;
+}
+
+h3.post-title>time
+{
+	font-family: "Lato",sans-serif;
+	font-weight: 300!important;
+	font-size: .9em;
+}
+
+.post-title .feature-star
+{
+	font-size: .9em;
+}
+
+.feature-star,.separator
+{
+	color: #ccc;
+}
+
+.taglist { color: #ccc }
+
+.taglist a {
+    background-color: #ccc;
+    color: #fff;
+    display: inline-block;
+    line-height: 1.5em;
+    padding: .3em .6em;
+    vertical-align: 20%;
+    font-size: .5em;
+    font-weight: 700!important;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-radius: .25em;
+    -moz-border-radius: .25em;
+    -webkit-border-radius: .25em;
+}
+
+#social-bar
+{
+	margin-top: 1.5em;
+	background-color: #bdc3c7;
+	padding: .5em;
+}
+
+.pagination
+{
+	margin-bottom: 1em;
+}
+
+footer a
+{
+	font-weight: 300;
+	color: #95a5a6;
+	text-decoration: underline;
+}
+
+footer a:hover
+{
+	color: #7f8c8d;
+	text-decoration: none;
+}
+
+.uk-search
+{
+	display: inline-block;
+	position: relative;
+	margin: 0;
+}
+
+.uk-search:before
+{
+	content: "\f002";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1.87em;
+	line-height: 2.5em;
+	text-align: center;
+	font-family: FontAwesome;
+	font-size: 0.87em;
+	color: #1abc9c;
+}
+
+.uk-search-field::-moz-focus-inner
+{
+	border: 0;
+	padding: 0;
+}
+
+.uk-search-field::-webkit-search-cancel-button,.uk-search-field::-webkit-search-decoration
+{
+	-webkit-appearance: none;
+}
+
+.uk-search-field::-ms-clear
+{
+	display: none;
+}
+
+.uk-search-field::-moz-placeholder
+{
+	opacity: 1;
+}
+
+.uk-search-field
+{
+	font-family: "Oswald","Lato",sans-serif;
+	color: #ecf0f1;
+	-webkit-appearance: none;
+	width: 11.25em;
+	height: 1.87em;
+	padding: 0 0 0 1.87em;
+	border: 0;
+	background: rgba(0,0,0,0);
+	-webkit-transition: all linear .2s;
+	transition: all linear .2s;
+	vertical-align: middle;
+}
+
+.uk-search-field:-ms-input-placeholder
+{
+	color: #95a5a6!important;
+}
+
+.uk-search-field::-moz-placeholder
+{
+	color: #95a5a6;
+}
+
+.uk-search-field::-webkit-input-placeholder
+{
+	color: #95a5a6;
+}
+
+.uk-search-field:focus
+{
+	outline: 0;
+}
+
+.uk-search-field:focus,.uk-search.uk-active .uk-search-field
+{
+	width: 11.25em;
+}
+
+.gs-image-box,.gsc-above-wrapper-area,.gsc-cursor-box,.gsc-url-bottom,.gsc-thumbnail,.gs-per-result-labels
+{
+	display: none!important;
+	visibility: hidden!important;
+}
+
+.gsc-control-cse,.gsc-results
+{
+	font: inherit!important;
+	background: inherit!important;
+	border: inherit!important;
+	padding: inherit!important;
+	margin: inherit!important;
+}
+
+.gsc-result
+{
+	border: inherit!important;
+	background: inherit!important;
+	padding: inherit!important;
+}
+
+.gs-title
+{
+	font-family: "Lato",sans-serif!important;
+	color: #e74c3c!important;
+	text-decoration: none!important;
+	height: inherit!important;
+	overflow: inherit!important;
+}
+
+.gs-snippet
+{
+	color: inherit!important;
+	font-family: "Lato",sans-serif!important;
+	height: inherit!important;
+	overflow: inherit!important;
+}
+
+@media only screen and (min-width:1281px)
+{
+	body,html
+	{
+		font-size: 1.1em;
+	};
+}
+
+@media only screen and (max-width:800px)
+{
+	body
+	{
+		padding: 0;
+	}
+
+	header
+	{
+		border-right: 0;
+		border-bottom: 1px #bdc3c7 solid;
+		position: relative;
+		height: auto;
+		width: auto;
+		text-align: center;
+		padding-bottom: 1em;
+	}
+
+	#content
+	{
+		margin-left: 0;
+		padding: 2em 2em 1em;
+		width: auto;
+	}
+
+	footer
+	{
+		padding: 0 2.5em 2em;
+	};
+}
+
+@media only screen and (max-width:31.25em)
+{
+	#content,header
+	{
+		padding: 1.2em 1.2em .6em;
+	}
+
+	footer
+	{
+		padding: 0 1.5em 1.2em;
+	}
+
+	ol,ul
+	{
+		margin-left: 2em;
+	};
+}
+
+.section
+{
+	clear: both;
+	padding: 0;
+	margin: 0;
+}
+
+.col
+{
+	display: block;
+	float: left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.col:first-child
+{
+	margin-left: 0;
+}
+
+.group:before,.group:after
+{
+	content: "";
+	display: table;
+}
+
+.group:after
+{
+	clear: both;
+}
+
+.group
+{
+	zoom: 1;
+}
+
+.span_3_of_3
+{
+	width: 100%;
+}
+
+.span_2_of_3
+{
+	width: 66.13%;
+}
+
+.span_1_of_3
+{
+	width: 32.26%;
+}
+
+@media only screen and (max-width: 480px)
+{
+	.col
+	{
+		margin: 1% 0;
+	}
+
+	.span_3_of_3,.span_2_of_3,.span_1_of_3
+	{
+		width: 100%;
+	};
+}
+
+@media only screen and (max-height: 550px)
+{
+	.sitetaglist, .sitetaglisttitle
+	{
+		display: none;
+		visibility: hidden;
+	}
+}
+
+.portfoliobox
+{
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.portfoliobox img
+{
+	max-height: 10em;
+}
+
+.portfoliobox h4
+{
+	margin-top: 0;
+}
+
+.portfolio-meta
+{
+	margin-bottom: .5em;
+}
+
+.portfolio-meta > *
+{
+	display: block;
+}
+
+.portfolio-tag
+{
+	font-weight: 600;
+}
+</style>
+    </head>
+    <body>
+        <header id="header">
+            <a id="logo" href="http://oubnpdea.github.io/"><img src="http://7xp22y.com1.z0.glb.clouddn.com/avatar.jpg" alt="345345345 Blog" /></a>
+            <h1><a href="http://oubnpdea.github.io/">345345345 Blog</a></h1>
+            <div id="follow-icons">
+	<a href="http://weibo.com/khalil8yang" target="_blank"><i class="fa fa-weibo fa-2x"></i></a>
+	<a href="https://github.com/MingYangCoder" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+	<a href="https://www.linkedin.com/in/bpcoder" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+    
+</div>  
+
+            
+
+
+            <h6 class="sitetaglisttitle">Tags</h6>
+<ul class="sitetaglist">
+    
+        
+            <li><a href="/tags/%E5%B7%A5%E5%85%B7">工具 (9)</a></li>
+        
+    
+        
+            <li><a href="/tags/php">php (6)</a></li>
+        
+    
+        
+            <li><a href="/tags/mongodb">mongodb (3)</a></li>
+        
+    
+        
+            <li><a href="/tags/go">go (2)</a></li>
+        
+    
+        
+            <li><a href="/tags/%E7%AE%97%E6%B3%95">算法 (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/hugo">hugo (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/oauth">oauth (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/%E7%9E%8E%E8%AF%B4">瞎说 (1)</a></li>
+        
+    
+        
+            <li><a href="/tags/lua">lua (1)</a></li>
+        
+    
+</ul>
+
+            <form class="uk-search" action="http://oubnpdea.github.io/search/">
+    <input class="uk-search-field" id="q" name="q" type="search" placeholder="search..." />
+</form>
+
+        </header>
+
+<main id="content">
+
+<article class="post">
+    <div class="post-stamp">
+        <time datetime="2015-12-06T14:51:58&#43;08:00">
+            6 Dec 2015
+        </time>
+        <span class="taglist">
+        
+        &middot; 
+            
+                <a href="http://oubnpdea.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+            
+        
+        </span>
+    </div>
+    <h1 class="post-title">Atom 酷炫插件 activate-power-mode</h1>
+    
+
+<p>前几天微博朋友圈一下子被一个 Atom 插件霸屏了。那几天特别忙就没空玩，今天闲下来翻微博突然又看到了，感觉配置一个自己玩玩看。</p>
+
+<p>没错，不喜欢瞎玩的逗逼不是好程序员。</p>
+
+<p><a href="https://atom.io/">Atom</a> 是由 GitHub 开发的自由及开放源代码的文字与代码编辑器，支持OS X、Windows和Linux操作系统，支持 Node.js 所写的插件，并内置Git版本控制系统。多数的延伸包皆为开放源代码授权，并由社区建置与维护。Atom 基于 Chromium 并使用 CoffeeScript 撰写。Atom 也可当作IDE使用。自2014年5月6日起，Atom 的核心程序、包管理器、以及 Atom 基于 Chromium 的桌面程序框架皆使用 MIT 授权条款发布。 （来源：<a href="https://zh.wikipedia.org/wiki/Atom">维基百科</a>）</p>
+
+<h2 id="安装-atom:27ca9704c06c4ce672db41ca97ca47f4">安装 Atom</h2>
+
+<p>在<a href="https://atom.io/">官网</a>下载对应系统版本的软件包，安装很简单。</p>
+
+<p><img src="http://7xp22y.com1.z0.glb.clouddn.com/material-design-theme-for-hugo-1.jpg" alt="Atom Welcome 界面" /></p>
+
+<h2 id="os-x-上安装-activate-power-mode-插件:27ca9704c06c4ce672db41ca97ca47f4">OS X 上安装 activate-power-mode 插件</h2>
+
+<p>插件源码在 GitHub 上可以获取 <a href="https://github.com/JoelBesada/activate-power-mode">activate-power-mode</a>。</p>
+
+<p>而安装过程很简单，在 Preferences 的 Install 上搜索 activate-power-mode 安装即可，然后仅需要使用 ctrl+alt+o 即可手动启动。</p>
+
+<p><img src="http://7xp22y.com1.z0.glb.clouddn.com/material-design-theme-for-hugo-2.gif" alt="activate-power-mode 效果" /></p>
+
+<h2 id="简单使用体验:27ca9704c06c4ce672db41ca97ca47f4">简单使用体验</h2>
+
+<p>在简单使用上，感觉 Atom 很棒的就是插件很丰富，安装简单方便，比较适合 Web 程序员使用。感觉和 Sublime 比较相似，不过 Atom 是由于 GitHub 牵头开发的开源项目，爱屋及乌先入为主的认为 Atom 后面的发展一定不会让我们失望的。</p>
+
+<h6 id="atom-对于-markdown-的支持:27ca9704c06c4ce672db41ca97ca47f4">Atom 对于 Markdown 的支持</h6>
+
+<p>支持对于 Markdown 的实时编辑预览功能，需要 shift+control+m 进行开启和关闭。</p>
+
+<p><img src="http://7xp22y.com1.z0.glb.clouddn.com/material-design-theme-for-hugo-3.jpg" alt="Atom Markdown 效果" /></p>
+
+<h6 id="atom-一些常规快捷键:27ca9704c06c4ce672db41ca97ca47f4">Atom 一些常规快捷键</h6>
+
+<ul>
+<li>command + \ 隐藏/显示文件目录</li>
+<li>command + o 打开文件/文件夹</li>
+<li>command +w 关闭文件</li>
+<li>command + L 选择一整行</li>
+<li>command + enter 光标任意位置也可以直接创建下一行</li>
+<li>command + shift + [ 向左切换文件</li>
+<li>command + shift + ] 向右切换文件</li>
+<li>command + &lsquo;number&rsquo; 比如command + 1切换到对应文件</li>
+<li>command + shift +p 弹出包搜索框</li>
+<li>command + k + ↑ 向上分屏</li>
+<li>command + k + ↓ 向下分屏</li>
+<li>command + k + ← 向左分屏</li>
+<li>command + k + → 向右分屏</li>
+<li>command + b 在打开的文件中查找文件</li>
+<li>command + p 在项目中查找文件</li>
+<li>command + f 在当前文件中查找</li>
+<li>command + g 查找下一个</li>
+<li>command + shift + g 查找上一个</li>
+<li>command + shift + f 在整个项目中查找</li>
+<li>esc 退出查找界面</li>
+<li>command + d 选择词</li>
+<li>command + ↑ 跳到文件顶部</li>
+<li>command + ↓ 跳到文件底部</li>
+<li>command + ← 跳到行首</li>
+<li>command + → 跳到行尾</li>
+<li>command + shift + ↑ 向上选择所有</li>
+<li>shift + ↑ 向上选择一行</li>
+<li>option/alt + → 光标按词向后跳 加上shift就是选择</li>
+</ul>
+
+<h6 id="atom-插件:27ca9704c06c4ce672db41ca97ca47f4">Atom 插件</h6>
+
+<p>在插件方面有很多，也有很多 Git 相结合的插件很棒，时间比较短玩的不多，后面玩的多了再补充个人体验吧。不过，我还是一个信仰坚定的 Vimer！科科！</p>
+
+    
+
+    <div id="disqus_thread"></div>
+<script>
+
+
+
+
+(function() { 
+    var d = document, s = d.createElement('script');
+
+    s.src = '//bpcoder.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+    
+
+</article>  
+
+</main>
+		<footer id="footer">
+            <p id="footer-message">版权所有 &copy; 345345345 Blog. 由 <a href="http://gohugo.io/" target="_blank">Hugo</a> 提供技术支持，主题由 <a href="https://github.com/Zenithar/hugo-theme-crisp" target="_blank">Crisp</a> 及 <a href="https://github.com/SamuelDebruyn/sa.muel.be-hugo" target="_blank">sa.muel.be-hugo</a> 提供，感谢 <a href="https://github.com/" target="_blank">GitHub</a> 为本站提供存储访问服务</p>
+		</footer>
+
+    <script>
+      (function(c,f){asyncLoader=function(i,h){i.foreach(function(k,j){e(j,d(j),h)});if(typeof h.callback=="function"){var g=setInterval(function(){if(f.readyState==="complete"){clearInterval(g);h.callback()}},10)}};var d=function(g){var h=g.split(".");return h[h.length-1]},e=function(h,i,g){switch(i){case"js":a(h,g);break;case"css":b(h);break;default:break}},a=function(i,h){var g=document.createElement("script");g.type="text/javascript";g.async=true;g.src=i;document.getElementsByTagName("head")[0].appendChild(g)},b=function(g){var h=document.createElement("link");h.type="text/css";h.rel="stylesheet";h.href=g;document.getElementsByTagName("head")[0].appendChild(h)};Array.prototype.foreach=function(h){for(var g=0;g<this.length;g++){h(g,this[g])}}})(this,document);
+
+      var WebFontConfig={google:{families:["Lato:300italic,700italic,300,400,700","Oswald","PT Sans:400,700"]}};
+      asyncLoader([
+        "//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css",
+        "//7xp22y.com1.z0.glb.clouddn.com/jquery.min.js",
+        "//7xp22y.com1.z0.glb.clouddn.com/webfontloader.js",
+        "//7xp22y.com1.z0.glb.clouddn.com/highlight.min.js"
+      ],{
+        callback:function(){
+          asyncLoader([
+            "http:\/\/oubnpdea.github.io\/css/rrssb.css",
+            "http:\/\/oubnpdea.github.io\/js/gist.min.js", 
+            "http:\/\/oubnpdea.github.io\/js/rrssb.min.js",
+            "//7xp22y.com1.z0.glb.clouddn.com/default.min.css"
+          ], { callback:function() {
+              hljs.initHighlighting();
+              
+          }});
+        }
+      });
+    </script>
+	</body>
+</html>
+

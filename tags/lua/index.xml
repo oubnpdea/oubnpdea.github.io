@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lua on 345345345 Blog</title>
+    <link>http://oubnpdea.github.io/tags/lua/</link>
+    <description>Recent content in Lua on 345345345 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
+    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <lastBuildDate>Thu, 03 Dec 2015 23:46:40 +0800</lastBuildDate>
+    <atom:link href="http://oubnpdea.github.io/tags/lua/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>初识 Lua</title>
+      <link>http://oubnpdea.github.io/2015/12/acquaintance-lua/</link>
+      <pubDate>Thu, 03 Dec 2015 23:46:40 +0800</pubDate>
+      <author>345345345345@163.com (345345 345345345)</author>
+      <guid>http://oubnpdea.github.io/2015/12/acquaintance-lua/</guid>
+      <description>
+
+&lt;p&gt;最近了解 &lt;a href=&#34;http://www.lua.org/&#34;&gt;Lua&lt;/a&gt; 完全是为了学习 &lt;a href=&#34;http://weibo.com/agentzh&#34;&gt;@agentZh&lt;/a&gt; 大神的开源项目 &lt;a href=&#34;https://openresty.org/&#34;&gt;OpenResty&lt;/a&gt;。因为在接触到的一些大型高访问高并发下的 Web 项目后，日益发现 PHP 存在的不足与无力（当然这不能抹杀他带来的开发效率的优势，新的 PHP 7 也有了很显著的性能上的提高）。有幸前段时间参加了 OpenResty 的一次线下活动，学习到了很多公司对于 OpenResty 的应用与实践，发现 OpenResty 就是一个很棒的解决方案。&lt;/p&gt;
+
+&lt;p&gt;OpenResty 是一个基于 Nginx 核心的，拥有大量高质量的第三方模块的全功能 Web 应用服务器。OpenResty 可以让 Web 开发人员使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K+ 并发连接响应的超高性能 Web 应用系统。&lt;/p&gt;
+
+&lt;p&gt;既然是使用 Lua 开发，那就先学习了解 Lua 吧。&lt;/p&gt;
+
+&lt;h2 id=&#34;lua-简介:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 简介&lt;/h2&gt;
+
+&lt;p&gt;Lua 是于 1993 年在巴西里约热内卢天主教大学(Pontifical Catholic University of Rio de Janeiro in Brazil)诞生了一门编程语言，发明者是该校的三位研究人员，他们给这门语言取了个浪漫的名字 —— Lua，在葡萄牙语里代表美丽的月亮。事实证明她没有糟蹋这个优美的单词，Lua语言正如它名字所预示的那样成长为一门简洁、优雅且富有乐趣的语言。&lt;/p&gt;
+
+&lt;p&gt;Lua 从一开始就是作为一门方便嵌入(其它应用程序)并可扩展的轻量级脚本语言来设计的，因此她一直遵从着简单、小巧、可移植、快速的原则，官方实现完全采用ANSI C编写，能以C程序库的形式嵌入到宿主程序中。Lua 的每个版本都保持着开放源码的传统，不过各版采用的许可协议并不相同，自5.0版(最新版是5.1)开始她采用的是著名的MIT许可协议。正由于上述特点，所以Lua在游戏开发、机器人控制、分布式应用、图像处理、生物信息学等各种各样的领域中得到了越来越广泛的应用。其中尤以游戏开发为最，许多著名的游戏，比如 Escape from Monkey Island、World of Warcraft、大话西游，都采用了 Lua 来配合引擎完成数据描述、配置管理和逻辑控制等任务。&lt;/p&gt;
+
+&lt;p&gt;提到 Lua 就不得不提到 LuaJIT，虽然 Lua 已经很高效了，相对于其他很多脚本语言都要快，但仍然不能满足所有人，于是就诞生出了 LuaJIT。LuaJIT 是利用 JIT 编译技术把 Lua 代码编译成本地机器码后交由 CPU 直接执行。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://luajit.org/&#34;&gt;LuaJIT&lt;/a&gt; 是采用 C 语言编写的 Lua 解释器。LuaJIT 被设计成全兼容标准 Lua 5.1，因此 LuaJIT 代码的语法和标准的 Lua 语法没有太大的区别（当然一些 Lua 后续的新特性还没有引入）。LuaJIT 却比标准 Lua 快上数十倍，简直就是一个高效版的 Lua。&lt;/p&gt;
+
+&lt;h2 id=&#34;lua-环境搭建:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 环境搭建&lt;/h2&gt;
+
+&lt;p&gt;因为 OpenResty 使用的就是 LuaJIT，所以后续学习 Lua 也是在 LuaJIT 环境下运行。
+对于 Mac 用户来说安装简单，只要已经安装了 Homebrew 即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install luajit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其他系统的安装可查看&lt;a href=&#34;http://www.lua.org/download.html&#34;&gt;官网&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;hello-world:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Hello World&lt;/h2&gt;
+
+&lt;p&gt;既然学习新东西，起手一定是 Hello World ！&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function main()
+    print(&amp;quot;Hello World!&amp;quot;)
+end
+
+main()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后和所有脚本语言一下执行它查看输出结果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ luajit HelloWorld.lua
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;lua-的注释:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 的注释&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;单行注释 &amp;ndash;  功能等同于 C++ 中的 //&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;多行注释 &amp;ndash;[[  注释的内容  ]]   功能等同于C++中的 /**/&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;多行注释 &amp;ndash;[====[   注释和内容  ]====],  也等同于C++中的/**/,   这个主要用于注释的内容里面有像arr[arr2[idx]] 这种文本,  如果使用&amp;ndash;[[  ]] 遇到arr[arr2[idx]]后面的]]注释就结束,这显示与我们的意图不相符合。所以使用&amp;ndash;[===[  ]===] 来注释内容, 就不用担心了, 两边的等号数量要相同, 多少个没有关系。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;lua-基础数据类型:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 基础数据类型&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;nil         空（无效值）
+boolean     布尔（true/false）
+number      实数（类同 C/C++ 的 double 类型）
+string      字符串
+table       表（关联数组）
+function    函数
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;lua-表达式:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 表达式&lt;/h2&gt;
+
+&lt;p&gt;算数运算符和关系运算符，与大多数语言一致，唯一特殊的是 不等于运算的写法为 ~=。&lt;/p&gt;
+
+&lt;h5 id=&#34;逻辑运算符:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;逻辑运算符&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;and     逻辑与
+or      逻辑或
+not     逻辑非
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lua 中的 and 和 or 不同于大多数语言。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;a and b   如果 a 为 nil或false，则返回 a，否则返回 b&lt;/li&gt;
+&lt;li&gt;a or b    如果 a 为 nil或false，则返回 b，否则返回 a&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;lua-函数:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 函数&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;function functionName(args..) 
+    ....
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lua 函数的使用：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;函数的定义一定要在函数调用前。&lt;/li&gt;
+&lt;li&gt;函数的参数为按值传递，唯一例外的是表数据类型，是按址传递。&lt;/li&gt;
+&lt;li&gt;函数参数支持变长参数。&lt;/li&gt;
+&lt;li&gt;函数支持多个返回值。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;lua-模块:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 模块&lt;/h2&gt;
+
+&lt;p&gt;从Lua5.1版本开始，就对模块和包添加了新的支持，可以使用require和module来定义和使用模块和包。require用于使用模块，module用于创建模块。简单的说，一个模块就是一个程序库，可以通过require来加载。然后便得到了一个全局变量，表示一个table。这个table就像是一个命名空间，其内容就是模块中导出的所有东西，比如函数和常量，一个符合规范的模块还应使require返回这个table。&lt;/p&gt;
+
+&lt;p&gt;使用实例：&lt;/p&gt;
+
+&lt;p&gt;complex.lua 文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;local _M = {}   -- 局部变量，模块名称
+
+function _M.new(r, i)
+    return {r = r, i = i}
+end
+
+_M.i =  _M.new(0, 1)     -- 定义一个table型常量i
+
+function  _M.add(c1, c2)  --复数加法
+    return  _M.new(c1.r + c2.r, c1.i + c2.i)
+end
+
+function  _M.sub(c1, c2)  --复数减法
+    return  _M.new(c1.r - c2.r, c1.i - c2.i)
+end
+
+return  _M  -- 返回模块的table
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;main.lua 文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;local complex = require &amp;quot;complex&amp;quot;
+
+local com1 = complex.new(0, 1)
+local com2 = complex.new(1, 2)
+
+local ans = complex.add(com1, com2)
+print(ans.r, ans.i)      --&amp;gt;output  1     3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;lua-类库:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 类库&lt;/h2&gt;
+
+&lt;p&gt;Lua 提供丰富的标准库，便于开发使用。&lt;a href=&#34;http://www.lua.org/manual/5.1/&#34;&gt;在线手册&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;lua-文件操作:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;Lua 文件操作&lt;/h2&gt;
+
+&lt;p&gt;Lua I/O库提供两种不同的方式处理文件：隐式文件描述，显式文件描述。&lt;/p&gt;
+
+&lt;h6 id=&#34;隐式文件描述:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;隐式文件描述&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;file = io.input(&amp;quot;test1.txt&amp;quot;)  --使用io.input()函数打开文件
+
+repeat
+    line = io.read()      --逐行读取内容，文件结束时返回nil
+    if nil == line then
+        break
+end
+print(line)
+until (false)
+
+io.close(file)       --关闭文件
+
+--&amp;gt;output
+my test file
+hello
+lua
+
+
+file = io.open(&amp;quot;test1.txt&amp;quot;, &amp;quot;a+&amp;quot;) --使用io.open()函数，以添加模式打开文件
+io.output(file)                    --使用io.output()函数，设置默认输出文件
+io.write(&amp;quot;\nhello world&amp;quot;)          --使用io.write()函数，把内容写到文件
+io.close(file)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;显示文件描述:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;显示文件描述&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code&gt;file = io.open(&amp;quot;test2.txt&amp;quot;, &amp;quot;r&amp;quot;)  --使用io.open()函数，以只读模式打开文件
+
+for line in file:lines() do          --使用file:lines()函数逐行读取文件
+    print(line)
+end
+
+file:close()
+
+--&amp;gt;output
+my test2
+hello lua
+
+
+file = io.open(&amp;quot;test2.txt&amp;quot;, &amp;quot;a&amp;quot;)  --使用io.open()函数，以添加模式打开文件
+file:write(&amp;quot;\nhello world&amp;quot;)       --使用file:open()函数，在文件的最后添加一行内容
+file:close()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;具体其他操作文件的函数，查询 &lt;a href=&#34;http://www.lua.org/manual/5.1/&#34;&gt;在线手册&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考资料:dfd4229f58ff2e8c966ff53c3c616ed8&#34;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gitbook.com/book/moonbingbing/openresty-best-practices&#34;&gt;OpenResty最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
