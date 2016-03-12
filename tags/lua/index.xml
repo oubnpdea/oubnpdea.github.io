@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lua on 345345345 Blog</title>
+    <title>Lua on oubnpdea Blog</title>
     <link>http://oubnpdea.github.io/tags/lua/</link>
-    <description>Recent content in Lua on 345345345 Blog</description>
+    <description>Recent content in Lua on oubnpdea Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
-    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <managingEditor>345345345345@163.com (oubnpdea)</managingEditor>
+    <webMaster>345345345345@163.com (oubnpdea)</webMaster>
     <lastBuildDate>Thu, 03 Dec 2015 23:46:40 +0800</lastBuildDate>
     <atom:link href="http://oubnpdea.github.io/tags/lua/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
       <title>初识 Lua</title>
       <link>http://oubnpdea.github.io/2015/12/acquaintance-lua/</link>
       <pubDate>Thu, 03 Dec 2015 23:46:40 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
+      <author>345345345345@163.com (oubnpdea)</author>
       <guid>http://oubnpdea.github.io/2015/12/acquaintance-lua/</guid>
       <description>
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hugo on 345345345 Blog</title>
+    <title>Hugo on oubnpdea Blog</title>
     <link>http://oubnpdea.github.io/tags/hugo/</link>
-    <description>Recent content in Hugo on 345345345 Blog</description>
+    <description>Recent content in Hugo on oubnpdea Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <managingEditor>345345345345@163.com (345345 345345345)</managingEditor>
-    <webMaster>345345345345@163.com (345345 345345345)</webMaster>
+    <managingEditor>345345345345@163.com (oubnpdea)</managingEditor>
+    <webMaster>345345345345@163.com (oubnpdea)</webMaster>
     <lastBuildDate>Tue, 01 Dec 2015 12:55:48 +0800</lastBuildDate>
     <atom:link href="http://oubnpdea.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
       <title>利用 Hugo &amp; GitHub 搭建个人博客静态网站</title>
       <link>http://oubnpdea.github.io/2015/12/hugo-create-blog/</link>
       <pubDate>Tue, 01 Dec 2015 12:55:48 +0800</pubDate>
-      <author>345345345345@163.com (345345 345345345)</author>
+      <author>345345345345@163.com (oubnpdea)</author>
       <guid>http://oubnpdea.github.io/2015/12/hugo-create-blog/</guid>
       <description>
 
